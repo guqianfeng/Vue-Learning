@@ -108,4 +108,16 @@
         
         ![](./images/v-on控制台结果.png)   
         
-    3. 注意methods属性方法中的this指向vue的实例vm        
+    3. 注意methods属性方法中的this指向vue的实例vm   
+    
+    4. 这个时候inputHandle里的代码改成这样
+        ```
+        inputHandle(e){
+            this.msg = e.target.value;
+        }
+        ``` 
+    5. 此时input框输入就能改变页面msg的值了
+    6. 总结
+        1. 数据 -> 页面 (数据msg渲染了页面)
+        2. 页面 -> 数据 (页面的操作也能改变数据msg)
+        3. 但e.target.value实际上还是操作了dom，所以接下去我们会学习v-model   
