@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .group {
+            margin: 20px 0;
+        }
+
+        .group-name {
+            cursor: pointer;
+            padding: 5px 20px 5px 0px;
+            border: 1px solid black;
+        }
+
+        ul {
+            display: none;
+        }
+
+        ul.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <p>{{msg}}</p>
+    <div v-for="(item,i) in list" class="group">
+        <span class="group-name" @click="openList(i)">{{item.group}}</span>
+        <ul :class="{'active': i === index}">
+            <li v-for="option in item.dataList">{{option}}</li>
+        </ul>
+    </div>
+</div>
+<script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+<script>
+    let list = [
+        {
+            group: "分组1",
+            dataList: [
+                "1",
+                "11",
+                "111",
+                "1111",
+            ]
+        },
+        {
+            group: "分组2",
+            dataList: [
+                "2",
+                "22",
+                "222",
+                "2222",
+                "22222",
+            ]
+        },
+        {
+            group: "分组3",
+            dataList: [
+                "3",
+                "33",
+                "333",
+            ]
+        },
+    ];
+    new Vue({
+        el: "#app",
+        data() {
+            return {
+                msg: "好友列表",
+                list,
+                index: -1
+            }
+        },
+        methods: {
+            openList(index) {
+                this.index = (this.index === index ? -1 : index);
+            }
+        }
+    })
+</script>
+</body>
+</html>

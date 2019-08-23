@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .choose{
+            margin: 50px 0;
+        }
+        span{
+            border: 1px solid black;
+            padding: 5px;
+            margin-right: 15px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .active{
+            background-color: skyblue;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <p>{{msg}}</p>
+        <p class="result">
+            <p>已选择</p>
+            <span v-for="(item,i) in choose" @click="removeHandle(i)">{{item}}</span>
+        </p>
+        <div class="choose" v-for="(item,i) in list">
+            <p>{{item.title}}</p>
+            <span v-for="(option,j) in item.dataList" @click="chooseHandle(i, option, j)" :class="{'active': j === item.index}">{{option}}</span>
+        </div>
+    </div>
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+    <script>
+        let list = [
+            {
+                title: "头发",
+                dataList: [
+                    "黑色",
+                    "黄色",
+                    "红色",
+                    "蓝色",
+                ]
+            },
+            {
+                title: "眼睛大小",
+                dataList: [
+                    "大",
+                    "中",
+                    "小",
+                    "超级大",
+                    "超级小",
+                ]
+            },
+            {
+                title: "武器",
+                dataList: [
+                    "刀",
+                    "枪",
+                    "盾",
+                ]
+            },
+        ];
+        list.forEach(item => item.index = -1);
+        new Vue({
+            el: "#app",
+            data(){
+                return {
+                    msg: "塑造角色",
+                    list,
+                    choose: {
+
+                    }
+                }
+            },
+            methods:{
+                chooseHandle(key, value, index){
+                    this.$set(this.choose, key, value);
+                    this.list[key].index = index;
+                },
+                removeHandle(key){
+                    this.$delete(this.choose, key);
+                    this.list[key].index = -1;
+                }
+            }
+        })
+    </script>
+</body>
+</html>

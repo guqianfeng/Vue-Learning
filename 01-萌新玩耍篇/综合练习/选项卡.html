@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .skill-content{
+            display: none;
+        }
+        .active{
+            background-color: skyblue;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <p>{{msg}}</p>
+    <button v-for="(item,i) in list" :class="{active: i === index}" @click="changeTab(i)">{{item.title}}</button>
+    <div v-for="(item,i) in list"
+         class="skill-content"
+         :style="{display: i === index ? 'block' : 'none'}">
+        <p v-for="option in item.skill">{{option}}</p>
+    </div>
+</div>
+<script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+<script>
+    let list = [
+        {
+            title: "剑圣",
+            skill: [
+                "疾风步",
+                "镜象",
+                "致命一击",
+                "剑刃风暴"
+            ]
+        },
+        {
+            title: "先知",
+            skill: [
+                "远视",
+                "闪电链",
+                "幽灵狼",
+                "地震"
+            ]
+        },
+        {
+            title: "牛头人酋长",
+            skill: [
+                "冲击波",
+                "战争践踏",
+                "耐力光环",
+                "重生"
+            ]
+        },
+        {
+            title: "影子猎手",
+            skill: [
+                "治疗波",
+                "妖术",
+                "眼镜蛇守卫",
+                "巫毒"
+            ]
+        },
+    ];
+    new Vue({
+        el: "#app",
+        data(){
+            return {
+                msg: "兽族英雄技能",
+                list,
+                index: 1
+            }
+        },
+        methods:{
+            changeTab(index){
+                this.index = index
+            }
+        }
+    })
+</script>
+</body>
+</html>
