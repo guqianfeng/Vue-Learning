@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .list{
+            display: none;
+        }
+        .active{
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <button v-for="(item,i) in buttonList" :class="{'active': i === index}" @click="changeTab(i)">{{item}}</button>
+    <div class="list" :style="{display: index===0 ? 'block':'none'}">
+        <p>全部列表 -- {{list.length}} (未完成: {{unFinishedList.length}})</p>
+        <input type="text" v-model="info" @keyup.enter="keyEnterHandle">
+        <input type="checkbox" v-model="checkedAll">全选
+        <ul>
+            <li v-for="item in list">
+                <input type="checkbox" v-model="item.checked">{{item.info}} --- {{item.checked ? '已完成' : '未完成'}}
+            </li>
+        </ul>
+    </div>
+    <div class="list" :style="{display: index===1 ? 'block':'none'}">
+        <p>未完成列表 -- {{unFinishedList.length}}</p>
+        <ul>
+            <li v-for="item in unFinishedList">{{item.info}}</li>
+        </ul>
+    </div>
+    <div class="list" :style="{display: index===2 ? 'block':'none'}">
+        <p>已完成列表 -- {{finishedList.length}}</p>
+        <ul>
+            <li v-for="item in finishedList">{{item.info}}</li>
+        </ul>
+    </div>
+</div>
+<script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        data(){
+            return {
+                info: "",
+                list: [],
+                index: 0,
+                buttonList: ["全部列表", "未完成列表", "已完成列表"]
+            }
+        },
+        methods: {
+            keyEnterHandle(){
+                this.list.push({
+                    info: this.info,
+                    checked: false
+                });
+                this.info = "";
+            },
+            changeTab(index){
+                this.index = index
+            }
+        },
+        computed:{
+            checkedAll:{
+                get(){
+                    if(!this.list.length) return false;
+                    return this.list.every(item => item.checked)
+                },
+                set(val){
+                    this.list.forEach(item => item.checked = val);
+                }
+            },
+            unFinishedList(){
+                return this.list.filter(item => item.checked == false);
+            },
+            finishedList(){
+                return this.list.filter(item => item.checked);
+            }
+        }
+    })
+</script>
+</body>
+</html>
