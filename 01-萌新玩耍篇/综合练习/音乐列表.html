@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="app">
+        <p style="text-align: center">
+            <span>选择歌手: {{sumSinger}}位</span>
+            <span>专辑总数: {{sumAlbum}}</span>
+        </p>
+        <table border="1px" width="400" style="margin: auto">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" v-model="checkedAll"></th>
+                    <th>歌手</th>
+                    <th>歌曲名</th>
+                    <th>专辑</th>
+                </tr>
+            </thead>
+            <tbody align="center">
+            <tr v-for="item in list">
+                <td><input type="checkbox" v-model="item.checked"></td>
+                <td>{{item.singer}}</td>
+                <td>{{item.song}}</td>
+                <td>{{item.album}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+    <script>
+        let list = [
+            {
+                id: Math.random().toString(16).substring(2),
+                singer: "邓紫棋",
+                song: "差不多姑娘",
+                album: 10
+            },
+            {
+                id: Math.random().toString(16).substring(2),
+                singer: "吴亦凡",
+                song: "差不多姑娘",
+                album: 20
+            },
+            {
+                id: Math.random().toString(16).substring(2),
+                singer: "邓紫棋",
+                song: "泡沫",
+                album: 30
+            },
+        ];
+        list.forEach(item => {
+            item.checked = false;
+        });
+        new Vue({
+            el: "#app",
+            data(){
+                return {
+                    list
+                }
+            },
+            computed: {
+                checkedAll:{
+                    get(){
+                        return this.list.every(item => item.checked);
+                    },
+                    set(val){
+                        this.list.forEach(item => item.checked = val);
+                    }
+                },
+                sumSinger(){
+                    return distinctSinger(this.list.filter(item => item.checked)).length
+                },
+                sumAlbum(){
+                    return this.list.filter(item => item.checked).reduce((n, item) => {
+                        return n + item.album
+                    }, 0)
+                }
+            }
+        });
+
+        function distinctSinger(arr){
+            return [... new Set(arr.map(item => item.singer))]
+        }
+    </script>
+</body>
+</html>
