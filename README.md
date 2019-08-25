@@ -32,6 +32,7 @@
     * [计算属性](./01-萌新玩耍篇/08-计算属性/计算属性.md)
     * [Object.defineProperty数据描述](./01-萌新玩耍篇/09-Object.defineProperty数据描述/Object.defineProperty数据描述.md)
     * [Object.defineProperty实现响应的数据绑定](./01-萌新玩耍篇/10-Object.defineProperty实现响应的数据绑定/Object.defineProperty实现响应的数据绑定.md)
+    * [其他指令学习](./01-萌新玩耍篇/11-其他指令学习/其他指令学习.md)
 
 2. 基础篇 - Vue核心知识
 
