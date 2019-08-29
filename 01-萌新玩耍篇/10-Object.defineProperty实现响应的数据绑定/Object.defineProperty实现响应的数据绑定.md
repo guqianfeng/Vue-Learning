@@ -190,4 +190,7 @@
 
 4. 声明式渲染
     * 结合知识大纲以及之前的练习加深理解  
+    
+* [上一章-Object.defineProperty数据描述](../09-Object.defineProperty数据描述/Object.defineProperty数据描述.md)
+* [下一章-其他指令学习](../11-其他指令学习/其他指令学习.md)    
             
