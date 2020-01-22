@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <p>{{title}}</p>
+        <p>姓名 - {{user.name}}</p>
+        <p>年龄 - {{user.age}}</p>
+        <p>{{arr}}</p>
+    </div>
+    <script src='../js/vue.js'></script>
+    <script>
+        let app = new Vue({
+            el: "#app",
+            data: {
+                title: "猪猪带你起飞",
+                user: {
+                    name: "gqf",
+                },
+                arr: [1, 2, 3]
+            }
+        })
+        console.log(app);
+    </script>
+</body>
+</html>
