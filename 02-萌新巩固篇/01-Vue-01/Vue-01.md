@@ -63,7 +63,7 @@
         ![](./images/初始化.png) 
 
     * 其实就是生命个template模板，然后挂载到我们的id为app的节点上  
-    * 我们在来看另外中方式挂载，这种方式就不需要`app.$mount("#app");` 
+    * 我们在来看另外种方式挂载，这种方式就不需要`app.$mount("#app");` 
         ```js
         let app = new Vue({
             el: "#app",
