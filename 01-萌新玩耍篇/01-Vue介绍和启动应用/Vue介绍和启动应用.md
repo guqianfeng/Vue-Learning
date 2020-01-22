@@ -70,4 +70,7 @@
     
 * 说明了数据发生变化影响了视图
 
-* [下一章-v-bind和v-on](../02-v-bind和v-on/v-bind和v-on.md)         
+> 知道你还不过瘾继续吧        
+* [返回目录](../../README.md) 
+* [下一章-v-bind和v-on](../02-v-bind和v-on/v-bind和v-on.md)   
+  

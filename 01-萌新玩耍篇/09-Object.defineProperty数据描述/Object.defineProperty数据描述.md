@@ -149,5 +149,8 @@
     ```  
 14. 果然和我们预期的一样，控制台值打印了y和z  
 
+
+> 知道你还不过瘾继续吧        
+* [返回目录](../../README.md) 
 * [上一章-计算属性](../08-计算属性/计算属性.md)  
 * [下一章-Object.defineProperty实现响应的数据绑定](../10-Object.defineProperty实现响应的数据绑定/Object.defineProperty实现响应的数据绑定.md)
