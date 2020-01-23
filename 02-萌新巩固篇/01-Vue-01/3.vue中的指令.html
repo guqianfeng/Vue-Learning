@@ -21,6 +21,10 @@
         <hr/>
         <p v-if="isLogin">猪猪(已登录)</p>
         <p v-else>未登陆</p>
+        <hr/>
+        <div v-for="(value, key, index) in user">
+            {{value}} - {{key}} - {{index}}
+        </div>
     </div>
     <script src="../js/vue.js"></script>
     <script>
@@ -28,7 +32,12 @@
             // el: "#app",
             data: {
                 title: "我是梅利奥猪猪",
-                isLogin: true
+                isLogin: true,
+                user: {
+                    id: 1,
+                    name: "gqf",
+                    age: 28,
+                }
             }
         })
         setTimeout(() => {

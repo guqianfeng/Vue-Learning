@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box{
+            width: 100px;
+            height: 100px;
+            background-color: red;
+        }
+        #wrap{
+            width: 500px;
+            height: 500px;
+            background-color: skyblue;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="box" @contextmenu.prevent="fn"></div>
+
+        <hr>
+
+        <div id="wrap" @click="alertWrap">
+            <button @click.stop="buttonClick">1</button>
+            <button @click="buttonClick">2</button>
+            <button @click="buttonClick">3</button>
+        </div>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        let app = new Vue({
+            el: "#app",
+            data: {
+                
+            },
+            methods:{
+                fn(){
+                    console.log("其实就想看下在div右键菜单会不会出来是否被阻止")
+                },
+                alertWrap(){
+                    alert("this is wrap")
+                },
+                buttonClick(){
+                    console.log("click btn")
+                }
+            }
+        })
+    </script>
+</body>
+</html>

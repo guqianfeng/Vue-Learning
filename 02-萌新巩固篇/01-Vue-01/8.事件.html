@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .checked{
+            background-color: red;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        {{val}}
+        <button @click="val++">让数字自增1</button>
+        <button @click="fn">让数字自增2</button>
+
+        <hr>
+        <ul>
+            <li 
+                v-for="user in users" 
+                :key="user.id" 
+                :class="{'checked': user.checked}"
+                @click="doCheck(user, $event)"
+            >
+                {{user.name}} - {{user.age}}
+            </li>
+        </ul>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        let app = new Vue({
+            el: "#app",
+            data: {
+                val: 1,
+                users: [
+                    {
+                        id: 1,
+                        name: "zhangsan",
+                        age: 21,
+                        checked: false,
+                    },
+                    {
+                        id: 2,
+                        name: "lisi",
+                        age: 22,
+                        checked: false,
+                    },
+                    {
+                        id: 3,
+                        name: "wangwu",
+                        age: 23,
+                        checked: false,
+                    },
+                ]
+            },
+            methods:{
+                fn(){
+                    this.val += 2;
+                },
+                doCheck(user, e){
+                    console.log(user, e)
+                    user.checked = !user.checked;
+                }
+            }
+        })
+    </script>
+</body>
+</html>

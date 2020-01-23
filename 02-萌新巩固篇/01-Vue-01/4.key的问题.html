@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <p v-for="user in arr" :key="user.id">
+            <input type="checkbox"> {{user.name}} - {{user.age}}
+        </p>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        let app = new Vue({
+            el: "#app",
+            data: {
+                arr: [
+                    {
+                        id: 1,
+                        name: "梅利奥猪猪",
+                        age: 28
+                    },
+                    {
+                        id: 2,
+                        name: "张三",
+                        age: 3
+                    },
+                    {
+                        id: 3,
+                        name: "李四",
+                        age: 4
+                    },
+                    {
+                        id: 4,
+                        name: "王五",
+                        age: 5
+                    },
+                    {
+                        id: 5,
+                        name: "赵六",
+                        age: 6
+                    },
+                ]
+            }
+        })
+    </script>
+</body>
+</html>

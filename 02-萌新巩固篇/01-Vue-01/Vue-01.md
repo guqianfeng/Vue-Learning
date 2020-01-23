@@ -40,6 +40,22 @@
     * 属性绑定
     * 事件
     * 其他
+* 指令修饰符
+    * 一个指令可以包含的内容包括
+        * 指令名称
+        * 指令值
+        * 指令参数
+        * 指令修饰符
+    * 代码格式`<组件 指令:参数.修饰符1.修饰符2="值"/>`
+    * .lazy
+        * 取代input监听change事件
+    * .number
+        * 输入字符串转为有效的数字
+    * trim
+        * 输入首尾空格过滤 
+* 事件绑定
+    * v-on简写@
+    * 选项methods                      
 
 > 练习
 
@@ -368,10 +384,15 @@
                 display: none;
             }            
             ```
+    
     * v-html和v-text区别就不演示了，其实v-html主要为了防止xss攻击，默认情况下输出是不会作为html解析的，通过v-html可以让内容作为html进行解析
+    
     * v-once - 只渲染元素和组件一次，后期的更新不再渲染，这个就如同字面的意思，也不做演示了
+    
     * v-pre - 忽略这个元素和它子元素内容的编译，其实就是不解析   
+    
     * v-show和v-if，在萌新玩耍篇的时候已经讲过了，一个是控制display(该元素肯定会创建)，一个是元素是否创建，所以当一个元素要经常切换隐藏显示的话，一般用v-show，针对不经常切换状态使用v-if
+    
     * v-else，其实就是和if一起使用的，这个简单演示下怎么写的，然后我们在控制台使用`app.isLogin = !app.isLogin;`就可以来回切换了
         ```html
         <!DOCTYPE html>
@@ -414,7 +435,8 @@
         </body>
         </html>        
         ```   
-    * 注意一定要连在一起写v-if和v-else，还有v-else-if
+   
+    * v-else-if
         ```html
         <div id='root'>
         　　<div v-if='show==="a"'>this is a</div>
@@ -431,7 +453,543 @@
         　　　　}
         　　})
         </script>        
-        ```               
+        ```  
 
-> 知道你还不过瘾继续吧        
+    * v-for - 这个就是循环遍历，这里演示下对象的遍历吧
+        ```html
+        <div v-for="(value, key, index) in user">
+            {{value}} - {{key}} - {{index}}
+        </div>        
+        ``` 
+
+    * :key - 这个和react一样的问题，这个还是简单演示下吧
+        * 先上代码，注意我们这里先不绑定key，选中几个，然后打开控制台，这么玩`app.arr.sort(_ => Math.random() - 0.5)`
+            ```html
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Document</title>
+            </head>
+            <body>
+                <div id="app">
+                    <p v-for="user in arr">
+                        <input type="checkbox"> {{user.name}} - {{user.age}}
+                    </p>
+                </div>
+                <script src="../js/vue.js"></script>
+                <script>
+                    let app = new Vue({
+                        el: "#app",
+                        data: {
+                            arr: [
+                                {
+                                    id: 1,
+                                    name: "梅利奥猪猪",
+                                    age: 28
+                                },
+                                {
+                                    id: 2,
+                                    name: "张三",
+                                    age: 3
+                                },
+                                {
+                                    id: 3,
+                                    name: "李四",
+                                    age: 4
+                                },
+                                {
+                                    id: 4,
+                                    name: "王五",
+                                    age: 5
+                                },
+                                {
+                                    id: 5,
+                                    name: "赵六",
+                                    age: 6
+                                },
+                            ]
+                        }
+                    })
+                </script>
+            </body>
+            </html>        
+            ```   
+        * 这个时候就会发现，随机排序并没有带着我们的checkbox和数据一起走，这个就是不加key导致的结果，然后我们加上key，注意key属性是绑定所以要用`:key`，并且是写在循环的元素上，所以代码是这样的`<p v-for="user in arr" :key="user.id">`  
+        * 然后就解决了这个问题，其实是因为diff算法，如果不加key，页面的结构是没有变化的，只改变了数据，我们可以通过控制台element就能发现，但是加上key，就能告诉Vue，希望数据跟着元素一起走 
+        * 这里仔细思考下，其实是能想明白为什么key的属性不能用数组的下标，因为下标不能表示数组里元素的唯一性，随机排序后，下表肯定变化了，但id肯定是唯一标识    
+
+    * v-bind - 属性绑定  
+        * 直接上代码，清晰明了的说明什么是属性绑定
+            ```html
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Document</title>
+            </head>
+            <body>
+                <div id="app">
+                    <p id="idName">梅利奥猪猪</p>
+                    <p :id="idName">梅利奥猪猪</p>
+                </div>
+                <script src="../js/vue.js"></script>
+                <script>
+                    let app = new Vue({
+                        el: "#app",
+                        data: {
+                            idName: "gqf"
+                        }
+                    })
+                </script>
+            </body>
+            </html>            
+            ```
+        * 上述代码可以看到，如果不使用`:id`，这样绑定的就不是表达式，所以还可以通过控制台element看到
+
+            ![](./images/属性绑定.jpg)  
+
+        * 这里再演示个动态添加class的例子 
+            ```html
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Document</title>
+            </head>
+            <body>
+                <div id="app">
+                    <p id="idName">梅利奥猪猪</p>
+                    <p :id="idName">梅利奥猪猪</p>
+                    <p :class="{'box1': isActive, 'box2': isChecked}"></p>
+                </div>
+                <script src="../js/vue.js"></script>
+                <script>
+                    let app = new Vue({
+                        el: "#app",
+                        data: {
+                            idName: "gqf",
+                            isActive: true,
+                            isChecked: false
+                        }
+                    })
+                </script>
+            </body>
+            </html>            
+            ``` 
+        * isActive和isChecked分别控制了对应的class是否添加  
+
+    * v-model - 双向数据绑定
+        * v-bind是单向数据流，先来看下这个例子
+            ```html
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Document</title>
+            </head>
+            <body>
+                <div id="app">
+                    <input type="text" :value="val">
+                </div>
+                <script src="../js/vue.js"></script>
+                <script>
+                    let app = new Vue({
+                        el: "#app",
+                        data: {
+                            val: "1",
+                        }
+                    })
+                </script>
+            </body>
+            </html>            
+            ```
+        * 从上述代码中我们可以知道，我们把值val绑定在input上，所以当我们在控制台敲`app.val = '10'`，页面input框里的值也会变成10  
+
+            ![](./images/单向数据流.jpg)
+
+        * 但我们如果直接在输入框改变值，是不会影响到我们本身的数据的，其实我们玩过react的话，知道受控组件，然后我们也可以尝试改下这个例子      
+            ```html
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Document</title>
+            </head>
+            <body>
+                <div id="app">
+                    <input type="text" :value="val" @blur="fn">
+                    {{val}}
+                </div>
+                <script src="../js/vue.js"></script>
+                <script>
+                    let app = new Vue({
+                        el: "#app",
+                        data: {
+                            val: "1",
+                        },
+                        methods:{
+                            fn(e){
+                                this.val = e.target.value;
+                            }
+                        }
+                    })
+                </script>
+            </body>
+            </html>                        
+            ``` 
+        * 但实际上不需要这么麻烦，我们有v-model，直接`<input type="text" v-model="val">`就可以了 
+        * 接着我们来玩下绑定表单的单选框复选框下拉框
+            ```html
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Document</title>
+            </head>
+            <body>
+                <div id="app">
+                    <input type="text" :value="val" @blur="fn">
+                    {{val}}
+                    <input type="text" v-model="val">
+                    <hr>
+                    <h1>单选</h1>
+                    <input type="radio" name="gender" value="male" v-model="gender"> 男
+                    <input type="radio" name="gender" value="female" v-model="gender"> 女
+                    <hr>
+                    <h1>复选</h1>
+                    <input type="checkbox" name="hobby" value="eat" v-model="hobby"> 吃
+                    <input type="checkbox" name="hobby" value="play" v-model="hobby"> 玩
+                    <input type="checkbox" name="hobby" value="sleep" v-model="hobby"> 睡
+                    <br>
+                    <input type="checkbox" v-model="isChecked"> 同意以上是你的兴趣
+                    <hr>
+                    <h1>下拉框</h1>
+                    <select v-model="selectedValue">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+                <script src="../js/vue.js"></script>
+                <script>
+                    let app = new Vue({
+                        el: "#app",
+                        data: {
+                            val: "1",
+                            gender: "male",
+                            hobby: ["eat"],
+                            isChecked: true,
+                            selectedValue: "2"
+                        },
+                        methods:{
+                            fn(e){
+                                this.val = e.target.value;
+                            }
+                        }
+                    })
+                </script>
+            </body>
+            </html>                       
+            ```   
+
+    * 指令修饰符
+        * 先来个简单的例子，先写个双绑，具体啥效果大家也知道
+            ```html
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Document</title>
+            </head>
+            <body>
+                <div id="app">
+                    <input type="text" v-model="modelValue">
+                    <br>
+                    {{modelValue}}
+                </div>
+                <script src="../js/vue.js"></script>
+                <script>
+                    let app = new Vue({
+                        el: "#app",
+                        data: {
+                            modelValue: 1
+                        }
+                    })
+                </script>
+            </body>
+            </html>            
+            ```
+        * 我们在v-model后面加上修饰符.lazy再看下效果，发现光标移开即失去焦点的时候页面在发生变化，说明了lazy就把原先input事件干成了change事件  
+
+        * 接着我们在来看个例子 
+            ```html
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Document</title>
+            </head>
+            <body>
+                <div id="app">
+                    <input type="text" v-model.lazy="modelValue">
+                    <br>
+                    {{modelValue}}
+
+                    <hr>
+
+                    <input type="text" v-model="n1">
+                    +
+                    <input type="text" v-model="n2">
+                    =
+                    {{n1 + n2}}
+
+                </div>
+                <script src="../js/vue.js"></script>
+                <script>
+                    let app = new Vue({
+                        el: "#app",
+                        data: {
+                            modelValue: 1,
+                            n1: 0,
+                            n2: 0,
+                        }
+                    })
+                </script>
+            </body>
+            </html>            
+            ```
+        * 上述例子说明了，其实input的值改好后是个字符串，然后字符串拼接就变成了这样
+
+            ![](./images/字符串相加是拼接.jpg)  
+
+        * 这个时候大家肯定说，那我其实在`{{n1 + n2}}`的时候，转成Number相加就可以了，效果的确可以实现，但是肯定用修饰符的方式更为方便        
+
+        * 所以我们可以接着使用修饰符`.number`，这样就解决了这个问题 
+            ```html
+            <input type="text" v-model.number="n1">
+            +
+            <input type="text" v-model.number="n2">
+            =
+            {{n1 + n2}}            
+            ``` 
+
+        * 注意不同的指令有不同的修饰符
+
+    * 事件绑定
+        * 先上代码，完成个简单的效果就是让数字自增
+            ```html
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Document</title>
+            </head>
+            <body>
+                <div id="app">
+                    {{val}}
+                    <button @click="val++">让数字自增</button>
+                </div>
+                <script src="../js/vue.js"></script>
+                <script>
+                    let app = new Vue({
+                        el: "#app",
+                        data: {
+                            val: 1
+                        }
+                    })
+                </script>
+            </body>
+            </html>            
+            ```
+        * 复杂的就是写在函数里，要在methods选项里写，写在全局是没有用的   
+            ```html
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Document</title>
+            </head>
+            <body>
+                <div id="app">
+                    {{val}}
+                    <button @click="val++">让数字自增1</button>
+                    <button @click="fn">让数字自增2</button>
+                </div>
+                <script src="../js/vue.js"></script>
+                <script>
+                    let app = new Vue({
+                        el: "#app",
+                        data: {
+                            val: 1
+                        },
+                        methods:{
+                            fn(){
+                                this.val += 2;
+                            }
+                        }
+                    })
+                </script>
+            </body>
+            </html>            
+            ```  
+        * 注意vue中事件函数的this指向该组件实例，如果我们需要事件对象，可以在方法函数里传个参数e，默认情况下，函数的第一个参数是事件对象
+        * 有时候，函数不是直接被事件调用，下面看个例子，其实很简单，就是点击哪个li，给li添加样式
+            ```html
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Document</title>
+                <style>
+                    .checked{
+                        background-color: red;
+                        color: white;
+                    }
+                </style>
+            </head>
+            <body>
+                <div id="app">
+                    {{val}}
+                    <button @click="val++">让数字自增1</button>
+                    <button @click="fn">让数字自增2</button>
+
+                    <hr>
+                    <ul>
+                        <li 
+                            v-for="user in users" 
+                            :key="user.id" 
+                            :class="{'checked': user.checked}"
+                            @click="doCheck(user, $event)"
+                        >
+                            {{user.name}} - {{user.age}}
+                        </li>
+                    </ul>
+                </div>
+                <script src="../js/vue.js"></script>
+                <script>
+                    let app = new Vue({
+                        el: "#app",
+                        data: {
+                            val: 1,
+                            users: [
+                                {
+                                    id: 1,
+                                    name: "zhangsan",
+                                    age: 21,
+                                    checked: false,
+                                },
+                                {
+                                    id: 2,
+                                    name: "lisi",
+                                    age: 22,
+                                    checked: false,
+                                },
+                                {
+                                    id: 3,
+                                    name: "wangwu",
+                                    age: 23,
+                                    checked: false,
+                                },
+                            ]
+                        },
+                        methods:{
+                            fn(){
+                                this.val += 2;
+                            },
+                            doCheck(user, e){
+                                console.log(user, e)
+                                user.checked = !user.checked;
+                            }
+                        }
+                    })
+                </script>
+            </body>
+            </html>            
+            ```
+        * 注意$event是固定写法
+        * 关于事件绑定的一些修饰符可以看下[事件系统](../../01-萌新玩耍篇/12-事件系统/事件系统.md)
+        * 这里可以在随意举一个例子，一个是div右键点击没菜单，一个是阻止冒泡
+            ```html
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Document</title>
+                <style>
+                    .box{
+                        width: 100px;
+                        height: 100px;
+                        background-color: red;
+                    }
+                    #wrap{
+                        width: 500px;
+                        height: 500px;
+                        background-color: skyblue;
+                    }
+                </style>
+            </head>
+            <body>
+                <div id="app">
+                    <div class="box" @contextmenu.prevent="fn"></div>
+
+                    <hr>
+
+                    <div id="wrap" @click="alertWrap">
+                        <button @click.stop="buttonClick">1</button>
+                        <button @click="buttonClick">2</button>
+                        <button @click="buttonClick">3</button>
+                    </div>
+                </div>
+                <script src="../js/vue.js"></script>
+                <script>
+                    let app = new Vue({
+                        el: "#app",
+                        data: {
+                            
+                        },
+                        methods:{
+                            fn(){
+                                console.log("其实就想看下在div右键菜单会不会出来是否被阻止")
+                            },
+                            alertWrap(){
+                                alert("this is wrap")
+                            },
+                            buttonClick(){
+                                console.log("click btn")
+                            }
+                        }
+                    })
+                </script>
+            </body>
+            </html>                      
+            ```
+        * 提个细节，比如所有的button都要阻止冒泡，其实就可以给父级的那个div，给个修饰符self    
+
+> 知道你还不过瘾继续吧 
+
 * [返回目录](../../README.md) 

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" :value="val" @blur="fn">
+        {{val}}
+        <input type="text" v-model="val">
+        <hr>
+        <h1>单选</h1>
+        <input type="radio" name="gender" value="male" v-model="gender"> 男
+        <input type="radio" name="gender" value="female" v-model="gender"> 女
+        <hr>
+        <h1>复选</h1>
+        <input type="checkbox" name="hobby" value="eat" v-model="hobby"> 吃
+        <input type="checkbox" name="hobby" value="play" v-model="hobby"> 玩
+        <input type="checkbox" name="hobby" value="sleep" v-model="hobby"> 睡
+        <br>
+        <input type="checkbox" v-model="isChecked"> 同意以上是你的兴趣
+        <hr>
+        <h1>下拉框</h1>
+        <select v-model="selectedValue">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        let app = new Vue({
+            el: "#app",
+            data: {
+                val: "1",
+                gender: "male",
+                hobby: ["eat"],
+                isChecked: true,
+                selectedValue: "2"
+            },
+            methods:{
+                fn(e){
+                    this.val = e.target.value;
+                }
+            }
+        })
+    </script>
+</body>
+</html>
