@@ -1,6 +1,7 @@
 # Vue-01
 
 > 知识大纲
+
 * 组件基本分类
     * 根组件
     * 可复用的功能组件
@@ -32,8 +33,16 @@
         Vue.set(app.user, "gender", '男');
         app.$set(app.user, 'age', 30);
         ```                     
+* 指令-`v-xxx`，指令的值是用引号括起来的表达式，后期还可以自定义属于自己的指令
+    * 内容输出
+    * 循环
+    * 逻辑
+    * 属性绑定
+    * 事件
+    * 其他
 
 > 练习
+
 1. vue初始化
     * 先上代码
         ```html
@@ -273,6 +282,156 @@
     实现了原本的功能，并且在push后重新通过defineProperty去劫持，官网上称这些为变异方法(详细去看知识大纲列出来的数组方法)
 
         ![](./images/玩数组2.jpg)    
+
+3. vue中的指令
+    * v-text
+        * 先上代码 
+            ```html
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Document</title>
+            </head>
+            <body>
+                <div id="app">
+                    <p>hello, {{title}}</p>
+                    <p v-text="title">hello</p>
+                </div>
+                <script src="../js/vue.js"></script>
+                <script>
+                    let app = new Vue({
+                        el: "#app",
+                        data: {
+                            title: "我是梅利奥猪猪"
+                        }
+                    })
+                </script>
+            </body>
+            </html>        
+            ``` 
+        * 上述代码我们能看到v-text把hello也一起替换掉了 
+
+            ![](./images/v-text的细节.jpg)
+
+        * 还有个就是很基础的，指令的引号中，填的是表达式，所以下面的代码页面呈现的就是title和6
+            ```html
+            <p v-text="'title'"></p>
+            <p v-text="1+2+3"></p>
+            ``` 
+        * 这边在看个有意思的现象，我们把el选项先注释掉，然后开个定时器使用$mount去挂载      
+            ```html
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Document</title>
+            </head>
+            <body>
+                <div id="app">
+                    <p>hello, {{title}}</p>
+                    <p v-text="title">hello</p>
+                    <p v-text="'title'"></p>
+                    <p v-text="1+2+3"></p>
+                </div>
+                <script src="../js/vue.js"></script>
+                <script>
+                    let app = new Vue({
+                        // el: "#app",
+                        data: {
+                            title: "我是梅利奥猪猪"
+                        }
+                    })
+                    setTimeout(() => {
+                        app.$mount("#app");
+                    }, 1000)
+                </script>
+            </body>
+            </html>            
+            ```
+        * 我们会发现页面在一开始渲染的时候，看到了我们的大胡子语法，但是使用指令的就没这个问题 
+
+    * v-cloak
+        * 个人感觉是解决了前面2个一起的问题，首先我们知道使用大胡子语法不使用指令，会导致页面一开始渲染的时候就让用户看到了大胡子，这个明显不太好，但使用v-text又会把html全部替换掉，这个时候我们可以用v-cloak配合样式，这样一开始既不会看到大胡子，而且也不会把整个html都替换掉，下面来讲下具体改怎么写
+        * 我们这次把定时器的间隔调整到5000毫秒，为了看下v-cloak的效果`<p v-cloak>hello - {{title}}</p>`
+        * 这个时候我们发现，和之前的那个没用指令的的一样，页面一开始会看到大胡子~ 
+
+            ![](./images/看大胡子.jpg) 
+
+        * 但我们这个时候可以来个操作，就是通过css去控制，就能解决这个问题了
+            ```css
+            [v-cloak]{
+                display: none;
+            }            
+            ```
+    * v-html和v-text区别就不演示了，其实v-html主要为了防止xss攻击，默认情况下输出是不会作为html解析的，通过v-html可以让内容作为html进行解析
+    * v-once - 只渲染元素和组件一次，后期的更新不再渲染，这个就如同字面的意思，也不做演示了
+    * v-pre - 忽略这个元素和它子元素内容的编译，其实就是不解析   
+    * v-show和v-if，在萌新玩耍篇的时候已经讲过了，一个是控制display(该元素肯定会创建)，一个是元素是否创建，所以当一个元素要经常切换隐藏显示的话，一般用v-show，针对不经常切换状态使用v-if
+    * v-else，其实就是和if一起使用的，这个简单演示下怎么写的，然后我们在控制台使用`app.isLogin = !app.isLogin;`就可以来回切换了
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+            <style>
+                [v-cloak]{
+                    display: none;
+                }
+            </style>
+        </head>
+        <body>
+            <div id="app">
+                <p>hello, {{title}}</p>
+                <p v-text="title">hello</p>
+                <p v-text="'title'"></p>
+                <p v-text="1+2+3"></p>
+                <p v-cloak>hello - {{title}}</p>
+                <hr/>
+                <p v-if="isLogin">猪猪(已登录)</p>
+                <p v-else>未登陆</p>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                let app = new Vue({
+                    // el: "#app",
+                    data: {
+                        title: "我是梅利奥猪猪",
+                        isLogin: true
+                    }
+                })
+                setTimeout(() => {
+                    app.$mount("#app");
+                }, 100)
+            </script>
+        </body>
+        </html>        
+        ```   
+    * 注意一定要连在一起写v-if和v-else，还有v-else-if
+        ```html
+        <div id='root'>
+        　　<div v-if='show==="a"'>this is a</div>
+        　　<div v-else-if='show==="b"'>this is b</div>
+        　　<div v-else>this is others</div>
+        </div>
+
+
+        <script>
+        　　var vm = new Vue({
+        　　　　el:'#root',
+        　　　　data:{
+        　　　　　　show:'a'
+        　　　　}
+        　　})
+        </script>        
+        ```               
 
 > 知道你还不过瘾继续吧        
 * [返回目录](../../README.md) 

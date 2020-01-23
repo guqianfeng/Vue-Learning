@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <p>hello, {{title}}</p>
+        <p v-text="title">hello</p>
+        <p v-text="'title'"></p>
+        <p v-text="1+2+3"></p>
+        <p v-cloak>hello - {{title}}</p>
+        <hr/>
+        <p v-if="isLogin">猪猪(已登录)</p>
+        <p v-else>未登陆</p>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        let app = new Vue({
+            // el: "#app",
+            data: {
+                title: "我是梅利奥猪猪",
+                isLogin: true
+            }
+        })
+        setTimeout(() => {
+            app.$mount("#app");
+        }, 100)
+    </script>
+</body>
+</html>
