@@ -204,7 +204,263 @@
             </script>
         </body>
         </html>        
+        ```  
+
+2. 自定义拖拽指令  
+    * 给元素加上v-drag
+    * 添加事件实际上只要在bind的时候添加就可以了，不需要等插入dom后在添加    
+    * 最简单的一个拖拽实现如下
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>自定义拖拽指令</title>
+            <style>
+                *{
+                    padding: 0;
+                    margin: 0;
+                }
+                .box{
+                    position: absolute;
+                    left: 100px;
+                    top: 100px;
+                    width: 100px;
+                    height: 100px;
+                    background-color: red;
+                }
+            </style>
+        </head>
+        <body>
+            <div id="app">
+                <div class="box" v-drag></div>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                Vue.directive("drag", {
+                    bind(el, binding){
+                        let start = {
+                            x: 0,
+                            y: 0,
+                        }
+                        let now = {
+                            x: 0,
+                            y: 0,
+                        }
+                        function move(e){
+                            now.x = e.clientX;
+                            now.y = e.clientY;
+                            let dis = {
+                                x: now.x - start.x,
+                                y: now.y - start.y,
+                            }
+                            el.style.left = dis.x + "px";
+                            el.style.top = dis.y + "px";
+                        }
+                        el.addEventListener("mousedown", function(e){
+                            start.x = e.clientX - this.offsetLeft;
+                            start.y = e.clientY - this.offsetTop;
+                            document.addEventListener("mousemove", move);
+                            document.addEventListener("mouseup", function(){
+                                document.removeEventListener("mousemove", move);
+                            }, {once: true})
+                        })
+                    }
+                })
+                let app = new Vue({
+                    el: "#app",
+
+                })
+            </script>
+        </body>
+        </html>        
+        ```   
+    * 接着我们接着扩展，和前面焦点的例子一样，我们也给v-drag弄个开关，然后点击按钮切换，true的时候能拖拽false的时候不能拖拽   
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>自定义拖拽指令</title>
+            <style>
+                *{
+                    padding: 0;
+                    margin: 0;
+                }
+                .box{
+                    position: absolute;
+                    left: 100px;
+                    top: 100px;
+                    width: 100px;
+                    height: 100px;
+                    background-color: red;
+                }
+            </style>
+        </head>
+        <body>
+            <div id="app">
+                <button @click="isDrag=!isDrag">点击切换是否拖拽</button> <span>{{isDrag}}</span>
+                <div class="box" v-drag="isDrag"></div>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                Vue.directive("drag", {
+                    bind(el, binding){
+                        el.isDrag = binding.value; //挂在el上
+                        let start = {
+                            x: 0,
+                            y: 0,
+                        }
+                        let now = {
+                            x: 0,
+                            y: 0,
+                        }
+                        function move(e){
+                            now.x = e.clientX;
+                            now.y = e.clientY;
+                            let dis = {
+                                x: now.x - start.x,
+                                y: now.y - start.y,
+                            }
+                            el.style.left = dis.x + "px";
+                            el.style.top = dis.y + "px";
+                        }
+                        el.addEventListener("mousedown", function(e){
+                            e.preventDefault();
+                            e.stopPropagation();
+                            if(!el.isDrag){
+                                return;
+                            }
+                            start.x = e.clientX - this.offsetLeft;
+                            start.y = e.clientY - this.offsetTop;
+                            document.addEventListener("mousemove", move);
+                            document.addEventListener("mouseup", function(){
+                                document.removeEventListener("mousemove", move);
+                            }, {once: true})
+                        })
+                    },
+                    update(el, binding){
+                        el.isDrag = binding.value;
+                    }
+                })
+                let app = new Vue({
+                    el: "#app",
+                    data: {
+                        isDrag: false,
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ```   
+    * 这个就实现了我们前面说的效果，别着急我们还可以接着扩展，比如限制拖拽，不能超出屏幕之类的，使用传说中的修饰符`v-drag.limit="true"` 
+    * 这个limit的值，可以通过`binding.modifiers`去获取，这边我们加上limit看下效果，然后删掉limit在看下效果 
+
+        ![](./images/加上limit的打印.jpg)
+
+        ![](./images/不加limit的打印.jpg)
+
+    * 所以我们很方便可以知道一个指令是否加上了修饰符，下面来看下我们实现的代码 
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>自定义拖拽指令</title>
+            <style>
+                *{
+                    padding: 0;
+                    margin: 0;
+                }
+                .box{
+                    position: absolute;
+                    left: 100px;
+                    top: 100px;
+                    width: 100px;
+                    height: 100px;
+                    background-color: red;
+                }
+            </style>
+        </head>
+        <body>
+            <div id="app">
+                <button @click="isDrag=!isDrag">点击切换是否拖拽</button> <span>{{isDrag}}</span>
+                <div class="box" v-drag.limit="isDrag"></div>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                Vue.directive("drag", {
+                    bind(el, binding){
+                        el.isDrag = binding.value; //挂在el上
+                        el.isLimit = binding.modifiers.limit; //判断修饰符.limit
+                        let start = {
+                            x: 0,
+                            y: 0,
+                        }
+                        let now = {
+                            x: 0,
+                            y: 0,
+                        }
+                        function move(e){
+                            now.x = e.clientX;
+                            now.y = e.clientY;
+                            let dis = {
+                                x: now.x - start.x,
+                                y: now.y - start.y,
+                            }
+                            let L = dis.x;
+                            let T = dis.y;
+                            if(el.isLimit){
+                                L = Math.min(Math.max(0, L), window.innerWidth - el.offsetWidth);
+                                T = Math.min(Math.max(0, T), window.innerHeight - el.offsetHeight);
+                            }
+                            el.style.left = L + "px";
+                            el.style.top = T + "px";
+                        }
+                        el.addEventListener("mousedown", function(e){
+                            e.preventDefault();
+                            e.stopPropagation();
+                            if(!el.isDrag){
+                                return;
+                            }
+                            start.x = e.clientX - this.offsetLeft;
+                            start.y = e.clientY - this.offsetTop;
+                            document.addEventListener("mousemove", move);
+                            document.addEventListener("mouseup", function(){
+                                document.removeEventListener("mousemove", move);
+                            }, {once: true})
+                        })
+                    },
+                    componentUpdated(el, binding){
+                        el.isDrag = binding.value;
+                    }
+                })
+                let app = new Vue({
+                    el: "#app",
+                    data: {
+                        isDrag: false,
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ```
+
+    * 实现效果后其实我们可以玩下，比如2个div，一个设置limit一个不设置，非常有意思  
+        ```html
+        <div class="box" v-drag.limit="isDrag"></div>
+        <div class="test" v-drag="isDrag"></div>        
         ```      
+
+        ![](./images/限制范围.jpg) 
+
+    * 很明显一个被我限制范围了，一个被我拖出屏幕外了~     
 
 > 知道你还不过瘾继续吧    
 

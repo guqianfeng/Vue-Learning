@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自定义拖拽指令</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        .box{
+            position: absolute;
+            left: 100px;
+            top: 100px;
+            width: 100px;
+            height: 100px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="box" v-drag></div>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        Vue.directive("drag", {
+            bind(el, binding){
+                let start = {
+                    x: 0,
+                    y: 0,
+                }
+                let now = {
+                    x: 0,
+                    y: 0,
+                }
+                function move(e){
+                    now.x = e.clientX;
+                    now.y = e.clientY;
+                    let dis = {
+                        x: now.x - start.x,
+                        y: now.y - start.y,
+                    }
+                    el.style.left = dis.x + "px";
+                    el.style.top = dis.y + "px";
+                }
+                el.addEventListener("mousedown", function(e){
+                    start.x = e.clientX - this.offsetLeft;
+                    start.y = e.clientY - this.offsetTop;
+                    document.addEventListener("mousemove", move);
+                    document.addEventListener("mouseup", function(){
+                        document.removeEventListener("mousemove", move);
+                    }, {once: true})
+                })
+            }
+        })
+        let app = new Vue({
+            el: "#app",
+
+        })
+    </script>
+</body>
+</html>
