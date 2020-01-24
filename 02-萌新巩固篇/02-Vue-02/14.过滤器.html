@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <p>{{price}}</p>
+        <p>{{price | money}}</p>
+        <p>{{price | money("$")}}</p>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        Vue.filter("money", function(price, type = "￥"){
+            return type + (price / 100).toFixed(2);
+        })
+        new Vue({
+            el: "#app",
+            data: {
+                price: 123456,
+            },
+        })
+    </script>
+</body>
+</html>

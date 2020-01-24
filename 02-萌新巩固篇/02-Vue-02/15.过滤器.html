@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- (1 + 100 - 20) * 3 / 2 -->
+        <p>{{num | a(100) | b(20) | c(3) | d(2)}}</p>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                num: 1,
+            },
+            filters: {
+                a(result, num){
+                    return result + num;
+                },
+                b(result, num){
+                    return result - num;
+                },
+                c(result, num){
+                    return result * num;
+                },
+                d(result, num){
+                    return result / num;
+                }
+            }
+        })
+    </script>
+</body>
+</html>

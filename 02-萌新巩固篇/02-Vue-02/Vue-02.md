@@ -920,7 +920,131 @@
         </html>        
         ```
     * watch其实可以有2个参数，newValue,oldValue,前面我们就用了一个参数，就代表着新的值
-    * 还有些比较高端的监听，详细请看知识大纲    
+    * 还有些比较高端的监听，详细请看知识大纲  
+
+5. 过滤器  
+    * 先来个例子，不使用过滤器，把**123456分**展示为**1234.56元** 
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <p>{{price}}</p>
+                <p>{{RMB(price)}}</p>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                new Vue({
+                    el: "#app",
+                    data: {
+                        price: 123456,
+                    },
+                    methods: {
+                        RMB(price){
+                            return '￥' + (price / 100).toFixed(2)
+                        }
+                    }
+                })
+            </script>
+        </body>
+        </html>                
+        ```   
+    * 接着我们用过滤器来实现下，顺便扩展点功能，比如可以在传个参数，看是人民币还是美元
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <p>{{price}}</p>
+                <p>{{price | money}}</p>
+                <p>{{price | money("$")}}</p>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                Vue.filter("money", function(price, type = "￥"){
+                    return type + (price / 100).toFixed(2);
+                })
+                new Vue({
+                    el: "#app",
+                    data: {
+                        price: 123456,
+                    },
+                })
+            </script>
+        </body>
+        </html>        
+        ``` 
+    * 页面的效果也呈现出来了
+
+        ![](./images/钱.jpg)  
+
+    * 其实过滤器是一种视觉享受，下面举个简单的例子，比如嵌套调用，c调用b，b调用a，伪代码如下
+        ```js
+        c(b(a(val)))
+        ``` 
+    * 有时候可能还不止一个参数，比如a接受值和1，b接受值和2，c接受值和3
+        ```js
+        c(b(a(val, 1), 2), 3)
+        ```  
+    * 上述代码就可以看到，a传入了我们要处理的值，和1，然后b接受结果，在多传个2，最后再是c接受结果，在多传个参数3，如果使用过滤器，这个代码就会变成
+        ```html
+        <p>{{val | a(1) | b(2) | c(3)}}</p>
+        ```         
+    * 玩一个类似的过滤器，加减乘除对应abcd 
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <!-- (1 + 100 - 20) * 3 / 2 -->
+                <p>{{num | a(100) | b(20) | c(3) | d(2)}}</p>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                new Vue({
+                    el: "#app",
+                    data: {
+                        num: 1,
+                    },
+                    filters: {
+                        a(result, num){
+                            return result + num;
+                        },
+                        b(result, num){
+                            return result - num;
+                        },
+                        c(result, num){
+                            return result * num;
+                        },
+                        d(result, num){
+                            return result / num;
+                        }
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ``` 
+
+        ![](./images/愉快的玩过滤器.jpg)  
 
     
 
