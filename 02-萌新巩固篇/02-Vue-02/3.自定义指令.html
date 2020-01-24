@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-focus="isFocus">
+        <button @click="setFocus">获取焦点/失去焦点</button>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        Vue.directive("focus", {
+            inserted(el, {value}){
+                if(value){
+                    el.focus();
+                }
+            },
+            componentUpdated(el, {value}){
+                if(value){
+                    el.focus();
+                }
+            }
+        })
+
+        new Vue({
+            el: "#app",
+            data: {
+                isFocus: false
+            },
+            methods: {
+                setFocus(){
+                    this.isFocus = !this.isFocus;
+                }
+            }
+        })
+    </script>
+</body>
+</html>

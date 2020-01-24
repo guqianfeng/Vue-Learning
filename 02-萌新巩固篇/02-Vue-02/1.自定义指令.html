@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" ref="inputEl">
+        <button @click="setFocus">设置焦点</button>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        let app = new Vue({
+            el: "#app",
+            methods: {
+                setFocus(){
+                    let inputEl = this.$refs.inputEl;
+                    inputEl.focus();
+                }
+            }
+        })
+    </script>
+</body>
+</html>

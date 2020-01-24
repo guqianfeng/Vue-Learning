@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-focus>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        /* window.onload = function(){
+            let input = document.createElement("input");
+            document.body.appendChild(input);
+            input.focus();
+        } */
+
+        Vue.directive("focus", {
+            bind(el, binding){
+                console.log(el, binding)
+                el.value = "梅利奥猪猪带你飞了吧"
+            },
+            inserted(el, binding){
+                console.log(el, binding)
+                el.focus();
+            }
+        })
+
+        new Vue({
+            el: "#app"
+        })
+    </script>
+</body>
+</html>
