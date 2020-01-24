@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <button @click="showDate=!showDate">开启/隐藏时间 - {{showDate}}</button>
+        <div v-show="showDate">
+            <p>方法调用拿到的时间 - {{methodsNow()}}</p>
+            <p>计算属性拿到的时间 - {{computedNow}}</p>
+        </div>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        let app = new Vue({
+            el: "#app",
+            data: {
+                showDate: false
+            },
+            methods: {
+                methodsNow(){
+                    return Date.now();
+                }
+            },
+            computed: {
+                computedNow(){
+                    return Date.now();
+                }
+            }
+        })
+    </script>
+</body>
+</html>

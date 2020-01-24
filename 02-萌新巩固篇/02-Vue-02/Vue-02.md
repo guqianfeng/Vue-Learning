@@ -28,7 +28,13 @@
             * expression - 指令绑定的表达式(字符串)
             * arg - 传给指令的参数，可选
             * modifiers - 传给指令的修饰符组成的对象，可选，每个修饰符对应一个布尔值
-            * oldValue - 指令绑定的前一个值，仅在update和componentUpdated钩子中可用，无论值是否改变都可用            
+            * oldValue - 指令绑定的前一个值，仅在update和componentUpdated钩子中可用，无论值是否改变都可用    
+
+* computed
+    * 在实际应用中，我们会有一些原始数据，同时在应用中又会有一些数据是根据某些原始数据派生出来的，针对这样的一种情况，vue定义了一个专门来处理这种派生数据的选项**computed**
+
+* watch
+    * 有的时候，我们需要的派生数据是通过异步的方式去处理的，这个时候，计算属性就不太好用了(不能处理异步)，所以我们可以使用另外个选项**watch**
 
 > 练习
 
@@ -460,7 +466,292 @@
 
         ![](./images/限制范围.jpg) 
 
-    * 很明显一个被我限制范围了，一个被我拖出屏幕外了~     
+    * 很明显一个被我限制范围了，一个被我拖出屏幕外了~    
+
+3. computed
+    * 首先我们先来巩固个基础，那就是数组filter方法，是不会改变原数组的
+    * 接下去我们会做个案例，其实就类似选项卡，比如一堆用户，性别有男有女，三个按钮，全部，男性，女性
+    * 我们知道filter是不能改变原数组的，如果我们渲染的逻辑是根据users渲染，然后通过`users = users.filter(item => item.gender == gender)`这样就改变了原始数据会出现问题，所以我们在这种情况下，可能会使用其他方式，目的就是不修改我们的原始数据，接下来我们先实现下这个效果
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <button @click="changeGender('')">全部</button>
+                <button @click="changeGender('male')">男</button>
+                <button @click="changeGender('female')">女</button>
+                <ul>
+                    <li v-for="user in showUsers" :key="user.id">
+                        {{user.name}} - {{user.gender}}
+                    </li>
+                </ul>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                let users = [
+                            {
+                                id: 1,
+                                name: "张三",
+                                gender: "male"
+                            },
+                            {
+                                id: 2,
+                                name: "李四",
+                                gender: "male"
+                            },
+                            {
+                                id: 3,
+                                name: "王五",
+                                gender: "female"
+                            },
+                            {
+                                id: 4,
+                                name: "赵六",
+                                gender: "female"
+                            },
+                        ]
+                new Vue({
+                    el: "#app",
+                    data: {
+                        users,
+                        showUsers: users
+                    },
+                    methods:{
+                        changeGender(gender){
+                            console.log(gender);
+                            if(gender){
+                                this.showUsers = users.filter(item => item.gender === gender);
+                            }else{
+                                this.showUsers = users;
+                            }
+                        }
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ```
+    * 效果的确实现了，但每次点击都会调用事件，哪怕页面中的数据是没有变化的，比如我们多次点击男这个按钮，每次都会执行
+
+        ![](./images/不使用computed执行多次.jpg)
+
+    * 于是computed闪亮登场，主要可以解决这样的需求，派生数据
+        1. 有原始的数据
+        2. 有过滤的条件
+        3. 需要缓存结果  
+
+    * 所以代码改写下，然后测试下狂点男，就没有这个问题了
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <button @click="gender=''">全部</button>
+                <button @click="gender='male'">男</button>
+                <button @click="gender='female'">女</button>
+                <ul>
+                    <li v-for="user in showUsers" :key="user.id">
+                        {{user.name}} - {{user.gender}}
+                    </li>
+                </ul>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                let users = [
+                            {
+                                id: 1,
+                                name: "张三",
+                                gender: "male"
+                            },
+                            {
+                                id: 2,
+                                name: "李四",
+                                gender: "male"
+                            },
+                            {
+                                id: 3,
+                                name: "王五",
+                                gender: "female"
+                            },
+                            {
+                                id: 4,
+                                name: "赵六",
+                                gender: "female"
+                            },
+                        ]
+                new Vue({
+                    el: "#app",
+                    data: {
+                        gender: "",
+                        users,
+                    },
+                    computed: {
+                        showUsers: {
+                            get(){
+                                console.log("get");
+                                if(!this.gender){
+                                    return this.users;
+                                }
+                                return this.users.filter(item => item.gender === this.gender)
+                            }
+                        }
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ```
+    * 下图就是狂点男，不会一直执行方法的证据，图中打印了2个get，一个就是页面刚开始渲染全部的users，还有个就是第一次点击男渲染的时候，后续在点就没之前那个问题了，实际上就是computed它有缓存，意思就是数据没有变化的话，他不会一直执行
+
+        ![](./images/computed的魅力.jpg)   
+
+    * 我们在写一个演示缓存的例子 
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <button @click="showDate=!showDate">开启/隐藏时间 - {{showDate}}</button>
+                <div v-show="showDate">
+                    <p>方法调用拿到的时间 - {{methodsNow()}}</p>
+                    <p>计算属性拿到的时间 - {{computedNow}}</p>
+                </div>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                let app = new Vue({
+                    el: "#app",
+                    data: {
+                        showDate: false
+                    },
+                    methods: {
+                        methodsNow(){
+                            return Date.now();
+                        }
+                    },
+                    computed: {
+                        computedNow(){
+                            return Date.now();
+                        }
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ``` 
+    * 然后我们点击玩下，就能发现，方法调用的每次拿到的时间戳是个新的值，而计算属性拿到的时间戳，就是缓存的一个值，它是不会改变的
+
+        ![](./images/玩时间1.jpg)
+
+        ![](./images/玩时间2.jpg)  
+
+    * 其实上述代码，computed用了个省略的写法，如果只需要用到get可以直接`xxx(){return xxx;}`, 完整的写法，其实还是像我们之前案例这样，一个对象，然后写个get函数
+
+    * 下面来用下set，其实可以继续在我们之前那个性别选项卡上扩展，比如我们给每一项设置个checkbox，然后做个全选的功能
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <button @click="gender=''">全部</button>
+                <button @click="gender='male'">男</button>
+                <button @click="gender='female'">女</button>
+                <ul>
+                    <li v-for="user in showUsers" :key="user.id">
+                        <input type="checkbox" v-model="user.checked">
+                        {{user.name}} - {{user.gender}}
+                    </li>
+                </ul>
+                <hr>
+                <input type="checkbox" v-model="checkedAll"> 全选
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                let users = [
+                            {
+                                id: 1,
+                                name: "张三",
+                                gender: "male",
+                                checked: true
+                            },
+                            {
+                                id: 2,
+                                name: "李四",
+                                gender: "male",
+                                checked: false
+                            },
+                            {
+                                id: 3,
+                                name: "王五",
+                                gender: "female",
+                                checked: false
+                            },
+                            {
+                                id: 4,
+                                name: "赵六",
+                                gender: "female",
+                                checked: true
+                            },
+                        ]
+                new Vue({
+                    el: "#app",
+                    data: {
+                        gender: "",
+                        users,
+                    },
+                    computed: {
+                        showUsers: {
+                            get(){
+                                console.log("get");
+                                if(!this.gender){
+                                    return this.users;
+                                }
+                                return this.users.filter(item => item.gender === this.gender)
+                            }
+                        },
+                        checkedAll: {
+                            get(){
+                                return this.users.every(item => item.checked)
+                            },
+                            set(val){
+                                this.users.forEach(item => {
+                                    item.checked = val;
+                                })
+                            }
+                        }
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ```  
+
+4. watch
+    
 
 > 知道你还不过瘾继续吧    
 

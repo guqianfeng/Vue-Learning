@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <button @click="gender=''">全部</button>
+        <button @click="gender='male'">男</button>
+        <button @click="gender='female'">女</button>
+        <ul>
+            <li v-for="user in showUsers" :key="user.id">
+                <input type="checkbox" v-model="user.checked">
+                {{user.name}} - {{user.gender}}
+            </li>
+        </ul>
+        <hr>
+        <input type="checkbox" v-model="checkedAll"> 全选
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        let users = [
+                    {
+                        id: 1,
+                        name: "张三",
+                        gender: "male",
+                        checked: true
+                    },
+                    {
+                        id: 2,
+                        name: "李四",
+                        gender: "male",
+                        checked: false
+                    },
+                    {
+                        id: 3,
+                        name: "王五",
+                        gender: "female",
+                        checked: false
+                    },
+                    {
+                        id: 4,
+                        name: "赵六",
+                        gender: "female",
+                        checked: true
+                    },
+                ]
+        new Vue({
+            el: "#app",
+            data: {
+                gender: "",
+                users,
+            },
+            computed: {
+                showUsers: {
+                    get(){
+                        console.log("get");
+                        if(!this.gender){
+                            return this.users;
+                        }
+                        return this.users.filter(item => item.gender === this.gender)
+                    }
+                },
+                checkedAll: {
+                    get(){
+                        return this.users.every(item => item.checked)
+                    },
+                    set(val){
+                        this.users.forEach(item => {
+                            item.checked = val;
+                        })
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>
