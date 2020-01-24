@@ -35,6 +35,44 @@
 
 * watch
     * 有的时候，我们需要的派生数据是通过异步的方式去处理的，这个时候，计算属性就不太好用了(不能处理异步)，所以我们可以使用另外个选项**watch**
+    * 多层监听
+        * 对于多层数据的监听，可以使用字符串加点的语法
+            ```js
+            watch: {
+                'a.b.c': function(){
+                    //...
+                }
+            }
+            ```
+    * 深度监听
+        * 默认情况下，watch只对当前指定的值进行一层监听，如果需要对对象进行深层监听可以这么做
+            ```js
+            watch: {
+                a: {
+                    handler(){
+                        console.log("a deep")
+                    },
+                    deep: true
+                }
+            }
+            ```
+
+* 过滤器
+    * 过滤器是一个使用在双大括号插值和v-bind中，用于过滤输出内容的函数
+    * 假设有一个用于把内容转为大写的过滤函数**toUpperCase**,用法差不多就是`{{content | toUpperCase}}`
+        * | - 管道符，表示数组自左至右通过管道符进行传递
+        * 过滤器可以有多个，执行顺序从左至右，过滤器函数第一个参数的值就是其管道符前一个的结果
+    * 注册过滤器
+        * 全局过滤器 - `Vue.filter("过滤器名称", 过滤器函数)`
+        * 局部过滤器
+            ```js
+            Vue.component("组件", {
+                ...,
+                filters: {
+                    "过滤器名称": 过滤器函数
+                }
+            })
+            ```                
 
 > 练习
 
@@ -751,6 +789,139 @@
         ```  
 
 4. watch
+    * 我们接下来做个例子，比如根据输入框模糊查找对应的用户，先用computed去实现下
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <input type="text" v-model="keyword">
+                <ul>
+                    <li v-for="user in showUsers" :key="user.id">
+                        {{user.name}}
+                    </li>
+                </ul>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                new Vue({
+                    el: "#app",
+                    data: {
+                        keyword: "",
+                        users: [
+                            {
+                                id: 1,
+                                name: "zhangsan"
+                            },
+                            {
+                                id: 2,
+                                name: "lisi"
+                            },
+                            {
+                                id: 3,
+                                name: "wangwu"
+                            },
+                            {
+                                id: 4,
+                                name: "zhaoliu"
+                            },
+                            {
+                                id: 5,
+                                name: "meiliaozhuzhu"
+                            },
+                        ]
+                    },
+                    computed: {
+                        showUsers(){
+                            if(!this.keyword){
+                                return []
+                            }
+                            return this.users.filter(item => item.name.includes(this.keyword))
+                        }
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ```
+
+        ![](./images/watch前先用computed实现个小案例.jpg)
+
+    * 接着我们就在前面的例子上改动下，不管是使用setTimeout的方式，还是Promise的方式都无法实现，证实了计算属性不支持异步任务      
+    * 然后watch就闪亮登场了
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <input type="text" v-model="keyword">
+                <ul>
+                    <li v-for="user in showUsers" :key="user.id">
+                        {{user.name}}
+                    </li>
+                </ul>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                new Vue({
+                    el: "#app",
+                    data: {
+                        keyword: "",
+                        users: [
+                            {
+                                id: 1,
+                                name: "zhangsan"
+                            },
+                            {
+                                id: 2,
+                                name: "lisi"
+                            },
+                            {
+                                id: 3,
+                                name: "wangwu"
+                            },
+                            {
+                                id: 4,
+                                name: "zhaoliu"
+                            },
+                            {
+                                id: 5,
+                                name: "meiliaozhuzhu"
+                            },
+                        ],
+                        showUsers: []
+                    },
+                    watch: {
+                        keyword(){
+                            setTimeout(_ => {
+                                if(!this.keyword){
+                                    this.showUsers = []
+                                }else{
+                                    this.showUsers = this.users.filter(item => item.name.includes(this.keyword))
+                                }
+                            }, 1000)
+                        }
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ```
+    * watch其实可以有2个参数，newValue,oldValue,前面我们就用了一个参数，就代表着新的值
+    * 还有些比较高端的监听，详细请看知识大纲    
+
     
 
 > 知道你还不过瘾继续吧    
