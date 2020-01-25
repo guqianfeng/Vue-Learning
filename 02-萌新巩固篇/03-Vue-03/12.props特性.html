@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>props特性</title>
+</head>
+<body>
+    <div id="app">
+        <my-component :n="10" gqf="梅利奥猪猪" style="color: #fff"></my-component>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            components: {
+                "my-component": {
+                    inheritAttrs: false,
+                    props: {
+                        n: {
+                            type: Number,
+                            validator(val){
+                                return val >= 0 && val <= 10;
+                            }
+                        }
+                    },
+                    template: `<div gqf="gqf" style="background: #000">{{n + 10}}</div>`
+                }
+            }
+        })
+    </script>
+</body>
+</html>

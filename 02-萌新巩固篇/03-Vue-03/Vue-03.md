@@ -37,8 +37,45 @@
 * 插槽
     * 默认情况下，组件模板解析后会替换整个组件的内容，如果我们想在组件引用被包含的内容，可以通过vue提供的内置组件slot来获取 
     * 具名插槽 - 给插槽起名字
-    * 作用域插槽 - 拿到数据渲染       
-
+    * 作用域插槽 - 拿到数据渲染  
+* props验证 
+    * 组件的props就是组件的参数，为了确保传入的数据在可控的合理范围内，我们需要对传入的props的值类型进行必要的验证
+    * show u code
+        ```js
+        props: {
+            propA: Number, //基础的类型检查('null'和'undefined'会通过任何类型验证)
+            propB: [String, Number], //多个可能的类型
+            propC: { //必填的字符串
+                type: String,
+                required: true,
+            },
+            propD: { //带有默认值的数字
+                type: Number,
+                default: 100,
+            },
+            propE: { //带有默认值的对象
+                type: Object,
+                default: function(){ //对象或数组的默认值必须从一个工厂函数获取
+                    return {
+                        msg: "hello"
+                    }
+                }
+            },
+            propF: { //自定义验证函数
+                validator: function(value){
+                    //这个值必须匹配下列字符串的一个
+                    return ["success", "info", "danger", "warning"].includes(value)
+                }
+            }
+        }
+        ```
+    * 非prop特性
+        * 一个非prop特性是指向一个组件，但是该组件并没有响应prop定义的特性，这些props会被自动添加到组件的根元素上
+    * 替换/合并已有的特性
+        * 默认情况下，非props特性的属性会覆盖根组件元素上同名的内容，但是针对style和class有特殊的处理，他们会合并(同名样式还是会覆盖)
+    * 禁用特性继承    
+        * 如果你不希望组件的根元素继承特性，你可以在组件的选项中设置`inheritAttrs: false`，我们可以通过组件的`this.$attrs`来获取这些属性
+        * 注意`inheritAttrs: false`选项不会影响style和class的绑定
 
 > 练习
 
@@ -1124,7 +1161,192 @@
             </html>            
             ```
 
-            ![](./images/作用域插槽.jpg)                
+            ![](./images/作用域插槽.jpg)   
+
+9. props验证 
+    * 先随意来段代码
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <my-component n="1"></my-component>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                new Vue({
+                    el: "#app",
+                    components: {
+                        "my-component": {
+                            props: ["n"],
+                            template: `<div>{{n + 10}}</div>`
+                        }
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ```  
+    * 如果没有验证，上述的代码显示的结果就是**110**，都把警察叫来了，实际上我们是想要计算出结果11，所以搞个数字的验证 
+    * 之前props的写法都是用数组，其实验证的话，是使用对象的方式，代码如下 
+        ```js
+        props: {
+            n: Number
+        },
+        ``` 
+    * 然后打开页面就能看到这样的报错信息 
+
+        ![](./images/props的验证.jpg)   
+
+    * 所以我们应该这么传`<my-component :n="1"></my-component>`，然后11就计算出来了
+    * 还有些验证的方式请看知识大纲，这里就简单演示个自定义的，就前面那个例子，限制n的范围是[0,10]，超过控制台就会报错
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <my-component :n="11"></my-component>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                new Vue({
+                    el: "#app",
+                    components: {
+                        "my-component": {
+                            props: {
+                                n: {
+                                    type: Number,
+                                    validator(val){
+                                        return val >= 0 && val <= 10;
+                                    }
+                                }
+                            },
+                            template: `<div>{{n + 10}}</div>`
+                        }
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ```   
+
+10. props特性   
+    * 我们先来玩个东西，就是props不是接受传来的值吗，如果我不定义，看下页面会怎么样
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>props特性</title>
+        </head>
+        <body>
+            <div id="app">
+                <my-component :n="10" gqf="梅利奥猪猪"></my-component>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                new Vue({
+                    el: "#app",
+                    components: {
+                        "my-component": {
+                            props: {
+                                n: {
+                                    type: Number,
+                                    validator(val){
+                                        return val >= 0 && val <= 10;
+                                    }
+                                }
+                            },
+                            template: `<div>{{n + 10}}</div>`
+                        }
+                    }
+                })
+            </script>
+        </body>
+        </html>
+        ```  
+    * 我们会发现上述代码并没有报错，但如果我们在template里尝试用大胡子语法去取gqf的值，类似这样`{{gqf}}`就会报错，原因很简单，你没在props的接收gqf啊，这样我们就可以理解props其实就是设置个白名单，那没有设置的gqf会去哪里，会放在当前组件的根组件上，我们看下控制台的element
+
+        ![](./images/页面上的gqf.jpg)                               、
+
+    * 接着来玩下覆盖/合并
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>props特性</title>
+        </head>
+        <body>
+            <div id="app">
+                <my-component :n="10" gqf="梅利奥猪猪" style="color: #fff"></my-component>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                new Vue({
+                    el: "#app",
+                    components: {
+                        "my-component": {
+                            props: {
+                                n: {
+                                    type: Number,
+                                    validator(val){
+                                        return val >= 0 && val <= 10;
+                                    }
+                                }
+                            },
+                            template: `<div gqf="gqf" style="background: #000">{{n + 10}}</div>`
+                        }
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ``` 
+    * 我们会发现外面的gqf把里面的gqf覆盖了，然后样式是合并的
+
+        ![](./images/覆盖合并.jpg) 
+
+    * 最后我们在玩下禁止继承 
+        ```js
+        new Vue({
+            el: "#app",
+            components: {
+                "my-component": {
+                    inheritAttrs: false,
+                    props: {
+                        n: {
+                            type: Number,
+                            validator(val){
+                                return val >= 0 && val <= 10;
+                            }
+                        }
+                    },
+                    template: `<div gqf="gqf" style="background: #000">{{n + 10}}</div>`
+                }
+            }
+        })        
+        ```
+
+    * 这个时候就能看到梅利奥猪猪并没有覆盖gqf，注意禁止是不会影响style和class的，他们还是会覆盖合并的  
+
+        ![](./images/禁止继承.jpg)           
 
 > 知道你还不过瘾继续吧  
 
