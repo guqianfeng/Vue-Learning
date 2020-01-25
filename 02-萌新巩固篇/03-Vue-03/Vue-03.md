@@ -26,7 +26,13 @@
     * props定义的属性和data不能冲突   
 * 组件通讯
     * 不要修改props传入的数据
-    * 父组件通过props传入数据到子组件内部，但是子组件内部不要修改外部传入的props，vue提供了一种事件机制通知父级更新，父级中使用子组件的时候，监听对应的事件绑定对应的处理函数即可       
+    * 父组件通过props传入数据到子组件内部，但是子组件内部不要修改外部传入的props，vue提供了一种事件机制通知父级更新，父级中使用子组件的时候，监听对应的事件绑定对应的处理函数即可 
+    * v-model的使用
+        * prop指定要绑定的属性，默认是value
+        * event指定要绑定触发的事件，默认是input事件
+    * .sync
+        * 通过v-model来进行双向绑定，会给状态维护带来一定的问题，因为修改比较隐蔽，同时也只能处理一个prop的绑定，我们还可以通过另外种方式来达到这个目的，那就是用sync        
+
 
 > 练习
 
@@ -570,7 +576,196 @@
         </body>
         </html>        
         ```
-    * 此时效果就实现了，这里简单提下this.$emit的第一个参数，是自己随意定义的，比如定义了xxx，那在组件中监听就是@xxx，至于@xxx="xxx"，引号中的xxx就是父组件里methods定义的方法，再然后就是this.$emit后面的参数，对应的就是父组件方法中，对应的参数    
+    * 此时效果就实现了，这里简单提下this.$emit的第一个参数，是自己随意定义的，比如定义了xxx，那在组件中监听就是@xxx，至于@xxx="xxx"，引号中的xxx就是父组件里methods定义的方法，再然后就是this.$emit后面的参数，对应的就是父组件方法中，对应的参数 
+
+6. v-model的实现    
+    * 直接上代码
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <gqf-product 
+                    v-for="product in products" 
+                    :key="product.id" 
+                    :name="product.name"
+                    v-model="product.num"
+                >
+                </gqf-product>
+                <p>总数 - {{sum}}</p>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                Vue.component("gqf-product", {
+                    props: ["name", "num"],
+                    model: {
+                        prop: "num",
+                        event: "edit"
+                    },
+                    template: `
+                        <div>
+                            <button @click="minus">-</button>
+                            <span> {{name}} - 已购买数量: {{num}} </span>
+                            <button @click="add">+</button>
+                        </div>
+                    `,
+                    methods: {
+                        minus(){
+                            let result = this.num - 1;
+                            if(result < 0){
+                                result = 0;
+                            }
+                            this.$emit("edit", result);
+                        },
+                        add(){
+                            this.$emit("edit", this.num + 1)
+                        }
+                    }
+                })
+                let app = new Vue({
+                    el: "#app",
+                    data: {
+                        products: [
+                            {
+                                id: 1,
+                                name: "product-1",
+                                num: 1,
+                            },
+                            {
+                                id: 2,
+                                name: "product-2",
+                                num: 2,
+                            },
+                            {
+                                id: 3,
+                                name: "product-3",
+                                num: 3,
+                            },
+                            {
+                                id: 4,
+                                name: "product-4",
+                                num: 4,
+                            },
+                            {
+                                id: 5,
+                                name: "product-5",
+                                num: 5,
+                            },
+                        ]
+                    },
+                    computed: {
+                        sum(){
+                            return this.products.reduce((n, item) => {
+                                return n + item.num
+                            }, 0)
+                        }
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ```
+    * v-model不需要在写`@edit="edit"`,也不需要在父组件methods里写方法了，只需要配置个model属性
+    * 实际上是不推荐这种写法的，我们接下来看下sync
+
+7. sync
+    * 先上代码
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <gqf-product 
+                    v-for="product in products" 
+                    :key="product.id" 
+                    :name="product.name"
+                    :num.sync="product.num"
+                >
+                </gqf-product>
+                <p>总数 - {{sum}}</p>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                Vue.component("gqf-product", {
+                    props: ["name", "num"],
+                    template: `
+                        <div>
+                            <button @click="minus">-</button>
+                            <span> {{name}} - 已购买数量: {{num}} </span>
+                            <button @click="add">+</button>
+                        </div>
+                    `,
+                    methods: {
+                        minus(){
+                            let result = this.num - 1;
+                            if(result < 0){
+                                result = 0;
+                            }
+                            this.$emit("update:num", result);
+                        },
+                        add(){
+                            this.$emit("update:num", this.num + 1)
+                        }
+                    }
+                })
+                let app = new Vue({
+                    el: "#app",
+                    data: {
+                        products: [
+                            {
+                                id: 1,
+                                name: "product-1",
+                                num: 1,
+                            },
+                            {
+                                id: 2,
+                                name: "product-2",
+                                num: 2,
+                            },
+                            {
+                                id: 3,
+                                name: "product-3",
+                                num: 3,
+                            },
+                            {
+                                id: 4,
+                                name: "product-4",
+                                num: 4,
+                            },
+                            {
+                                id: 5,
+                                name: "product-5",
+                                num: 5,
+                            },
+                        ]
+                    },
+                    computed: {
+                        sum(){
+                            return this.products.reduce((n, item) => {
+                                return n + item.num
+                            }, 0)
+                        }
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ```
+    * 其实核心的代码就这2行
+        * `:num.sync="product.num"`
+        * `this.$emit("update:num", this.num + 1)`    
 
 > 知道你还不过瘾继续吧  
 
