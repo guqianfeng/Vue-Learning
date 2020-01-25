@@ -31,7 +31,13 @@
         * prop指定要绑定的属性，默认是value
         * event指定要绑定触发的事件，默认是input事件
     * .sync
-        * 通过v-model来进行双向绑定，会给状态维护带来一定的问题，因为修改比较隐蔽，同时也只能处理一个prop的绑定，我们还可以通过另外种方式来达到这个目的，那就是用sync        
+        * 通过v-model来进行双向绑定，会给状态维护带来一定的问题，因为修改比较隐蔽，同时也只能处理一个prop的绑定，我们还可以通过另外种方式来达到这个目的，那就是用sync
+        * `:xxx.sync = ""`
+        * `this.$emit(update:xxx, ...)`      
+* 插槽
+    * 默认情况下，组件模板解析后会替换整个组件的内容，如果我们想在组件引用被包含的内容，可以通过vue提供的内置组件slot来获取 
+    * 具名插槽 - 给插槽起名字
+    * 作用域插槽 - 拿到数据渲染       
 
 
 > 练习
@@ -765,7 +771,360 @@
         ```
     * 其实核心的代码就这2行
         * `:num.sync="product.num"`
-        * `this.$emit("update:num", this.num + 1)`    
+        * `this.$emit("update:num", this.num + 1)`  
+
+8. 插槽     
+    * 讲插槽前，先简单实现个东西  
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <gqf-dialog title="标题1" content="内容1"></gqf-dialog>
+                <gqf-dialog title="标题2" content="内容2"></gqf-dialog>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                Vue.component("gqf-dialog", {
+                    props: ["title", "content"],
+                    template: `
+                        <div>
+                            <h1>{{title}}</h1>
+                            <div>{{content}}</div>
+                        </div>    
+                    `
+                })
+                let app = new Vue({
+                    el: "#app",
+                    
+                })
+            </script>
+        </body>
+        </html>        
+        ```
+    * 现在因为内容比较简单，只是个简单的字符串，如果以后扩展成，是个表格，或者表单，是不是就比较麻烦了
+    * 我们先来写个表格玩下，注意组件里要用v-html 
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <gqf-dialog title="标题1" content="内容1"></gqf-dialog>
+                <gqf-dialog title="标题2" content="内容2"></gqf-dialog>
+                <gqf-dialog 
+                    title="表格" 
+                    content="<table border='1'>
+                                <thead>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>name</th>
+                                        <th>gender</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>gqf</td>
+                                        <td>male</td>
+                                    </tr>
+                                </tbody>
+                            </table>"
+                >
+                </gqf-dialog>
+            </div>
+
+            <!-- <table border='1'>
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>name</th>
+                        <th>gender</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>gqf</td>
+                        <td>male</td>
+                    </tr>
+                </tbody>
+            </table> -->
+            <script src="../js/vue.js"></script>
+            <script>
+                Vue.component("gqf-dialog", {
+                    props: ["title", "content"],
+                    template: `
+                        <div>
+                            <h1>{{title}}</h1>
+                            <div v-html="content"></div>
+                        </div>    
+                    `
+                })
+                let app = new Vue({
+                    el: "#app",
+                    
+                })
+            </script>
+        </body>
+        </html>        
+        ```  
+    * 效果是这样的
+
+        ![](./images/表格的效果.jpg)  
+
+    * 很明显这样的写法非常的恶心，那肯定有小伙伴会说，那我就放在这个自定义组件里面不就可以了，类似这样
+        ```html
+        <gqf-dialog title="标题3">
+            <table border='1'>
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>name</th>
+                        <th>gender</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>gqf</td>
+                        <td>male</td>
+                    </tr>
+                </tbody>
+            </table>
+        </gqf-dialog>        
+        ``` 
+    * 然后打开页面看，并没有看到表格，实际上vue有slot组件，这个其实类似react的children，所以加上slot组件，就能看到效果了
+        ```js
+        Vue.component("gqf-dialog", {
+            props: ["title", "content"],
+            template: `
+                <div>
+                    <h1>{{title}}</h1>
+                    <div>
+                        <slot></slot>
+                    </div>
+                </div>    
+            `
+        })        
+        ```           
+    * 具名插槽
+        * 其实很简单，就是有多个插槽
+        * 为了区分，需要包在template标签下，并且添加属性，给插槽起下名字`v-slot:xxx`，不起名字的就是默认的插槽
+        * 然后在定义组件的地方，这么写`<slot name="xxx"></slot>`
+        * 具体代码如下
+            ```html
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Document</title>
+            </head>
+            <body>
+                <div id="app">
+                    <gqf-dialog>
+                        <template v-slot:title>
+                            <h1>标题</h1>
+                        </template>
+                        <template>
+                            <table border='1'>
+                                <thead>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>name</th>
+                                        <th>gender</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>gqf</td>
+                                        <td>male</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </template>
+                    </gqf-dialog>
+                </div>
+                <script src="../js/vue.js"></script>
+                <script>
+                    Vue.component("gqf-dialog", {
+                        props: ["title", "content"],
+                        template: `
+                            <div>
+                                <div>
+                                    <slot name="title"></slot>
+                                </div>
+                                <div>
+                                    <slot></slot>
+                                </div>
+                            </div>    
+                        `
+                    })
+                    let app = new Vue({
+                        el: "#app",
+                        
+                    })
+                </script>
+            </body>
+            </html>
+            ```  
+    * 作用域插槽
+        * 其实就是传数据，因为内部的组件不能直接使用props传进来的数据，要做下处理
+        * 我们先在根组件里定义下数据 
+            ```js
+            let app = new Vue({
+                el: "#app",
+                data: {
+                    list: {
+                        title: "用户列表",
+                        users: [
+                            {
+                                id: 1,
+                                name: "gqf",
+                                gender: "male"
+                            },
+                            {
+                                id: 2,
+                                name: "zhangsan",
+                                gender: "female"
+                            },
+                            {
+                                id: 3,
+                                name: "lisi",
+                                gender: "male"
+                            },
+                            {
+                                id: 4,
+                                name: "wangwu",
+                                gender: "female"
+                            },
+                            {
+                                id: 5,
+                                name: "zhaoliu",
+                                gender: "male"
+                            },
+                        ]
+                    }
+                }
+            })            
+            ``` 
+        * 接着就是传值给我们的gqf-dialog组件，主要代码如下 
+            * `<gqf-dialog :list="list">`
+            * `props: ["list"],`   
+        * 在定义的组件里代码如下
+            * `<slot name="title" :title="list.title"></slot>`
+        * 在template标签里这么处理
+            ```html
+            <template v-slot:title="props">
+                <h1>{{props.title}}</h1>
+            </template>            
+            ```  
+        * 最终代码如下
+            ```html
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Document</title>
+            </head>
+            <body>
+                <div id="app">
+                    <gqf-dialog :list="list">
+                        <template v-slot:title="props">
+                            <h1>{{props.title}}</h1>
+                        </template>
+                        <template v-slot="props">
+                            <table border='1'>
+                                <thead>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>name</th>
+                                        <th>gender</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="user in props.users" :key="user.id">
+                                        <td>{{user.id}}</td>
+                                        <td>{{user.name}}</td>
+                                        <td>{{user.gender}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </template>
+                    </gqf-dialog>
+                </div>
+                <script src="../js/vue.js"></script>
+                <script>
+                    Vue.component("gqf-dialog", {
+                        props: ["list"],
+                        template: `
+                            <div>
+                                <div>
+                                    <slot name="title" :title="list.title"></slot>
+                                </div>
+                                <div>
+                                    <slot :users="list.users"></slot>
+                                </div>
+                            </div>    
+                        `
+                    })
+                    let app = new Vue({
+                        el: "#app",
+                        data: {
+                            list: {
+                                title: "用户列表",
+                                users: [
+                                    {
+                                        id: 1,
+                                        name: "gqf",
+                                        gender: "male"
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "zhangsan",
+                                        gender: "female"
+                                    },
+                                    {
+                                        id: 3,
+                                        name: "lisi",
+                                        gender: "male"
+                                    },
+                                    {
+                                        id: 4,
+                                        name: "wangwu",
+                                        gender: "female"
+                                    },
+                                    {
+                                        id: 5,
+                                        name: "zhaoliu",
+                                        gender: "male"
+                                    },
+                                ]
+                            }
+                        }
+                    })
+                </script>
+            </body>
+            </html>            
+            ```
+
+            ![](./images/作用域插槽.jpg)                
 
 > 知道你还不过瘾继续吧  
 

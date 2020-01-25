@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <gqf-dialog title="标题1" content="内容1"></gqf-dialog>
+        <gqf-dialog title="标题2" content="内容2"></gqf-dialog>
+        <!-- <gqf-dialog 
+            title="表格" 
+            content="<table border='1'>
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>name</th>
+                                <th>gender</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>gqf</td>
+                                <td>male</td>
+                            </tr>
+                        </tbody>
+                    </table>"
+        >
+        </gqf-dialog> -->
+        <gqf-dialog title="标题3">
+            <table border='1'>
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>name</th>
+                        <th>gender</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>gqf</td>
+                        <td>male</td>
+                    </tr>
+                </tbody>
+            </table>
+        </gqf-dialog>
+    </div>
+
+    <!-- <table border='1'>
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>gender</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>gqf</td>
+                <td>male</td>
+            </tr>
+        </tbody>
+    </table> -->
+    <script src="../js/vue.js"></script>
+    <script>
+        Vue.component("gqf-dialog", {
+            props: ["title", "content"],
+            template: `
+                <div>
+                    <h1>{{title}}</h1>
+                    <div>
+                        <slot></slot>
+                    </div>
+                </div>    
+            `
+        })
+        let app = new Vue({
+            el: "#app",
+            
+        })
+    </script>
+</body>
+</html>

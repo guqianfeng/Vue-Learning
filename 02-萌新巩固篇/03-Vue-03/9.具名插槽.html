@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <gqf-dialog>
+            <template v-slot:title>
+                <h1>标题</h1>
+            </template>
+            <template>
+                <table border='1'>
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>name</th>
+                            <th>gender</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>gqf</td>
+                            <td>male</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </template>
+        </gqf-dialog>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        Vue.component("gqf-dialog", {
+            props: ["title", "content"],
+            template: `
+                <div>
+                    <div>
+                        <slot name="title"></slot>
+                    </div>
+                    <div>
+                        <slot></slot>
+                    </div>
+                </div>    
+            `
+        })
+        let app = new Vue({
+            el: "#app",
+            
+        })
+    </script>
+</body>
+</html>

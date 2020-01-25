@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <gqf-dialog :list="list">
+            <template v-slot:title="props">
+                <h1>{{props.title}}</h1>
+            </template>
+            <template v-slot="props">
+                <table border='1'>
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>name</th>
+                            <th>gender</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="user in props.users" :key="user.id">
+                            <td>{{user.id}}</td>
+                            <td>{{user.name}}</td>
+                            <td>{{user.gender}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </template>
+        </gqf-dialog>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        Vue.component("gqf-dialog", {
+            props: ["list"],
+            template: `
+                <div>
+                    <div>
+                        <slot name="title" :title="list.title"></slot>
+                    </div>
+                    <div>
+                        <slot :users="list.users"></slot>
+                    </div>
+                </div>    
+            `
+        })
+        let app = new Vue({
+            el: "#app",
+            data: {
+                list: {
+                    title: "用户列表",
+                    users: [
+                        {
+                            id: 1,
+                            name: "gqf",
+                            gender: "male"
+                        },
+                        {
+                            id: 2,
+                            name: "zhangsan",
+                            gender: "female"
+                        },
+                        {
+                            id: 3,
+                            name: "lisi",
+                            gender: "male"
+                        },
+                        {
+                            id: 4,
+                            name: "wangwu",
+                            gender: "female"
+                        },
+                        {
+                            id: 5,
+                            name: "zhaoliu",
+                            gender: "male"
+                        },
+                    ]
+                }
+            }
+        })
+    </script>
+</body>
+</html>
