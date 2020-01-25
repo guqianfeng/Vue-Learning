@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <p>{{num}}</p>
+        <gqf-component></gqf-component>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        Vue.component("gqf-component", {
+            data(){
+                return {
+                    num: 999
+                }
+            },
+            template: `<div>
+                            <h1>这里是梅利奥猪猪的全局组件</h1>
+                            <p>试下全局组件能不能拿到根组件的data - {{num}}</p>
+                        </div>`
+        })
+        new Vue({
+            el: "#app",
+            data: {
+                num: 1
+            }
+        })
+    </script>
+</body>
+</html>

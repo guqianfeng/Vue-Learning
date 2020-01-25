@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <gqf-component></gqf-component>   
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        let gqfComponent = Vue.component("gqf-component", {
+            template: `
+                        <div>
+                            <h1>全局组件哦</h1>
+                            <h1>我是梅利奥猪猪</h1>
+                            <h1>你们的猪大佬</h1>
+                            <gqf-component1></gqf-component1>
+                            <gqf-component2></gqf-component2>
+                        </div>
+            `,
+            components: {
+                'gqf-component1': {
+                    template: "<div>梅利奥猪猪 - 1</div>"
+                },
+                'gqf-component2': {
+                    template: "<div>梅利奥猪猪 - 2</div>"
+                },
+            }
+        })
+        let app = new Vue({
+            el: "#app"
+        })
+        console.log(app);
+        console.log(gqfComponent);
+    </script>
+</body>
+</html>

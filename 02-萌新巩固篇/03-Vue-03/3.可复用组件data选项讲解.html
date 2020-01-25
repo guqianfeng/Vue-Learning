@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class VueComponent{
+            constructor(options){
+                this._opts = options;
+                this._data = this._opts.data;
+            }
+        }
+
+        /* let gqfComponent1 = new VueComponent({
+            name: "gqf-component1",
+            data: {
+                num: 1
+            }
+        }) 
+
+        let gqfComponent2 = new VueComponent({
+            name: "gqf-component2",
+            data: {
+                num: 1
+            }
+        })
+
+        gqfComponent2._data.num = 999;
+
+        console.log(gqfComponent1)
+        console.log(gqfComponent2) */
+        let Vue = {};
+        Vue.component = function(name, options){
+            return function(){
+                return new VueComponent({
+                    name,
+                    ...options,
+                    data: options.data(), //每次都会调用下，返回个对象，这样就不是共用一份数据了
+                })
+            }
+        }
+
+        let gqfComponent = Vue.component("gqf-component", {
+            // data: {
+            //     num: 1,
+            // }
+            data(){
+                return {
+                    num: 1
+                }
+            }
+        })
+
+        let gqfComponent1 = gqfComponent();
+        let gqfComponent2 = gqfComponent();
+
+        gqfComponent1._data.num = 999;
+
+        console.log(gqfComponent1)
+        console.log(gqfComponent2)
+
+    </script>
+</body>
+</html>
