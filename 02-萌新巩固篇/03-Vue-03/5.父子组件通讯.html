@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <gqf-product 
+            v-for="product in products" 
+            :key="product.id" 
+            :product="product" 
+            :num="product.num"
+            @edit="edit"
+        >
+        </gqf-product>
+        <p>总数 - {{sum}}</p>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        Vue.component("gqf-product", {
+            props: ["product", "num"],
+            template: `
+                <div>
+                    <button @click="minus">-</button>
+                    <span> {{product.name}} - 已购买数量: {{num}} </span>
+                    <button @click="add">+</button>
+                </div>
+            `,
+            methods: {
+                minus(){
+                    let result = this.num - 1;
+                    if(result < 0){
+                        result = 0;
+                    }
+                    this.$emit("edit", this.product, result);
+                },
+                add(){
+                    this.$emit("edit", this.product, this.num + 1);
+                }
+            }
+        })
+        let app = new Vue({
+            el: "#app",
+            data: {
+                products: [
+                    {
+                        id: 1,
+                        name: "product-1",
+                        num: 1,
+                    },
+                    {
+                        id: 2,
+                        name: "product-2",
+                        num: 2,
+                    },
+                    {
+                        id: 3,
+                        name: "product-3",
+                        num: 3,
+                    },
+                    {
+                        id: 4,
+                        name: "product-4",
+                        num: 4,
+                    },
+                    {
+                        id: 5,
+                        name: "product-5",
+                        num: 5,
+                    },
+                ]
+            },
+            computed: {
+                sum(){
+                    return this.products.reduce((n, item) => {
+                        return n + item.num
+                    }, 0)
+                }
+            },
+            methods:{
+                edit(product, num){
+                    product.num = num;
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -20,7 +20,13 @@
         })
         ```
     * 在一个组件内部通过components选项注册的组件是局部组件，只能在当前的components选项所在的组件内部使用
-    * 注意局部组件的注册只能在当前注册的组件中使用，不能再它的子组件中使用    
+    * 注意局部组件的注册只能在当前注册的组件中使用，不能再它的子组件中使用  
+* data和props
+    * data必须是个函数，且需要返回个对象
+    * props定义的属性和data不能冲突   
+* 组件通讯
+    * 不要修改props传入的数据
+    * 父组件通过props传入数据到子组件内部，但是子组件内部不要修改外部传入的props，vue提供了一种事件机制通知父级更新，父级中使用子组件的时候，监听对应的事件绑定对应的处理函数即可       
 
 > 练习
 
@@ -268,6 +274,303 @@
 
         ![](./images/使用函数解决问题.jpg)   
 
+4. props
+    * 来计算不同半径的圆的面积吧
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <gqf-circle :r="r1"></gqf-circle>
+                <gqf-circle :r="r2"></gqf-circle>
+                <gqf-circle :r="r3"></gqf-circle>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                Vue.component("gqf-circle", {
+                    props: ["r"],
+                    template: `<div>{{r}} - {{Math.PI * r * r}}</div>`
+                })
+
+                let app = new Vue({
+                    el: "#app",
+                    data: {
+                        r1: 1,
+                        r2: 3,
+                        r3: 5,
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ```
+    * 结果如下
+
+        ![](./images/计算圆的面积.jpg)   
+
+5. 父子组件通讯     
+    * 先来做个简单的案例，就是一堆商品，每个商品维护个数量，然后点击加减数量可以增减，最后统计下总数    
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <gqf-product v-for="product in products" :key="product.id" :product="product"></gqf-product>
+                <p>总数 - {{sum}}</p>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                Vue.component("gqf-product", {
+                    props: ["product"],
+                    template: `
+                        <div>
+                            <button @click="minus">-</button>
+                            <span> {{product.name}} - 已购买数量: {{product.num}} </span>
+                            <button @click="product.num++">+</button>
+                        </div>
+                    `,
+                    methods: {
+                        minus(){
+                            this.product.num--;
+                            if(this.product.num < 0){
+                                this.product.num = 0;
+                            }
+                        }
+                    }
+                })
+                let app = new Vue({
+                    el: "#app",
+                    data: {
+                        products: [
+                            {
+                                id: 1,
+                                name: "product-1",
+                                num: 1,
+                            },
+                            {
+                                id: 2,
+                                name: "product-2",
+                                num: 2,
+                            },
+                            {
+                                id: 3,
+                                name: "product-3",
+                                num: 3,
+                            },
+                            {
+                                id: 4,
+                                name: "product-4",
+                                num: 4,
+                            },
+                            {
+                                id: 5,
+                                name: "product-5",
+                                num: 5,
+                            },
+                        ]
+                    },
+                    computed: {
+                        sum(){
+                            return this.products.reduce((n, item) => {
+                                return n + item.num
+                            }, 0)
+                        }
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ```
+    * 效果的确是实现了，但有个比较大的问题，因为我们在组件中传入的是个对象，对象传递是址传递 
+    * vue其实是不建议你直接修改传进去的值的，因为传入的数据不仅仅是当前组件使用，可能其他组件也在使用这个数据，为了保证数据操作的安全性，接下来，我们把例子在做个简单的调整，比如我们在多传个数量
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <gqf-product v-for="product in products" :key="product.id" :product="product" :num="product.num"></gqf-product>
+                <p>总数 - {{sum}}</p>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                Vue.component("gqf-product", {
+                    props: ["product", "num"],
+                    template: `
+                        <div>
+                            <button @click="minus">-</button>
+                            <span> {{product.name}} - 已购买数量: {{num}} </span>
+                            <button @click="num++">+</button>
+                        </div>
+                    `,
+                    methods: {
+                        minus(){
+                            this.num--;
+                            if(this.num < 0){
+                                this.num = 0;
+                            }
+                        }
+                    }
+                })
+                let app = new Vue({
+                    el: "#app",
+                    data: {
+                        products: [
+                            {
+                                id: 1,
+                                name: "product-1",
+                                num: 1,
+                            },
+                            {
+                                id: 2,
+                                name: "product-2",
+                                num: 2,
+                            },
+                            {
+                                id: 3,
+                                name: "product-3",
+                                num: 3,
+                            },
+                            {
+                                id: 4,
+                                name: "product-4",
+                                num: 4,
+                            },
+                            {
+                                id: 5,
+                                name: "product-5",
+                                num: 5,
+                            },
+                        ]
+                    },
+                    computed: {
+                        sum(){
+                            return this.products.reduce((n, item) => {
+                                return n + item.num
+                            }, 0)
+                        }
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ```
+    * 这个时候点击加号就会报错，下面的求和运算也会有问题
+
+        ![](./images/点击加号报错.jpg)    
+
+    * 这个时候，最正确的做法就是通知父级(数据持有人)去改  
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <gqf-product 
+                    v-for="product in products" 
+                    :key="product.id" 
+                    :product="product" 
+                    :num="product.num"
+                    @edit="edit"
+                >
+                </gqf-product>
+                <p>总数 - {{sum}}</p>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                Vue.component("gqf-product", {
+                    props: ["product", "num"],
+                    template: `
+                        <div>
+                            <button @click="minus">-</button>
+                            <span> {{product.name}} - 已购买数量: {{num}} </span>
+                            <button @click="add">+</button>
+                        </div>
+                    `,
+                    methods: {
+                        minus(){
+                            let result = this.num - 1;
+                            if(result < 0){
+                                result = 0;
+                            }
+                            this.$emit("edit", this.product, result);
+                        },
+                        add(){
+                            this.$emit("edit", this.product, this.num + 1);
+                        }
+                    }
+                })
+                let app = new Vue({
+                    el: "#app",
+                    data: {
+                        products: [
+                            {
+                                id: 1,
+                                name: "product-1",
+                                num: 1,
+                            },
+                            {
+                                id: 2,
+                                name: "product-2",
+                                num: 2,
+                            },
+                            {
+                                id: 3,
+                                name: "product-3",
+                                num: 3,
+                            },
+                            {
+                                id: 4,
+                                name: "product-4",
+                                num: 4,
+                            },
+                            {
+                                id: 5,
+                                name: "product-5",
+                                num: 5,
+                            },
+                        ]
+                    },
+                    computed: {
+                        sum(){
+                            return this.products.reduce((n, item) => {
+                                return n + item.num
+                            }, 0)
+                        }
+                    },
+                    methods:{
+                        edit(product, num){
+                            product.num = num;
+                        }
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ```
+    * 此时效果就实现了，这里简单提下this.$emit的第一个参数，是自己随意定义的，比如定义了xxx，那在组件中监听就是@xxx，至于@xxx="xxx"，引号中的xxx就是父组件里methods定义的方法，再然后就是this.$emit后面的参数，对应的就是父组件方法中，对应的参数    
 
 > 知道你还不过瘾继续吧  
 

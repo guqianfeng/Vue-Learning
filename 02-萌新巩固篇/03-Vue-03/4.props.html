@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <gqf-circle :r="r1"></gqf-circle>
+        <gqf-circle :r="r2"></gqf-circle>
+        <gqf-circle :r="r3"></gqf-circle>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        Vue.component("gqf-circle", {
+            props: ["r"],
+            template: `<div>{{r}} - {{Math.PI * r * r}}</div>`
+        })
+
+        let app = new Vue({
+            el: "#app",
+            data: {
+                r1: 1,
+                r2: 3,
+                r3: 5,
+            }
+        })
+    </script>
+</body>
+</html>
