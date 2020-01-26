@@ -72,7 +72,41 @@
                 * 2.1.8版及以上 定义离开过渡的结束状态。在离开过渡被触发之后下一帧生效 (与此同时 v-leave 被删除)，在过渡/动画完成之后移除。
         * 来看图更加直接
 
-            ![](./images/transition.png)          
+            ![](./images/transition.png)  
+
+* 插件
+    * 插件通常是用来给vue提供扩展功能的中方式
+        * 给Vue添加属性和方法
+        * 给Vue实例添加属性和方法
+        * 添加全局资源：指令，过滤器，组件等
+        * 添加配置选项
+    * 安装插件
+        * 通过全局的`Vue.use(插件)`使用插件，他需要在调用`new Vue()`启动应用之前完成 
+        * 如果一个插件是一个对象，必须提供install方法，如果插件是一个函数，他会作为install方法。install方法调用时，会将Vue作为参数传入
+            ```js
+            MyPlugin.install = function(Vue, options){
+                //1.添加全局方法或属性
+                Vue.myGlobalMethod = function(){
+                    //逻辑
+                }
+                //2.添加全局资源
+                Vue.directive('my-directive', {
+                    bind(el, binding){
+                        //逻辑
+                    }
+                })
+                //3.注入组件选项
+                Vue.mixin({
+                    created(){
+                        //逻辑
+                    }
+                })
+                //4.添加实例方法
+                Vue.prototype.$myMethod = function(methodOptions){
+                    //逻辑
+                }
+            }
+            ```                       
 
 > 练习
 
@@ -702,8 +736,132 @@
         </body>
         </html>        
         ``` 
-    * 关于动画的还有一些js的生命周期钩子，可以在官网查询，这边就不做演示了      
+    * 关于动画的还有一些js的生命周期钩子，可以在官网查询，这边就不做演示了
 
+5. 插件 
+    * 先来看个不规范的做法 
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <button @click="fn">click</button>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                Vue.prototype.getGqfDesc = function(){
+                    return "gqf is 梅利奥猪猪"
+                }
+
+                let app = new Vue({
+                    el: "#app",
+                    methods: {
+                        fn(){
+                            alert(this.getGqfDesc());
+                        }
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ``` 
+    * 上述代码是能实现效果的，但不是一种规范的写法，接下来看个比较好的方式
+        * 新建个gqf.js
+            ```js
+            function gqf(_Vue){
+                _Vue.prototype.getGqfDesc = function(){
+                    return "假装是个单独封装的插件 by 梅利奥猪猪"
+                }
+            }            
+            ```
+        * 然后在页面中引用这个js，使用Vue.use
+            ```html
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Document</title>
+            </head>
+            <body>
+                <div id="app">
+                    <button @click="fn">click</button>
+                </div>
+                <script src="./js/gqf.js"></script>
+                <script src="../js/vue.js"></script>
+                <script>
+                    Vue.use(gqf);
+                    let app = new Vue({
+                        el: "#app",
+                        methods: {
+                            fn(){
+                                alert(this.getGqfDesc());
+                            }
+                        }
+                    })
+                </script>
+            </body>
+            </html>            
+            ```
+        * 其实和之前的效果一样，代码也差不多，但使用use是比较规范的  
+    * 接着在来看下mixin
+        * 我们在gqf.js中追加代码，注意混合模式不是覆盖
+            ```js
+            function gqf(_Vue){
+                _Vue.prototype.getGqfDesc = function(){
+                    return "假装是个单独封装的插件 by 梅利奥猪猪"
+                }
+
+                _Vue.mixin({
+                    created(){
+                        console.log("this is gqf-created")
+                    }
+                })
+            }            
+            ```                 
+    * 然后在原先的页面中添加生命周期函数created
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <button @click="fn">click</button>
+            </div>
+            <script src="./js/gqf.js"></script>
+            <script src="../js/vue.js"></script>
+            <script>
+                Vue.use(gqf);
+                let app = new Vue({
+                    el: "#app",
+                    methods: {
+                        fn(){
+                            alert(this.getGqfDesc());
+                        }
+                    },
+                    created(){
+                        console.log("created")
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ```
+    * 此时在去看控制台的打印结果，就能发现混合成功~而且还能发现mixin它优于组件的生命周期，是先执行的    
+
+        ![](./images/混合成功.jpg)
 
 > 知道你还不过瘾继续吧  
 

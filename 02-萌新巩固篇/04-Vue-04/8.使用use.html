@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <button @click="fn">click</button>
+    </div>
+    <script src="./js/gqf.js"></script>
+    <script src="../js/vue.js"></script>
+    <script>
+        Vue.use(gqf);
+        let app = new Vue({
+            el: "#app",
+            methods: {
+                fn(){
+                    alert(this.getGqfDesc());
+                }
+            },
+            created(){
+                console.log("created")
+            }
+        })
+    </script>
+</body>
+</html>
