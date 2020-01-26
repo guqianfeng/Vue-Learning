@@ -8,7 +8,14 @@
 </head>
 <body>
     <div id="app">
-        <gqf-component></gqf-component>
+        <button @click="isShow = !isShow">changeShow</button>
+        <button @click="title=['天才','大佬','打游戏撸码的咸鱼'][Math.random()*3|0]">changeTitle</button>
+        <template v-if="hasError">
+            发生错误了
+        </template>
+        <template v-else>
+            <gqf-component v-if="isShow" :title="title"></gqf-component>
+        </template>
     </div>
     <script src="../js/vue.js"></script>
     <script>
@@ -16,18 +23,19 @@
             el: "#app",
             components: {
                 "gqf-component": {
-                    template: `<div>我是梅利奥猪猪</div>`,
+                    props: ["title"],
+                    template: `<div>{{title.a.b.c}}</div>`,
                     beforeCreate(){
-                        console.log("gqf-component - beforeCreate")
+                        console.log("gqf-component - beforeCreate", this.$data, this.$el)
                     },
                     created(){
-                        console.log("gqf-component - created")
+                        console.log("gqf-component - created", this.$data, this.$el)
                     },
                     beforeMount(){
-                        console.log("gqf-component - beforeMount")
+                        console.log("gqf-component - beforeMount", this.$data, this.$el)
                     },
                     mounted(){
-                        console.log("gqf-component - mounted")
+                        console.log("gqf-component - mounted", this.$data, this.$el)
                     },
                     beforeUpdate(){
                         console.log("gqf-component - beforeUpdate")
@@ -43,17 +51,22 @@
                     },
                 }
             },
+            data: {
+                isShow: true,
+                title: "我是梅利奥猪猪",
+                hasError: false,
+            },
             beforeCreate(){
-                console.log("beforeCreate")
+                console.log("beforeCreate", this.$data, this.$el)
             },
             created(){
-                console.log("created")
+                console.log("created", this.$data, this.$el)
             },
             beforeMount(){
-                console.log("beforeMount")
+                console.log("beforeMount", this.$data, this.$el)
             },
             mounted(){
-                console.log("mounted")
+                console.log("mounted", this.$data, this.$el)
             },
             beforeUpdate(){
                 console.log("beforeUpdate")
@@ -67,6 +80,11 @@
             destroyed(){
                 console.log("destroyed")
             },
+            errorCaptured(err, vm, info){
+                console.log("errorCaptured", err, vm, info);
+                this.hasError = true;
+                return false;
+            }
         })
     </script>
 </body>
