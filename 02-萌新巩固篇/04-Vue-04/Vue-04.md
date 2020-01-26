@@ -314,7 +314,73 @@
             ```
         * 然后就能看到效果了
 
-            ![](./images/捕获错误生命周期.jpg)          
+            ![](./images/捕获错误生命周期.jpg)  
+
+2. destroyed的生命周期  
+    * 还是类似前面个案例，我们改造下，在子组件created的生命周期里，开个定时器   
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <div id="app">
+                <button @click="isShow = !isShow">changeShow</button>
+                <gqf-component v-if="isShow" :title="title"></gqf-component>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                let app = new Vue({
+                    el: "#app",
+                    components: {
+                        "gqf-component": {
+                            props: ["title"],
+                            template: `<div>{{title}}</div>`,
+                            created(){
+                                setInterval(() => {
+                                    console.log(1);
+                                }, 1000)
+                            },
+                            beforeDestroy(){
+                                console.log("gqf-component - beforeDestroy")
+                            },
+                            destroyed(){
+                                console.log("gqf-component - destroyed")
+                            },
+                        }
+                    },
+                    data: {
+                        isShow: true,
+                        title: "我是梅利奥猪猪",
+                        hasError: false,
+                    },
+                })
+            </script>
+        </body>
+        </html>         
+        ``` 
+    * 当我们点击按钮，把isShow改为false后，子组件就销毁了，但这个时候我们发现，定时器并没有关闭 
+
+        ![](./images/定时器没有关闭的问题.jpg)  
+
+    * 所以我们要在摧毁的生命周期中clearInterval，这样摧毁组件的同时，也把定时器关闭了 
+        ```js
+        created(){
+            this.timer = setInterval(() => {
+                console.log(1);
+            }, 1000)
+        },
+        destroyed(){
+            console.log("gqf-component - destroyed")
+            clearInterval(this.timer);
+        },        
+        ```  
+
+3. 动态组件                        
 
 
 

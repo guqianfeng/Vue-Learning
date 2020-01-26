@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <button @click="isShow = !isShow">changeShow</button>
+        <gqf-component v-if="isShow" :title="title"></gqf-component>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        let app = new Vue({
+            el: "#app",
+            components: {
+                "gqf-component": {
+                    props: ["title"],
+                    template: `<div>{{title}}</div>`,
+                    created(){
+                        this.timer = setInterval(() => {
+                            console.log(1);
+                        }, 1000)
+                    },
+                    destroyed(){
+                        console.log("gqf-component - destroyed")
+                        clearInterval(this.timer);
+                    },
+                }
+            },
+            data: {
+                isShow: true,
+                title: "我是梅利奥猪猪",
+                hasError: false,
+            },
+        })
+    </script>
+</body>
+</html> 
