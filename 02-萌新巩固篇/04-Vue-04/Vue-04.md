@@ -48,7 +48,31 @@
 * 动画
     * 在Vue中给组件或元素添加动画的方式可以分为多种，但总体无非还是通过css和javascript处理     
     * css
-        * 通过css添加动画的方式特别的简单，只需要利用css中的transition就可以做到    
+        * 通过css添加动画的方式特别的简单，只需要利用css中的transition就可以做到 
+    * 动画生命周期
+        * vue为元素和组件的几个特殊情况提供了对应的处理方式
+        * 条件渲染 - v-if
+        * 条件展示 - v-show
+        * 动态组件
+        * 组件根节点
+    * transition组件
+        * 通过transition组件包裹的元素或组件，会在上面定义的几个场景中触发过渡，并添加指定的class样式
+        * 过渡类名
+            * v-enter
+                * 定义进入过渡的开始状态。在元素被插入之前生效，在元素被插入之后的下一帧移除。
+            * v-enter-active           
+                * 定义进入过渡生效时的状态。在整个进入过渡的阶段中应用，在元素被插入之前生效，在过渡/动画完成之后移除。这个类可以被用来定义进入过渡的过程时间，延迟和曲线函数。
+            * v-enter-to
+                * 2.1.8版及以上 定义进入过渡的结束状态。在元素被插入之后下一帧生效 (与此同时 v-enter 被移除)，在过渡/动画完成之后移除。
+            * v-leave
+                * 定义离开过渡的开始状态。在离开过渡被触发时立刻生效，下一帧被移除。
+            * v-leave-active
+                * 定义离开过渡生效时的状态。在整个离开过渡的阶段中应用，在离开过渡被触发时立刻生效，在过渡/动画完成之后移除。这个类可以被用来定义离开过渡的过程时间，延迟和曲线函数。
+            * v-leave-to  
+                * 2.1.8版及以上 定义离开过渡的结束状态。在离开过渡被触发之后下一帧生效 (与此同时 v-leave 被删除)，在过渡/动画完成之后移除。
+        * 来看图更加直接
+
+            ![](./images/transition.png)          
 
 > 练习
 
@@ -585,8 +609,100 @@
             ```
         * 然后就能看到效果了，来回切换~
 
-            ![](./images/玩keep-alive生命周期.jpg)                              
+            ![](./images/玩keep-alive生命周期.jpg)     
 
+4. 动画                                     
+    * 用css的transition属性做动画，改变width数据 
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>动画</title>
+            <style>
+                .box{
+                    height: 100px;
+                    background-color: red;
+                    transition: .5s;
+                }
+            </style>
+        </head>
+        <body>
+            <div id="app">
+                <button @click="w=Math.random()*500+'px'">改变width</button>
+                <div class="box" :style="{width: w}"></div>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                let app = new Vue({
+                    el: "#app",
+                    data: {
+                        w: '100px'
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ```
+    * 使用transition组件做动画 
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+            <style>
+                .box{
+                    width: 100px;
+                    height: 100px;
+                    background-color: red;
+                }
+
+                .slide-fade-enter-active, .slide-fade-leave-active{
+                    transition: .5s;
+                }
+                .slide-fade-enter{
+                    width: 0;
+                    height: 0;
+                }
+                .slide-fade-enter-to{
+                    width: 100px;
+                    height: 100px;
+                }
+                .slide-fade-leave{
+                    width: 100px;
+                    height: 100px;
+                }
+                .slide-fade-leave-to{
+                    width: 0;
+                    height: 0;
+                }
+            </style>
+        </head>
+        <body>
+            <div id="app">
+                <button @click="isShow = !isShow">show - {{isShow}}</button>
+                <transition name="slide-fade">
+                    <div class="box" v-if="isShow"></div>
+                </transition>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                let app = new Vue({
+                    el: "#app",
+                    data: {
+                        isShow: false,
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ``` 
+    * 关于动画的还有一些js的生命周期钩子，可以在官网查询，这边就不做演示了      
 
 
 > 知道你还不过瘾继续吧  
