@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <gqf-component></gqf-component>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        let app = new Vue({
+            el: "#app",
+            components: {
+                "gqf-component": {
+                    template: `<div>我是梅利奥猪猪</div>`,
+                    beforeCreate(){
+                        console.log("gqf-component - beforeCreate")
+                    },
+                    created(){
+                        console.log("gqf-component - created")
+                    },
+                    beforeMount(){
+                        console.log("gqf-component - beforeMount")
+                    },
+                    mounted(){
+                        console.log("gqf-component - mounted")
+                    },
+                    beforeUpdate(){
+                        console.log("gqf-component - beforeUpdate")
+                    },
+                    updated(){
+                        console.log("gqf-component - updated")
+                    },
+                    beforeDestroy(){
+                        console.log("gqf-component - beforeDestroy")
+                    },
+                    destroyed(){
+                        console.log("gqf-component - destroyed")
+                    },
+                }
+            },
+            beforeCreate(){
+                console.log("beforeCreate")
+            },
+            created(){
+                console.log("created")
+            },
+            beforeMount(){
+                console.log("beforeMount")
+            },
+            mounted(){
+                console.log("mounted")
+            },
+            beforeUpdate(){
+                console.log("beforeUpdate")
+            },
+            updated(){
+                console.log("updated")
+            },
+            beforeDestroy(){
+                console.log("beforeDestroy")
+            },
+            destroyed(){
+                console.log("destroyed")
+            },
+        })
+    </script>
+</body>
+</html> 
