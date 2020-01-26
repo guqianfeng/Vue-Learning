@@ -3,34 +3,35 @@
 > 知识大纲
 
 * 生命周期
+    * 先来看个图
 
-    ![](./images/lifecycle.png)
+        ![](./images/lifecycle.png)
 
-* 个人总结下，一般就是前后关系，请看下面的解说
-    * beforeCreate - 创建前
-        * 初始化阶段，应用不多
-    * created - 创建后
-        * 在实例创建完成后被立即调用，该阶段完成了对data中的数据的observer，该阶段可以处理一些异步任务
-    * beforeMount - 挂载前
-        * 在挂载开始之前被调用，应用不多
-    * mounted - 挂载后
-        * 该阶段执行完了模板解析，以及挂载。同时组件根组件元素被赋给了$el属性，该阶段可以通过DOM操作来对组件内部元素进行处理
-    * beforeUpdate - 更新前
-    * updated - 更新后
-    * beforeDestroy - 摧毁前
-    * destroyed - 摧毁后
+    * 个人总结下，一般就是前后关系，请看下面的解说
+        * beforeCreate - 创建前
+            * 初始化阶段，应用不多
+        * created - 创建后
+            * 在实例创建完成后被立即调用，该阶段完成了对data中的数据的observer，该阶段可以处理一些异步任务
+        * beforeMount - 挂载前
+            * 在挂载开始之前被调用，应用不多
+        * mounted - 挂载后
+            * 该阶段执行完了模板解析，以及挂载。同时组件根组件元素被赋给了$el属性，该阶段可以通过DOM操作来对组件内部元素进行处理
+        * beforeUpdate - 更新前
+        * updated - 更新后
+        * beforeDestroy - 摧毁前
+        * destroyed - 摧毁后
 
-* 还有个特殊的，捕获错误的 - errorCaptured 
-    * 在父组件里添加这个生命周期
-    * 如果子组件出现错误，就会调用这个生命周期
-    * 代码如下，`(err: Error, vm: Component, info: string) => ?boolean`
-        ```js
-        errorCaptured(err, vm, info){
-            console.log("errorCaptured", err, vm, info);
-            //做些错误的逻辑处理~
-            return false;
-        }
-        ```
+    * 还有个特殊的，捕获错误的 - errorCaptured 
+        * 在父组件里添加这个生命周期
+        * 如果子组件出现错误，就会调用这个生命周期
+        * 代码如下，`(err: Error, vm: Component, info: string) => ?boolean`
+            ```js
+            errorCaptured(err, vm, info){
+                console.log("errorCaptured", err, vm, info);
+                //做些错误的逻辑处理~
+                return false;
+            }
+            ```
 
 * 动态组件
     * 有的时候，我们需要在多个不同的组件之间进行切换。虽然我们可以通过v-if处理，但是比较麻烦，vue提供了一个更方便的方式来处理这种情况
@@ -43,6 +44,11 @@
             <component :is="currentComponent"></component>
         </keep-alive>
         ```   
+
+* 动画
+    * 在Vue中给组件或元素添加动画的方式可以分为多种，但总体无非还是通过css和javascript处理     
+    * css
+        * 通过css添加动画的方式特别的简单，只需要利用css中的transition就可以做到    
 
 > 练习
 
