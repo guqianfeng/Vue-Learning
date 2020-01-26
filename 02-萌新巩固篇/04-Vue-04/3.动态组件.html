@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        button{
+            padding: 5px 10px;
+        }
+        button.active{
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <button @click="type='aa'" :class="type==='aa'?'active':''">A</button>
+        <button @click="type='bb'" :class="type==='bb'?'active':''">B</button>
+        <button @click="type='cc'" :class="type==='cc'?'active':''">C</button>
+        
+        <aa v-if="type==='aa'"></aa>
+        <bb v-if="type==='bb'"></bb>
+        <cc v-if="type==='cc'"></cc>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        const aa = {
+            template: `<div>this is A</div>`,
+            created(){
+                console.log("A created")
+            },
+            destroyed(){
+                console.log("A destroyed")
+            }
+        };
+        const bb = {
+            template: `<div>this is B</div>`,
+            created(){
+                console.log("B created")
+            },
+            destroyed(){
+                console.log("B destroyed")
+            }
+        };
+        const cc = {
+            template: `<div>this is C</div>`,
+            created(){
+                console.log("C created")
+            },
+            destroyed(){
+                console.log("C destroyed")
+            }
+        };
+        let app = new Vue({
+            el: "#app",
+            components: {
+                aa,
+                bb,
+                cc
+            },
+            data: {
+                type: "aa"
+            }
+        })
+    </script>
+</body>
+</html>

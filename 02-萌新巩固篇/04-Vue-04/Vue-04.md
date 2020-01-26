@@ -32,6 +32,18 @@
         }
         ```
 
+* 动态组件
+    * 有的时候，我们需要在多个不同的组件之间进行切换。虽然我们可以通过v-if处理，但是比较麻烦，vue提供了一个更方便的方式来处理这种情况
+    * component是vue内置的一个组件，它提供一个is属性用来动态渲染不同的组件 
+    * 但component组件在切换的时候依然会触发组件的销毁和重建，首先性能不好，其次会丢失组件状态(比如选项卡，其中一个内容有checkbox，不能保留这个checkbox的状态)     
+    * 这个时候可以使用keep-alive组件
+    * keep-alive在组件切换的时候，会保留这些组件的状态，以避免反复重复渲染导致的性能问题，它是个内置容器组件，使用keep-alive，内部包含的组件将增加激活，失活/冻结的状态(activated，deactivated) 
+        ```html
+        <keep-alive>
+            <component :is="currentComponent"></component>
+        </keep-alive>
+        ```   
+
 > 练习
 
 1. 生命周期
@@ -380,7 +392,194 @@
         },        
         ```  
 
-3. 动态组件                        
+3. 动态组件   
+    * 目标是做个选项卡，我们先来第一步，定义3个组件abc，在搞3个按钮abc  
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+            <style>
+                * {
+                    padding: 0;
+                    margin: 0;
+                }
+                button{
+                    padding: 5px 10px;
+                }
+                button.active{
+                    background-color: red;
+                }
+            </style>
+        </head>
+        <body>
+            <div id="app">
+                <button class="active">A</button>
+                <button>B</button>
+                <button>C</button>
+                
+                <aa></aa>
+                <bb></bb>
+                <cc></cc>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                const aa = {
+                    template: `<div>this is A</div>`,
+                    created(){
+                        console.log("A created")
+                    },
+                    destroyed(){
+                        console.log("A destroyed")
+                    }
+                };
+                const bb = {
+                    template: `<div>this is B</div>`,
+                    created(){
+                        console.log("B created")
+                    },
+                    destroyed(){
+                        console.log("B destroyed")
+                    }
+                };
+                const cc = {
+                    template: `<div>this is C</div>`,
+                    created(){
+                        console.log("C created")
+                    },
+                    destroyed(){
+                        console.log("C destroyed")
+                    }
+                };
+                let app = new Vue({
+                    el: "#app",
+                    components: {
+                        aa,
+                        bb,
+                        cc
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ```
+    * 注意这边vue的原因不能使用a和b作为子组件的名称，所以起名为aa，bb，cc，然后页面的效果是这样的  
+
+        ![](./images/选项卡布局.jpg)  
+
+    * 先来个最原始的做法，我们可以给父组件定义个type，然后给3个按钮的点击事件修改type，然后在添加class的逻辑和v-if的逻辑 
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+            <style>
+                * {
+                    padding: 0;
+                    margin: 0;
+                }
+                button{
+                    padding: 5px 10px;
+                }
+                button.active{
+                    background-color: red;
+                }
+            </style>
+        </head>
+        <body>
+            <div id="app">
+                <button @click="type='aa'" :class="type==='aa'?'active':''">A</button>
+                <button @click="type='bb'" :class="type==='bb'?'active':''">B</button>
+                <button @click="type='cc'" :class="type==='cc'?'active':''">C</button>
+                
+                <aa v-if="type==='aa'"></aa>
+                <bb v-if="type==='bb'"></bb>
+                <cc v-if="type==='cc'"></cc>
+            </div>
+            <script src="../js/vue.js"></script>
+            <script>
+                const aa = {
+                    template: `<div>this is A</div>`,
+                    created(){
+                        console.log("A created")
+                    },
+                    destroyed(){
+                        console.log("A destroyed")
+                    }
+                };
+                const bb = {
+                    template: `<div>this is B</div>`,
+                    created(){
+                        console.log("B created")
+                    },
+                    destroyed(){
+                        console.log("B destroyed")
+                    }
+                };
+                const cc = {
+                    template: `<div>this is C</div>`,
+                    created(){
+                        console.log("C created")
+                    },
+                    destroyed(){
+                        console.log("C destroyed")
+                    }
+                };
+                let app = new Vue({
+                    el: "#app",
+                    components: {
+                        aa,
+                        bb,
+                        cc
+                    },
+                    data: {
+                        type: "aa"
+                    }
+                })
+            </script>
+        </body>
+        </html>        
+        ```
+    * 最优解-动态组件
+        * 我们可以把3个子组件改为component动态组件 
+            ```html
+            <component :is="type"></component>
+            ```
+        * 这样效果也直接出来了 
+        * 然后我们还可以玩下keep-alive
+            ```html
+            <keep-alive>
+                <component :is="type"></component>
+            </keep-alive>            
+            ``` 
+        * 这个时候我们切换的时候发现生命周期destroyed就不会一直触发了，且b和c创建后，相当于abc都创建过了，也不会一直触发created的生命周期
+        * 接着玩下keep-alive的2个生命周期activated(组件激活时调用)和deactivated(组件停用时调用)，我们就给aa加一下   
+            ```js
+            const aa = {
+                template: `<div>this is A</div>`,
+                created(){
+                    console.log("A created")
+                },
+                destroyed(){
+                    console.log("A destroyed")
+                },
+                activated(){
+                    console.log("A activated")
+                },
+                deactivated(){
+                    console.log("A deactivated")
+                }
+            };            
+            ```
+        * 然后就能看到效果了，来回切换~
+
+            ![](./images/玩keep-alive生命周期.jpg)                              
 
 
 
