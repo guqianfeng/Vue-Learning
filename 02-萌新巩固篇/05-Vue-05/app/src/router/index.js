@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 
 import Gqf from '@/views/Gqf.vue'
 import User from '@/views/User.vue'
+import Detail from '@/views/Detail.vue'
 
 Vue.use(VueRouter)
 
@@ -30,6 +31,11 @@ const routes = [
     path: '/user',
     name: 'user',
     component: User,
+  },
+  {
+    path: '/detail/:id',
+    name: 'detail',
+    component: Detail,
   }
 ]
 

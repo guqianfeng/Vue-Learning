@@ -203,7 +203,28 @@
 * vue-devTools    
     * 直接将shell-chrome拖动到谷歌浏览器的扩展程序   
 
-* 动态路由     
+* 动态路由
+    * 有的时候，我们需要把满足某种规则的路由全部匹配到同一个组件，比如不同商品的url
+        ```
+        /item/1
+        /item/2
+        /item/3
+        ``` 
+    * 我们不可能为每一个商品都定义一个独立的组件，而是把他们都映射到同一个组件，同时url后面部分为动态变化的部分，我们会在设计路由的时候进行特殊的处理
+        ```
+        {
+            path: '/item/:itemId'
+        }
+        ```
+    * $router对象
+        * 该对象其实就是new ViewRouter得到的路由对象，通过该对象我们可以访问全局路由信息，调用路由下的方法，比如go，back，push等
+    * $route对象    
+        * 通过该对象可以访问与当前路由匹配的信息
+    * queryString
+        * `/item/1`其实用的是params
+        * queryString其实就是问号后面的东西
+
+
 
 > 练习
 
@@ -497,7 +518,84 @@
 
             ![](./images/this$http.jpg)  
 
-5. 动态路由                                                                     
+5. 动态路由 
+    * 我们先把router-link配置好`<router-link :to="'/detail/'+user.id">{{user.name}}</router-link>`  
+    * 然后我们随意点击个姓名，就能跳转到这样的一个路由`http://localhost:8080/detail/2`
+    * 所以接下来我们应该写下视图组件Detail
+    * 注意配置的路由应该是这样的
+        ```js
+        {
+            path: '/detail/:id',
+            name: 'detail',
+            component: Detail,
+        }        
+        ``` 
+    * 然后在Detail组件created的生命周期就可以调用我们前面封装的api了
+        ```vue
+        <template>
+            <div>
+                <h1>详情</h1>
+            </div>
+        </template>
+
+        <script>
+
+        import api from '@/api/index'
+
+        export default {
+            async created(){
+                // console.log(this.$route)
+                let id = this.$route.params.id;
+                let res = await api.getUserById(id);
+                console.log(res.data);
+            }
+        }
+        </script>
+        ```   
+    * 页面上就能看到
+
+        ![](./images/调用详情的接口.jpg)  
+
+    * 接着就是继续完善下这个例子
+        ```vue
+        <template>
+            <div>
+                <h1>详情</h1>
+                <template v-if="user">
+                    <p>id - {{user.id}}</p>
+                    <p>name - {{user.name}}</p>
+                    <p>age - {{user.age | showAge}}</p>
+                </template>
+                <template v-else>
+                    没有该用户信息
+                </template>
+            </div>
+        </template>
+
+        <script>
+
+        import api from '@/api/index'
+        import filter from '@/filter/index'
+
+        export default {
+            data(){
+                return {
+                    user: null
+                }
+            },
+            filters: {
+                showAge: filter.showAge
+            },
+            async created(){
+                // console.log(this.$route)
+                let id = this.$route.params.id;
+                let res = await api.getUserById(id);
+                // console.log(res.data);
+                this.user = res.data;
+            }
+        }
+        </script>        
+        ```                                                                     
 
 
 > 知道你还不过瘾继续吧   

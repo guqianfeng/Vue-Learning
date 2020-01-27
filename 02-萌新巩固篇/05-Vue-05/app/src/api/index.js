@@ -10,6 +10,7 @@ async function getUsers(){
 }
 
 async function getUserById(id){
+    // console.log(`${URL.USERS}/${id}`)
     let res = await axios({
         url: `${URL.USERS}/${id}`
     })
