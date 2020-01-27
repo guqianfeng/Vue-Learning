@@ -200,7 +200,8 @@
         }        
         ```
 
-* vue-devTools        
+* vue-devTools    
+    * 直接将shell-chrome拖动到谷歌浏览器的扩展程序    
 
 > 练习
 
@@ -376,7 +377,77 @@
 
         ![](./images/简单处理前后端交互.jpg)    
 
-3. vue-devTools                         
+3. vue-devTools 
+    * 有了这个调试工具我们打开控制台就能看到Vue这个选项 
+
+        ![](./images/开发工具调试.jpg) 
+
+    * 我们还可以在点到我们的视图组件User
+
+        ![](./images/视图组件User.jpg)    
+
+4. 完善axios使用
+    * 有的接口可能会调用多次该如何处理  
+        * 比如我们可以在src文件夹下新建个api的文件夹，然后新建个index.js，专门来做这种处理
+            ```js
+            import axios from 'axios'
+
+            async function getUsers(){
+                let res = await axios({
+                    url: "/api/users"
+                })
+                return res;
+            }
+
+            async function getUserById(id){
+                let res = await axios({
+                    url: `/api/users/${id}`
+                })
+                return res;
+            }
+
+            export default {
+                getUsers,
+                getUserById,
+            }            
+            ```
+        * 然后我们在User.vue中就可以这么使用
+            ```vue
+            <template>
+                <div>
+                    <h1>用户列表</h1>
+                    <ul>
+                        <li v-for="user in users" :key="user.id">
+                            {{user.id}} - {{user.name}} - {{user.age}}
+                        </li>
+                    </ul>
+                </div>
+            </template>
+
+            <script>
+
+            import api from '@/api/index.js'
+
+            export default {
+                data(){
+                    return {
+                        users: []
+                    }
+                },
+                async created(){
+                    let res = await api.getUsers();
+                    this.users = res.data;
+                    console.log("created", this.users)
+
+                    let test = await api.getUserById(1);
+                    console.log(test.data);
+                }
+            }
+            </script>            
+            ``` 
+        * 然后看下控制台，这种封装是没有问题的
+
+            ![](./images/简单封装一些api.jpg)                                   
 
 
 > 知道你还不过瘾继续吧   

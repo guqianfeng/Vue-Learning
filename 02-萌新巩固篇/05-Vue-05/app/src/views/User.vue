@@ -11,8 +11,7 @@
 
 <script>
 
-import axios from 'axios'
-// console.log(axios)
+import api from '@/api/index.js'
 
 export default {
     data(){
@@ -21,11 +20,12 @@ export default {
         }
     },
     async created(){
-        let res = await axios({
-            url: "/api/users?sort=desc"
-        });
-        // console.log(res.data);
+        let res = await api.getUsers();
         this.users = res.data;
+        console.log("created", this.users)
+
+        let test = await api.getUserById(1);
+        console.log(test.data);
     }
 }
 </script>
