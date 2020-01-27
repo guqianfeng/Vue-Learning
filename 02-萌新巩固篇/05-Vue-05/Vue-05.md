@@ -201,7 +201,9 @@
         ```
 
 * vue-devTools    
-    * 直接将shell-chrome拖动到谷歌浏览器的扩展程序    
+    * 直接将shell-chrome拖动到谷歌浏览器的扩展程序   
+
+* 动态路由     
 
 > 练习
 
@@ -447,7 +449,55 @@
             ``` 
         * 然后看下控制台，这种封装是没有问题的
 
-            ![](./images/简单封装一些api.jpg)                                   
+            ![](./images/简单封装一些api.jpg)
+
+    * 统一管理URL的方式
+        * 在api下新建个URL.js
+            ```js
+            export default {
+                'USERS': '/api/users'
+            }            
+            ``` 
+        * 然后就可以优化下api下的index.js了
+            ```js
+            import axios from 'axios'
+
+            import URL from './URL'
+
+            async function getUsers(){
+                let res = await axios({
+                    url: URL.USERS
+                })
+                return res;
+            }
+
+            async function getUserById(id){
+                let res = await axios({
+                    url: `${URL.USERS}/${id}`
+                })
+                return res;
+            }
+
+            export default {
+                getUsers,
+                getUserById,
+            }            
+            ``` 
+        * 这样就方便维护了，比如代理变了，不使用`/api`了，我们改好这个名字后，只需要在去URL.js变更下名字就可以了  
+
+    * axios挂在Vue的原型上，这样每个组件都可以通过this.$http来调用axios  
+        * main.js里加上这个代码
+            ```js
+            import axios from 'axios';
+
+            Vue.prototype.$http = axios;            
+            ```
+        * 我们可以在User.vue的created生命周期测试下，加上一行`console.log(this.$http)` 
+        * 来看控制台
+
+            ![](./images/this$http.jpg)  
+
+5. 动态路由                                                                     
 
 
 > 知道你还不过瘾继续吧   

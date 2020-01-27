@@ -1,15 +1,17 @@
 import axios from 'axios'
 
+import URL from './URL'
+
 async function getUsers(){
     let res = await axios({
-        url: "/api/users"
+        url: URL.USERS
     })
     return res;
 }
 
 async function getUserById(id){
     let res = await axios({
-        url: `/api/users/${id}`
+        url: `${URL.USERS}/${id}`
     })
     return res;
 }

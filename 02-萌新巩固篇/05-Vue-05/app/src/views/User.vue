@@ -26,6 +26,8 @@ export default {
 
         let test = await api.getUserById(1);
         console.log(test.data);
+
+        console.log(this.$http)
     }
 }
 </script>
