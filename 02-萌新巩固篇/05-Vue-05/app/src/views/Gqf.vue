@@ -1,0 +1,10 @@
+<template>
+    <div>
+        <h1>
+            我是梅利奥猪猪
+        </h1>
+        <p>
+            你们的猪大佬
+        </p>
+    </div>
+</template>
