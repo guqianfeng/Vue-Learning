@@ -1,6 +1,10 @@
 <template>
     <div>
         <h1>用户列表</h1>
+        <select @change="changeSort" v-model="sort">
+            <option value="desc">年龄从大到小</option>
+            <option value="asc">年龄从小到大</option>
+        </select>
         <ul>
             <li v-for="user in users" :key="user.id">
                 {{user.id}} - <router-link :to="'/detail/'+user.id">{{user.name}}</router-link> - {{user.age | showAge}}
@@ -18,21 +22,35 @@ import filter from '@/filter/index.js'
 export default {
     data(){
         return {
-            users: []
+            users: [],
+            sort: "desc",
+        }
+    },
+    methods: {
+        changeSort(){
+            this.$router.push({
+                name: "user",
+                query: {
+                    sort: this.sort
+                }
+            })
+        },
+        async getUsers(){
+            this.sort = this.$route.query.sort || "desc";
+            let res = await api.getUsers(this.sort);
+            this.users = res.data;
         }
     },
     async created(){
-        let res = await api.getUsers();
-        this.users = res.data;
-        // console.log("created", this.users)
-
-        // let test = await api.getUserById(1);
-        // console.log(test.data);
-
-        // console.log(this.$http)
+        this.getUsers();
     },
     filters: {
         showAge: filter.showAge,
+    },
+    watch: {
+        async $route(){
+            this.getUsers();
+        }
     }
 }
 </script>

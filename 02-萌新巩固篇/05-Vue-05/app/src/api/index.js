@@ -2,9 +2,9 @@ import axios from 'axios'
 
 import URL from './URL'
 
-async function getUsers(){
+async function getUsers(sort="desc"){
     let res = await axios({
-        url: URL.USERS
+        url: `${URL.USERS}?sort=${sort}`
     })
     return res;
 }

@@ -1,6 +1,7 @@
 # Vue-05
 
 > 准备工作
+
 * 搭前端
     * 使用脚手架新建项目app，因为要用到路由，我们初始化的时候可以选择`Manually select features`
     * 然后选中Router
@@ -8,6 +9,7 @@
     * 然后确认使用history mode，所以选择Y
     * 选择In package.json
     * save this as a preset for future projects? - 这里我选择了No
+
 * 搭后端
     * 使用脚手架`koa-generator`，搭koa2项目，`koa2 server`
     * `cd server && yarn`，安装各个依赖
@@ -223,8 +225,27 @@
     * queryString
         * `/item/1`其实用的是params
         * queryString其实就是问号后面的东西
+    * 编程式导航
+        ```js
+        this.$router.push({
+            name: 'home',
+            query: {
+                sort: ""
+            }
+        })
+        ```
+    * 路由组件的复用   
+        * 为了提高性能，增强路由组件的复用，当路由切换使用的是同一个组件的时候，则会复用该路由组件，而不是摧毁重建，这个时候，我们就需要通过watch或路由相关的生命周期函数来处理切换路由导致的变化
+        * 如果我切换的路由复用了组件，这个时候，我们可以通过watch来监听$route
+            ```js
+            watch: {
+                $route(to, from){
+                    console.log("route", to, from)
+                }
+            }
+            ```
 
-
+* 路由守卫           
 
 > 练习
 
@@ -595,8 +616,79 @@
             }
         }
         </script>        
-        ```                                                                     
+        ``` 
+    * 这次在来完成个排序功能吧
+        * 我们先去修改下我们api下的查询功能
+            ```js
+            async function getUsers(sort="desc"){
+                let res = await axios({
+                    url: `${URL.USERS}?sort=${sort}`
+                })
+                return res;
+            }        
+            ```   
+        * 然后看下完整的实现代码吧
+            ```vue
+            <template>
+                <div>
+                    <h1>用户列表</h1>
+                    <select @change="changeSort" v-model="sort">
+                        <option value="desc">年龄从大到小</option>
+                        <option value="asc">年龄从小到大</option>
+                    </select>
+                    <ul>
+                        <li v-for="user in users" :key="user.id">
+                            {{user.id}} - <router-link :to="'/detail/'+user.id">{{user.name}}</router-link> - {{user.age | showAge}}
+                        </li>
+                    </ul>
+                </div>
+            </template>
 
+            <script>
+
+            import api from '@/api/index.js'
+
+            import filter from '@/filter/index.js'
+
+            export default {
+                data(){
+                    return {
+                        users: [],
+                        sort: "desc",
+                    }
+                },
+                methods: {
+                    changeSort(){
+                        this.$router.push({
+                            name: "user",
+                            query: {
+                                sort: this.sort
+                            }
+                        })
+                    },
+                    async getUsers(){
+                        this.sort = this.$route.query.sort || "desc";
+                        let res = await api.getUsers(this.sort);
+                        this.users = res.data;
+                    }
+                },
+                async created(){
+                    this.getUsers();
+                },
+                filters: {
+                    showAge: filter.showAge,
+                },
+                watch: {
+                    async $route(){
+                        this.getUsers();
+                    }
+                }
+            }
+            </script>            
+            ```
+
+6. 路由守卫            
+    *                                                                        
 
 > 知道你还不过瘾继续吧   
 
