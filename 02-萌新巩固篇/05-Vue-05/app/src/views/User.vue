@@ -41,16 +41,26 @@ export default {
             this.users = res.data;
         }
     },
-    async created(){
+    // async created(){
+    //     this.getUsers();
+    // },
+    beforeRouteEnter(to, from, next){
+        next(vm => {
+            vm.getUsers();
+        })
+    },
+    beforeRouteUpdate(to, from, next){
+        //注意不能再next之前调用this.getUsers
+        next();
         this.getUsers();
     },
     filters: {
         showAge: filter.showAge,
     },
-    watch: {
+/*     watch: {
         async $route(){
             this.getUsers();
         }
-    }
+    } */
 }
 </script>

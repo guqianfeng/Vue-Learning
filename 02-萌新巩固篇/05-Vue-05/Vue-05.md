@@ -245,7 +245,38 @@
             }
             ```
 
-* 路由守卫           
+* 路由守卫
+    * 解析流程
+
+        ![](./images/解析流程.jpg)
+
+    * 当导航发生改变的时候，vue-router会在多个不同的地方调用指定的函数，也就是与路由有关的生命周期函数，也称为路由守卫
+    * 组件内守卫
+        * 定义在组件内的与路由有关的生命周期函数(守卫)
+            * beforeRouteEnter
+            * beforeRouteUpdate
+            * beforeRouteLeave
+    * 路由独享守卫
+        * 可以在路由配置上直接定义beforeEnter守卫，相对来说，应用不多
+            ```js
+            const routes = [
+                {
+                    path: '/foo',
+                    name: 'foo',
+                    component: Foo,
+                    beforeEnter: (to, from, next) => {
+
+                    }
+                },
+            ]            
+            ```
+    * 全局守卫 
+        * 全局守卫是注册在router对象`new VueRouter({...})`上的
+            * beforeEach
+            * beforeResolve
+            * afterEach    
+
+* 嵌套路由                
 
 > 练习
 
@@ -688,7 +719,68 @@
             ```
 
 6. 路由守卫            
-    *                                                                        
+    * 先来玩下beforeRouteEnter，在User.vue中添加这个生命周期  
+        ```js
+        beforeRouteEnter(to, from, next){
+
+        },        
+        ```  
+    * 我们发现如果不调用next方法，页面就不会调用接口获取数据了，如果在方法内调用`next()`，会发生什么你们懂的
+    * 这边其实还可以玩下next方法里传的参数
+        * `next(false)` - 其实和不写next是一样的
+        * `next({name: "gqf"})` - 意思就是跳转gqf路由
+        * `next(vm => {})` - 可以拿到vm
+        * 所以之前在created的生命周期也可以改成这个
+            ```js
+            // async created(){
+            //     this.getUsers();
+            // },
+            beforeRouteEnter(to, from, next){
+                next(vm => {
+                    vm.getUsers();
+                })
+            },            
+            ```
+    * 之前使用watch去监听$route，现在我们可以使用beforeRouteUpdate试下，注意调用接口要在next之后，因为next之前调用相当于是路由还没有更新时的状态
+        ```js
+        beforeRouteUpdate(to, from, next){
+            //注意不能再next之前调用this.getUsers
+            next();
+            this.getUsers();
+        },        
+        ```
+    * 上述代码就能完成我们之前的效果，相当于使用了路由守卫，我们就不需要之前的created生命周期，也不需要watch监听了
+    * 路由独享守卫用的不多所以这里不重点说明，接下来来看下全局守卫
+    * 我们打开router文件夹下的index.js，添加代码
+    * 先来看下beforeEach，这个其实做的就是鉴权，进入路由前，如果没有调用next就进不去
+        ```js
+        router.beforeEach((to, from, next) => {
+            next();
+        })        
+        ``` 
+    * 这里模拟个简单的鉴权，比如说没有登录的话就不能进gqf路由 
+        * 先简单写个登录的页面路由 
+        * 然后在路由index中添加这样的代码
+            ```js
+            let user = {
+                id: 0, //id为0模拟用户未登录
+            }
+
+            router.beforeEach((to, from, next) => {
+                if(user.id === 0 && to.name === 'gqf'){
+                    next({
+                    name: 'login'
+                    })
+                }else{
+                    next();
+                }
+
+            })            
+            ```  
+        * 我们发现当id是0的时候，我们点击gqf是进不去的，直接就跳转登录页面了，反之，id不为0就可以进入gqf页面
+        * 注意条件`user.id === 0 && to.name === 'gqf'`，如果条件中没有to的那个条件，就会递归报错，相当于进入login页面，然后判断未登录，在进入login页面 
+
+7. 嵌套路由                                                                                   
 
 > 知道你还不过瘾继续吧   
 

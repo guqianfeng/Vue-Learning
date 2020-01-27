@@ -3,8 +3,9 @@
     <ul id="nav">
       <router-link to="/">Home</router-link> | 
       <router-link to="/about">About</router-link> |
-      <router-link to="/gqf">gqf</router-link> |
-      <router-link to="/user">user list</router-link> 
+      <router-link to="/gqf">GQF</router-link> |
+      <router-link to="/user">User List</router-link> | 
+      <router-link to="/login">Login</router-link> 
     </ul>
     <router-view/>
   </div>

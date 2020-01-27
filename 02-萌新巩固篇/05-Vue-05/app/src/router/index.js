@@ -5,6 +5,7 @@ import Home from '../views/Home.vue'
 import Gqf from '@/views/Gqf.vue'
 import User from '@/views/User.vue'
 import Detail from '@/views/Detail.vue'
+import Login from '@/views/Login.vue'
 
 Vue.use(VueRouter)
 
@@ -36,6 +37,11 @@ const routes = [
     path: '/detail/:id',
     name: 'detail',
     component: Detail,
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
   }
 ]
 
@@ -43,6 +49,21 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+let user = {
+    id: 0, //id为0模拟用户未登录
+}
+
+router.beforeEach((to, from, next) => {
+    if(user.id === 0 && to.name === 'gqf'){
+        next({
+          name: 'login'
+        })
+    }else{
+        next();
+    }
+
 })
 
 export default router
