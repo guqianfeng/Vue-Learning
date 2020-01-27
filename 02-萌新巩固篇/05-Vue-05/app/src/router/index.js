@@ -7,6 +7,9 @@ import User from '@/views/User.vue'
 import Detail from '@/views/Detail.vue'
 import Login from '@/views/Login.vue'
 
+import Aaa from '@/views/Gqf/Aaa'
+import Bbb from '@/views/Gqf/Bbb'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -27,6 +30,18 @@ const routes = [
     path: '/gqf',
     name: 'gqf',
     component: Gqf,
+    children: [
+      {
+        path: '', //这样默认就跳到这个路由
+        name: 'aaa',
+        component: Aaa,
+      },
+      {
+        path: 'bbb',
+        name: 'bbb',
+        component: Bbb,
+      },
+    ]
   },
   {
     path: '/user',
@@ -52,7 +67,7 @@ const router = new VueRouter({
 })
 
 let user = {
-    id: 0, //id为0模拟用户未登录
+    id: 1, //id为0模拟用户未登录
 }
 
 router.beforeEach((to, from, next) => {

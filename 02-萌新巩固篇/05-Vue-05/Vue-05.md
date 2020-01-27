@@ -276,7 +276,27 @@
             * beforeResolve
             * afterEach    
 
-* 嵌套路由                
+* 嵌套路由
+    * 比如进入个路由后，该页面组件又是个比较复杂组件，里面可以再次嵌套路由
+    * 在配置路由的时候有个属性children，它是属于父路由里面的，且会自动拼接父级的url，注意children的路由不需要加斜线
+        ```js
+        {
+            path: "/xxx",
+            component: xxx,
+            children: [
+                {
+                    path: "xxx",
+                    component: xxx,
+                },
+                {
+                    path: "xxx",
+                    component: xxx,
+                }
+            ]
+        }
+        ``` 
+
+* 重定向与别名                       
 
 > 练习
 
@@ -780,7 +800,74 @@
         * 我们发现当id是0的时候，我们点击gqf是进不去的，直接就跳转登录页面了，反之，id不为0就可以进入gqf页面
         * 注意条件`user.id === 0 && to.name === 'gqf'`，如果条件中没有to的那个条件，就会递归报错，相当于进入login页面，然后判断未登录，在进入login页面 
 
-7. 嵌套路由                                                                                   
+7. 嵌套路由 
+    * 比如我们的gqf页面组件比较复杂，所以我们在views里面新建个文件夹Gqf
+    * 新建2个页面路由Aaa和Bbb
+    * 然后就是配置路由嵌套了，注意children的路由不需要加斜线
+        ```js
+        {
+            path: '/gqf',
+            name: 'gqf',
+            component: Gqf,
+            children: [
+            {
+                path: 'aaa',
+                name: 'aaa',
+                component: Aaa,
+            },
+            {
+                path: 'bbb',
+                name: 'bbb',
+                component: Bbb,
+            },
+            ]
+        },        
+        ```
+    * 接着就是去Gqf视图组件加代码了 
+        ```js
+        <template>
+            <div>
+                <h1>
+                    我是梅利奥猪猪
+                </h1>
+                <p>
+                    你们的猪大佬
+                </p>
+                <ul>
+                    <router-link tag="button" :to="{name: 'aaa'}">Aaa</router-link> | 
+                    <router-link tag="button" :to="{name: 'bbb'}">Bbb</router-link> 
+                </ul>
+                <router-view/>
+            </div>
+        </template>        
+        ``` 
+    * 页面呈现的结果 
+
+        ![](./images/嵌套路由.jpg)  
+
+    * 如果我们直接点击gqf发现并没有选中子的路由，如何设置默认的子路由，其实很简单，我们把子路由的path去掉就可以了
+        ```js
+        {
+            path: '/gqf',
+            name: 'gqf',
+            component: Gqf,
+            children: [
+            {
+                path: '', //这样默认就跳到这个路由
+                name: 'aaa',
+                component: Aaa,
+            },
+            {
+                path: 'bbb',
+                name: 'bbb',
+                component: Bbb,
+            },
+            ]
+        },        
+        ```  
+
+8. 重定向与别名              
+
 
 > 知道你还不过瘾继续吧   
 
