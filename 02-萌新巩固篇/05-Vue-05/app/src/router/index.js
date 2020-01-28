@@ -14,6 +14,8 @@ import BookChoose from '@/views/BookChoose'
 import BoyBook from '@/views/Book/BoyBook'
 import GirlBook from '@/views/Book/GirlBook'
 
+import NotFound from '@/views/NotFound'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -49,6 +51,7 @@ const routes = [
   },
   {
     path: '/user',
+    alias: "/member",
     name: 'user',
     component: User,
   },
@@ -84,7 +87,11 @@ const routes = [
       let type = localStorage.getItem("book-type");
       return {name: type || 'bookchoose'}
     }
-  }
+  },
+  {
+    path: "*",
+    component: NotFound
+  } 
 ]
 
 const router = new VueRouter({
