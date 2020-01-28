@@ -10,6 +10,10 @@ import Login from '@/views/Login.vue'
 import Aaa from '@/views/Gqf/Aaa'
 import Bbb from '@/views/Gqf/Bbb'
 
+import BookChoose from '@/views/BookChoose'
+import BoyBook from '@/views/Book/BoyBook'
+import GirlBook from '@/views/Book/GirlBook'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -57,6 +61,29 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login,
+  },
+  {
+    path: '/bookchoose',
+    name: 'bookchoose',
+    component: BookChoose,
+  },
+  {
+    path: '/boybook',
+    name: 'boybook',
+    component: BoyBook,
+  },
+  {
+    path: '/girlbook',
+    name: 'girlbook',
+    component: GirlBook,
+  },
+  {
+    path: '/book',
+    name: "book",
+    redirect: () => {
+      let type = localStorage.getItem("book-type");
+      return {name: type || 'bookchoose'}
+    }
   }
 ]
 

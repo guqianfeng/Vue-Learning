@@ -894,6 +894,34 @@
         ```  
 
 8. 重定向
+    * 案例背景，比如有一个小说的网站，用户第一次使用，可以选择自己是男性用户还是女性用户，第二次进入这个网站就不需要再做选择了
+    * 对于这个案例，我们先来3个视图组件，分别是BookChoose，BoyBook，GirlBook，boy和girl的2个视图组件我们可以放在Book文件夹下
+    * 然后先配置3个路由，然后在App.vue中添加bookchoose的router-link
+    * 在bookchoose组件中配置男孩图书和女孩图书的router-link
+    * 接着我们在男孩图书和女孩图书的视图组件中，created的生命周期中，使用本地存储，存type类型 
+        ```js
+        export default {
+            created(){
+                // console.log("boy")
+                localStorage.setItem("book-type", "boybook");
+            }
+        }        
+        ```
+    * 然后在控制台的application就能看到我们的本地存储 
+
+    * 接着就是处理重定向的问题了
+        ```js
+        {
+            path: '/book',
+            name: "book",
+            redirect: () => {
+            let type = localStorage.getItem("book-type");
+            return {name: type || 'bookchoose'}
+            }
+        }        
+        ```
+    * 最后修改下App.vue中的router-link，`<router-link to="/book">Book Choose</router-link>`
+    * 然后就大功告成了，我们可以先清理下localStorage，第一次进入的时候有选择，选择后，本地就有了存储，再次进入的时候就会根据本地存储重定向到你选择的页面组件          
 
 9. 别名
 

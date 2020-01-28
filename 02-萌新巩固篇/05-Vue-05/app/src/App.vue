@@ -5,6 +5,7 @@
       <router-link to="/about">About</router-link> |
       <router-link to="/gqf">GQF</router-link> |
       <router-link to="/user">User List</router-link> | 
+      <router-link to="/book">Book Choose</router-link> | 
       <router-link to="/login">Login</router-link> 
     </ul>
     <router-view/>
