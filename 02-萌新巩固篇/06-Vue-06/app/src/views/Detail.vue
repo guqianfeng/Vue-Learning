@@ -28,11 +28,8 @@ export default {
         showAge: filter.showAge
     },
     async created(){
-        // console.log(this.$route)
-        console.log(this.id);
-        let id = this.$route.params.id || this.id;
+        let id = this.id;
         let res = await api.getUserById(id);
-        // console.log(res.data);
         this.user = res.data;
     }
 }

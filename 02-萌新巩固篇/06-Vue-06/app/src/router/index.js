@@ -59,6 +59,7 @@ const routes = [
     path: '/detail/:id',
     name: 'detail',
     component: Detail,
+    props: true, //把params中的数据合并到props
   },
   {
     path: '/login',
