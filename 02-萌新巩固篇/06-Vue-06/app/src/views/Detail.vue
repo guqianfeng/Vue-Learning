@@ -7,7 +7,7 @@
             <p>age - {{user.age | showAge}}</p>
         </template>
         <template v-else>
-            没有该用户信息
+            
         </template>
     </div>
 </template>
@@ -18,6 +18,7 @@ import api from '@/api/index'
 import filter from '@/filter/index'
 
 export default {
+    props: ["id"],
     data(){
         return {
             user: null
@@ -28,7 +29,8 @@ export default {
     },
     async created(){
         // console.log(this.$route)
-        let id = this.$route.params.id;
+        console.log(this.id);
+        let id = this.$route.params.id || this.id;
         let res = await api.getUserById(id);
         // console.log(res.data);
         this.user = res.data;

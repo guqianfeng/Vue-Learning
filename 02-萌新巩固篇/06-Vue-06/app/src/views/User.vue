@@ -7,10 +7,14 @@
             <option value="asc">年龄从小到大</option>
         </select>
         <ul>
-            <li v-for="user in users" :key="user.id">
+            <li v-for="user in users" :key="user.id" style="margin: 20px 0">
                 {{user.id}} - <router-link :to="'/detail/'+user.id">{{user.name}}</router-link> - {{user.age | showAge}}
+                <button @click="showTip(user.id, $event)" :disabled="tip.isShow">click</button>
             </li>
         </ul>
+        <div class="tip" :style="{top: tip.t ,left: tip.l}" v-show="tip.isShow" @click="tip.isShow = false">
+            <Detail :id="tip.id" v-if="tip.isShow"></Detail>
+        </div>
     </div>
 </template>
 
@@ -22,6 +26,8 @@ import filter from '@/filter/index.js'
 
 import Page from '@/components/Page'
 
+import Detail from '@/views/Detail'
+
 export default {
     data(){
         return {
@@ -29,10 +35,17 @@ export default {
             sort: "desc",
             page: 2, //当前第几页
             pages: 10, //一共几页
+            tip: {
+                id: 0,
+                l: 0 + 'px',
+                t: 0 + 'px',
+                isShow: false
+            }
         }
     },
     components: {
-        Page
+        Page,
+        Detail
     },
     methods: {
         changeSort(){
@@ -49,6 +62,14 @@ export default {
             this.page = this.$route.query.page || 1;
             let res = await api.getUsers(this.sort);
             this.users = res.data;
+        },
+        showTip(id, e){
+            this.tip.isShow = true;
+            // console.log(e.target.getBoundingClientRect())
+            let {x, y} = e.target.getBoundingClientRect();
+            this.tip.l = x + e.target.offsetWidth + "px";
+            this.tip.t = y + "px";
+            this.tip.id = id;
         }
     },
     // async created(){
@@ -74,3 +95,10 @@ export default {
     } */
 }
 </script>
+<style scoped>
+.tip{
+    position: fixed;
+    border: 1px solid black;
+    padding: 10px;
+}
+</style>
