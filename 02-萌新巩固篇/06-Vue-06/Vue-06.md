@@ -38,7 +38,30 @@
             import NProgress from 'nprogress'
             import 'nprogress/nprogress.css'            
             ```
-        * 然后在beforeEach的时候调用`NProgress.start()`，在afterEach的时候调用`NProgress.done()`   
+        * 最后在beforeEach的时候调用`NProgress.start()`，在afterEach的时候调用`NProgress.done()`  
+
+* 路由动效 
+    * 利用transition组件，我们可以给路由导航加上动效   
+        ```vue
+        <template>
+            ...
+            <transition name="fade">
+                <router-view />
+            </transition>
+            ...
+        </template>
+        <style scoped>
+            .fade-enter-active{
+                transition: opacity .5s;
+            }
+            .fade-leave-active{
+                transition: none;
+            }
+            .fade-enter, .fade-leave-to{
+                opacity: 0;
+            }
+        </style>
+        ```    
 
 > 练习
 
@@ -464,7 +487,11 @@
                     vm.user = res.data;   
                 });
             }
-            ```                   
+            ``` 
+
+* 路由动效
+    * 根据知识大纲，我们取App.vue加上transition组件和样式就可以了 
+    * CV后我们的效果轻松实现了~                             
 
 
 > 知道你还不过瘾继续吧     

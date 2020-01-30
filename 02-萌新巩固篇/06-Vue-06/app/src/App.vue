@@ -8,7 +8,9 @@
       <router-link to="/book">Book Choose</router-link> | 
       <router-link to="/login">Login</router-link> 
     </ul>
-    <router-view/>
+    <transition name="fade">
+      <router-view/>
+    </transition>
   </div>
 </template>
 
@@ -32,5 +34,15 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.fade-enter-active{
+    transition: opacity .5s;
+}
+.fade-leave-active{
+    transition: none;
+}
+.fade-enter, .fade-leave-to{
+    opacity: 0;
 }
 </style>
