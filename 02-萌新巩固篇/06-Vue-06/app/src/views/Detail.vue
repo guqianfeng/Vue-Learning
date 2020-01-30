@@ -27,10 +27,17 @@ export default {
     filters: {
         showAge: filter.showAge
     },
-    async created(){
-        let id = this.id;
+    // async created(){
+    //     let id = this.id;
+    //     let res = await api.getUserById(id);
+    //     this.user = res.data;
+    // },
+    async beforeRouteEnter(to, from, next){
+        let id = to.params.id;
         let res = await api.getUserById(id);
-        this.user = res.data;
+        next(vm => {
+            vm.user = res.data;   
+        });
     }
 }
 </script>

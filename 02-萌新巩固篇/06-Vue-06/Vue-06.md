@@ -28,7 +28,17 @@
             * 先完成导航，然后在接下来的组件生命周期钩子中获取数据，在数据获取期间显示加载中之类的loading提示
         * 导航完成之前获取
             * 导航完成之前，在路由进入的守卫中获取数据，在获取数据成功后执行导航
-    * 这2种方式都没有任何问题，自行选择        
+    * 这2种方式都没有任何问题，自行选择  
+    * 扩展 - nprogress
+        * 安装`yarn add nprogress -S` 或者 `npm i nprogress -S`
+        * [nprogress演示地址](http://ricostacruz.com/nprogress/)
+        * 因为路由跳转都要用到，我们可以在路由index.js里，全局beforeEach里使用
+        * 需要先引入nprogress以及它的css文件
+            ```js
+            import NProgress from 'nprogress'
+            import 'nprogress/nprogress.css'            
+            ```
+        * 然后在beforeEach的时候调用`NProgress.start()`，在afterEach的时候调用`NProgress.done()`   
 
 > 练习
 
@@ -432,7 +442,29 @@
             let res = await api.getUserById(id);
             this.user = res.data;
         }        
-        ```                    
+        ```   
+
+* 路由数据获取
+    * 导航完成之后获取      
+        * 其实我们的详情页路由组件就是在导航完成之后获取
+        * 这边不做详细的演示就大概说下
+            * 可以设置个error的变量，当出现错误(404或者其他什么的)，展示没有数据
+            * 使用`try...catch`，在catch的时候设置this.error=true    
+            * 这样可以在v-if中根据error渲染                
+    * 导航完成之前获取   
+        * 使用生命周期函数，beforeRouteEnter
+        * 如果不调用next都进不了详情页
+        * 然后我们就可以把created的生命周期里做的事情，放在beforeRouteEnter
+        * 注意有些细节要处理，比如`let id = this.id;`，`this.user = res.data;` 
+            ```js
+            async beforeRouteEnter(to, from, next){
+                let id = to.params.id;
+                let res = await api.getUserById(id);
+                next(vm => {
+                    vm.user = res.data;   
+                });
+            }
+            ```                   
 
 
 > 知道你还不过瘾继续吧     
