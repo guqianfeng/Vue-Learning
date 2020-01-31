@@ -6,6 +6,9 @@
       <router-link to="/gqf">GQF</router-link> |
       <router-link to="/user">User List</router-link> | 
       <router-link to="/book">Book Choose</router-link> | 
+      <router-link to="/ggg">Ggg</router-link> | 
+      <router-link to="/qqq">Qqq</router-link> | 
+      <router-link to="/fff">Fff</router-link> | 
       <router-link to="/login">Login</router-link> 
     </ul>
     <transition name="fade">
@@ -13,6 +16,14 @@
     </transition>
   </div>
 </template>
+
+<script>
+export default {
+  created(){
+    console.log(this.$router.options.routes)
+  }
+}
+</script>
 
 <style>
 #app {
@@ -24,6 +35,9 @@
 }
 
 #nav {
+  position: fixed;
+  left: 0;
+  top: 0;
   padding: 30px;
 }
 

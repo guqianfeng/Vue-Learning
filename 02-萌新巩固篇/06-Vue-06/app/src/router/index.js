@@ -18,6 +18,9 @@ import BookChoose from '@/views/BookChoose'
 import BoyBook from '@/views/Book/BoyBook'
 import GirlBook from '@/views/Book/GirlBook'
 
+import Ggg from '@/views/Ggg'
+import Qqq from '@/views/Qqq'
+import Fff from '@/views/Fff'
 import NotFound from '@/views/NotFound'
 
 Vue.use(VueRouter)
@@ -94,6 +97,22 @@ const routes = [
     }
   },
   {
+    path: '/ggg',
+    name: 'ggg',
+    component: Ggg,
+  },
+  {
+    path: '/qqq',
+    name: 'qqq',
+    component: Qqq,
+  },
+  {
+    path: '/fff',
+    name: 'fff',
+    component: Fff,
+    meta: {requiresAuth: true, isNav: true}
+  },
+  {
     path: "*",
     component: NotFound
   } 
@@ -102,7 +121,15 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition){
+    console.log(to.meta)
+    if(to.meta.requiresAuth && savedPosition){
+        return savedPosition
+    }else{
+        return {x: 0, y: 0}
+    }
+  }
 })
 
 let user = {

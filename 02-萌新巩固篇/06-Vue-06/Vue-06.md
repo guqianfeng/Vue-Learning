@@ -61,7 +61,37 @@
                 opacity: 0;
             }
         </style>
+        ``` 
+
+* 滚动行为 
+    * 前端路由并没有重载整个浏览器，只是通过DOM进行了局部更新。所以有的时候，浏览器的状态会被保持，比如滚动条，当我们在一个页面滚动滚动条，然后跳转到另外个页面，滚动条会保持在上一个页面中，我们其实更希望滚动条能回到页面顶部，就像重载了整个页面一样
+        ```js
+        const router = new Router({
+            ...,
+            scrollBehavior: () => {
+                return {y: 0}
+            }
+            ...
+        })
+        ```  
+    * 后退/前进行为，会提供一个savedPosition参数，通过该参数返回历史记录中的滚动值
+        ```js
+        scrollBehavior(to, from, savedPosition){
+            if(savedPosition){
+                return savedPosition
+            }else{
+                return {x: 0, y: 0}
+            }
+        }
         ```    
+
+* 路由元信息
+    * 定义路由的时候配置meta字段
+    * 通过meta定义要验证的路由
+    * meta如何配置 - requiresAuth任意起的名字，可以在滚动行为参数中拿到
+        ```
+        meta: {requiresAuth: true}
+        ```                
 
 > 练习
 
@@ -491,7 +521,76 @@
 
 * 路由动效
     * 根据知识大纲，我们取App.vue加上transition组件和样式就可以了 
-    * CV后我们的效果轻松实现了~                             
+    * CV后我们的效果轻松实现了~  
+
+* 滚动行为  
+    * 我们新建3个视图组件，并将我们的导航栏定位在顶部 
+    * 3个视图组件分别生成100个li
+    * 比如我们把其中一个Ggg滚动条滚动到底部，然后切换Qqq和Fff视图，会发现滚动条依然在底部
+    * 显示是不合理的所以我们要在路由配置中配置滚动行为,切换新视图回到页面顶部
+    * 还有后退的行为，比如我们看Ggg切换到Qqq，然后在后退回Ggg，显然好的用户体验应该返回到Ggg上次滚动到的位置，所以这边还需要配置后退前进的行为
+    * 最终配置代码为
+        ```js
+        const router = new VueRouter({
+        mode: 'history',
+        base: process.env.BASE_URL,
+        routes,
+        scrollBehavior(to, from, savedPosition){
+            if(savedPosition){
+                return savedPosition
+            }else{
+                return {x: 0, y: 0}
+            }
+        }
+        })        
+        ```    
+
+* 路由元信息
+    * 前面说的滚动行为，如果有些特定的不想记录历史，我们可以通过参数to，from去处理
+    * 但如果有很多需要这种处理，显然也不方便，所以可以配置路由元信息
+    * 即配置了路由元信息，且有历史记录，才会让滚动条记录历史位置
+    * 滚动条历史记录，具体操作
+        * 先在路由的地方配置meta属性 
+            ```js
+            {
+                path: '/fff',
+                name: 'fff',
+                component: Fff,
+                meta: {requiresAuth: true}
+            },            
+            ```
+        * 然后在控制滚动条的行为加上判断
+            ```js
+            scrollBehavior(to, from, savedPosition){
+                console.log(to.meta)
+                if(to.meta.requiresAuth && savedPosition){
+                    return savedPosition
+                }else{
+                    return {x: 0, y: 0}
+                }
+            }            
+            ``` 
+    * 我们也可以配置元信息，是否是导航
+        ```js
+        {
+            path: '/fff',
+            name: 'fff',
+            component: Fff,
+            meta: {requiresAuth: true, isNav: true}
+        },        
+        ``` 
+    * 接下来简单做个演示，我们去App.vue
+        * 生命周期created函数处理
+            ```js
+            created(){
+                console.log(this.$router.options.routes)
+            }            
+            ``` 
+        * 看下打印结果，根据isNav动态去生成导航
+
+            ![](./images/元信息.jpg)  
+
+    * 导航中文显示其实也可以根据元信息来做，比如设置个navName                    
 
 
 > 知道你还不过瘾继续吧     
