@@ -1,10 +1,9 @@
 <template>
   <div>
-      <input type="text" ref="nameInput"><button @click="addUser">add user</button>
-      <h1>User - {{n}} - {{$store.state.n}}</h1>
+      <input type="text" ref="nameInput" placeholder="username"><button @click="addUser">add user</button>
       <ul>
           <li v-for="user in young" :key="user.id">
-              {{user.name}} - {{user.age}} - <button @click="deleteUser(user.id)">delete user</button>
+              {{user.name}} - {{user.age}} - <button @click="deleteUser(user.id, user.name)">delete user</button>
           </li>
       </ul>
   </div>
@@ -50,13 +49,19 @@ export default {
             })
             this.$refs.nameInput.value = "";
         },
-        deleteUser(id){
-            this.$store.commit("deleteUser", id)
+        deleteUser(id, name){
+            let flag = window.confirm(`确认删除${name}吗`);
+            if(flag){
+                this.$store.commit("deleteUser", id)
+            }
+            
         }
     }
 }
 </script>
 
-<style>
-
+<style scoped>
+    li{
+        margin: 10px;
+    }
 </style>
