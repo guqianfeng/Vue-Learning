@@ -75,7 +75,11 @@
     * 通过方法访问
         * 我们还可以通过闭包函数的形式返回一个函数，来实现给getters函数传参，需要注意的是这种方式不支持结果缓存
     * 使用辅助函数`mapGetters`
-        * 与`mapState`函数类似，通常映射到组件的computed上                                       
+        * 与`mapState`函数类似，通常映射到组件的computed上
+
+* 前后端交互 - 在练习中直接演示了
+
+* 还有些辅助函数，模块等请看[vuex官网](https://vuex.vuejs.org/)
 
 > 练习
 
@@ -519,7 +523,91 @@
 
     module.exports = router
 
-    ```           
+    ```  
+
+* 异步操作需要用到action
+    * ui => dispatch => actions => commit => mutations => state
+    * 先来看下mutation，如果return结果，能否拿到  
+        * 在mutation中这么处理addUser
+            ```js
+            async addUser(state, payload){
+                let res = await api.addUser(payload);
+                // console.log(res.data.user);
+                if(res.data.code == 1){
+                    state.users.unshift(res.data.user)
+                }
+                return res;     
+            },            
+            ``` 
+        * 然后在ui这边试图拿下res  
+            ```js
+            async addUser(){
+                this.$store.commit("changeN", Math.random() * 100 | 0);
+                let name = this.$refs.nameInput.value;
+                if(!name){
+                    alert("名字不能为空")
+                    return;
+                }
+                // this.$store.commit("addUser", {
+                //     id: Date.now(),
+                //     name,
+                //     age: Math.random() * 100 | 0
+                // })
+                let res = await this.$store.commit("addUser", {
+                    name,
+                    age: Math.random() * 100 | 0
+                })
+                console.log(res); //试图拿res
+                this.$refs.nameInput.value = "";
+            },            
+            ```
+        * 然后我把页面数据删光，重新添加了些数据，就看到了一堆undefined
+
+            ![](./images/mutation不能处理异步返回值.jpg)   
+
+    * action该如何做    
+        * 首先action里添加的函数，第一个参数是store，并不是state
+            ```js
+            actions: {
+                async addUser(store, payload){
+                //首先action中第一个参数是store，和mutation第一个参数state是不同的
+                let res = await api.addUser(payload);
+                // console.log(res.data.user);
+                if(res.data.code == 1){
+                    store.commit("addUser", res.data.user);
+                }
+                return res;     
+                },
+            },            
+            ``` 
+        * 通过store，commit以后，就到了mutation，所以mutation的代码如下
+            ```js
+            async addUser(state, payload){
+                state.users.unshift(payload)
+            },            
+            ``` 
+        * 然后mutation就可以修改state，最后ui层把之前的commit改成dispatch就可以了  
+            ```js
+            async addUser(){
+                this.$store.commit("changeN", Math.random() * 100 | 0);
+                let name = this.$refs.nameInput.value;
+                if(!name){
+                    alert("名字不能为空")
+                    return;
+                }
+                let res = await this.$store.dispatch("addUser", {
+                    name,
+                    age: Math.random() * 100 | 0
+                })
+                console.log(res); //试图拿res
+                this.$refs.nameInput.value = "";
+            },            
+            ```
+        * 页面打印结果就能看到了
+
+            ![](./images/action返回结果.jpg)
+
+        * 因为ui能拿到res结果，所以可以根据code来判断是否成功，然后在ui层提示信息                          
 
 > 知道你还不过瘾继续吧       
 

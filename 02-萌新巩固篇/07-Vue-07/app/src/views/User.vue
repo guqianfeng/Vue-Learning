@@ -31,22 +31,18 @@ export default {
         this.$store.commit("getUsers", "asc");
     },
     methods: {
-        addUser(){
+        async addUser(){
             this.$store.commit("changeN", Math.random() * 100 | 0);
             let name = this.$refs.nameInput.value;
             if(!name){
                 alert("名字不能为空")
                 return;
             }
-            // this.$store.commit("addUser", {
-            //     id: Date.now(),
-            //     name,
-            //     age: Math.random() * 100 | 0
-            // })
-            this.$store.commit("addUser", {
+            let res = await this.$store.dispatch("addUser", {
                 name,
                 age: Math.random() * 100 | 0
             })
+            console.log(res); //试图拿res
             this.$refs.nameInput.value = "";
         },
         deleteUser(id, name){

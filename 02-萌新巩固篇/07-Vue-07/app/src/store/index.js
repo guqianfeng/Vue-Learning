@@ -27,11 +27,7 @@ export default new Vuex.Store({
       state.users = res.data;
     },
     async addUser(state, payload){
-      let res = await api.addUser(payload);
-      // console.log(res.data.user);
-      if(res.data.code == 1){
-        state.users.unshift(res.data.user)
-      }     
+      state.users.unshift(payload)
     },
     async deleteUser(state, id){
       let res = await api.deleteUser(id);
@@ -41,6 +37,15 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    async addUser(store, payload){
+      //首先action中第一个参数是store，和mutation第一个参数state是不同的
+      let res = await api.addUser(payload);
+      // console.log(res.data.user);
+      if(res.data.code == 1){
+        store.commit("addUser", res.data.user);
+      }
+      return res;     
+    },
   },
   modules: {
   }
