@@ -3,7 +3,7 @@
       <input type="text" ref="nameInput"><button @click="addUser">add user</button>
       <h1>User - {{n}} - {{$store.state.n}}</h1>
       <ul>
-          <li v-for="user in users" :key="user.id">
+          <li v-for="user in young" :key="user.id">
               {{user.id}} - {{user.name}} - {{user.age}}
           </li>
       </ul>
@@ -21,7 +21,12 @@ export default {
     //         return this.$store.state.n;
     //     }
     // },
-    computed: mapState(["users", "n"]),
+    computed: {
+        ...mapState(["n"]),
+        young(){
+            return this.$store.getters.young(30);
+        }
+    },
     methods: {
         addUser(){
             this.$store.commit("changeN", Math.random() * 100 | 0);

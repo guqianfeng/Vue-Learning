@@ -34,6 +34,13 @@ export default new Vuex.Store({
       }
     ] 
   },
+  getters: {
+    young(state){
+      return function(age = 20){
+        return state.users.filter(user => user.age <= age);
+      }
+    }
+  },
   mutations: {
     changeN(state, payload){
       //第一个参数默认就是state，第二个参数作为需要修改的值

@@ -62,7 +62,20 @@
             },
             ...mapState(["title", "content"])
         }
-        ```                     
+        ```  
+
+* getters
+    * 有时候我们需要从store中的state中派生出一些状态，类似组件的data与computed，store也提供一个getters对象来处理派生数据
+    * getters函数
+        * 与组件属性一样，我们是通过定义一个函数的形式来返回派生数据的，getters函数接受两个参数
+        * 第一个参数 - state对象
+        * 第二个参数 - getters对象
+    * 通过属性访问
+        * 同样的，与组件计算属性一样，默认是通过属性的方式去访问getters中的数据，这种方式与组件的计算属性一样，也是会缓存结果的
+    * 通过方法访问
+        * 我们还可以通过闭包函数的形式返回一个函数，来实现给getters函数传参，需要注意的是这种方式不支持结果缓存
+    * 使用辅助函数`mapGetters`
+        * 与`mapState`函数类似，通常映射到组件的computed上                                       
 
 > 练习
 
@@ -390,7 +403,49 @@
         computed: mapState(["users", "n"]),        
         ``` 
     * 注释掉的computed和下面的computed效果是一样的，这就是辅助函数的力量~   
-    * 实质上mapState最终就是会生成上述我们注释的代码          
+    * 实质上mapState最终就是会生成上述我们注释的代码   
+
+* getters     
+    * 实际上也是派生数据，比如我们过滤下20岁以下的年轻人，在store下的index里追加getters属性
+        ```js
+        getters: {
+            young(state){
+                return state.users.filter(user => user.age <= 20);
+            }
+        },        
+        ```
+    * 同时也去修改下User.vue
+        ```js
+        computed: {
+            ...mapState(["n"]),
+            young(){
+                return this.$store.getters.young;
+            }
+        },        
+        ``` 
+    * 这样页面上展现的数据就是小于等于20岁的年轻人  
+
+        ![](./images/年轻人.jpg)  
+
+    * 有时候我们想要更灵活的控制过滤条件，像前面写死20岁不太好，于是可以这么改写 
+        ```js
+        getters: {
+            young(state){
+            return function(age = 20){
+                return state.users.filter(user => user.age <= age);
+            }
+            }
+        },        
+        ```
+        ```js
+        computed: {
+            ...mapState(["n"]),
+            young(){
+                return this.$store.getters.young(30);
+            }
+        },        
+        ``` 
+    * 上述代码意思就是小于等于30岁的过滤出来      
 
 > 知道你还不过瘾继续吧       
 
