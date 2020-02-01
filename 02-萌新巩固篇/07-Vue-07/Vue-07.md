@@ -1,7 +1,8 @@
 # Vue-07
 
 > 准备工作
-    * 这次用脚手架新建项目，记得要选中router和vuex
+
+* 这次用脚手架新建项目，记得要选中router和vuex
 
 > 知识大纲
 
@@ -22,9 +23,49 @@
     * State - 存储应用状态的数据(React中的State)
     * Vue Component - 消费State
     * Actions - 提交修改State的动作(包括异步行为)(React中的action)
-    * Mutations - 唯一更改State的位置(React中的Reducer)         
+    * Mutations - 唯一更改State的位置(React中的Reducer) 
+
+* 使用辅助函数`mapState`
+    * 当一个组件需要获取多个状态的时候，将这些状态都声明为计算属性会有一些重复和冗余。为了解决这个问题，我们可以使用`mapState`辅助函数帮我们生成计算属性，通常我们把`store`的`state`通过`mapState`函数映射到组件的`computed`上
+    * 具体代码如下 
+        ```js
+        import {mapState} from 'vuex'
+        export default {
+            name: 'home',
+            computed: mapState([
+                "title",
+                "content",
+            ])
+        }
+        ```
+    * 还可以起别名
+        ```js
+        computed: mapState({
+            "content": content, 
+            "subTitle": title, //key值代表起的别名
+        })
+        ``` 
+    * 也可以使用函数的方式 
+        ```js
+        computed: mapState({
+            "content": content, 
+            subTitle(state){
+                return state.title + " 特殊处理下";
+            }
+        })
+        ``` 
+    * 组件中本身有计算属性，且我们也需要用到mapState，使用解构就可以了~
+        ```js
+        computed: {
+            test(){
+                return "test";
+            },
+            ...mapState(["title", "content"])
+        }
+        ```                     
 
 > 练习
+
 * 了解项目结构
     * 建立好项目后我们能看到store下的index.js
         ```js
@@ -333,7 +374,23 @@
         ```  
     * 调试工具呈现的结果是 
 
-        ![](./images/添加用户.jpg)       
+        ![](./images/添加用户.jpg)    
+
+* 使用辅助函数`mapState` 
+    * 直接上代码
+        ```js
+        // computed: {
+        //     users(){
+        //         return this.$store.state.users;
+        //     },
+        //     n(){
+        //         return this.$store.state.n;
+        //     }
+        // },
+        computed: mapState(["users", "n"]),        
+        ``` 
+    * 注释掉的computed和下面的computed效果是一样的，这就是辅助函数的力量~   
+    * 实质上mapState最终就是会生成上述我们注释的代码          
 
 > 知道你还不过瘾继续吧       
 

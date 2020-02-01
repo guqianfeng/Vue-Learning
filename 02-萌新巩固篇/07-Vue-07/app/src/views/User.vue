@@ -11,15 +11,17 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
-    computed: {
-        users(){
-            return this.$store.state.users;
-        },
-        n(){
-            return this.$store.state.n;
-        }
-    },
+    // computed: {
+    //     users(){
+    //         return this.$store.state.users;
+    //     },
+    //     n(){
+    //         return this.$store.state.n;
+    //     }
+    // },
+    computed: mapState(["users", "n"]),
     methods: {
         addUser(){
             this.$store.commit("changeN", Math.random() * 100 | 0);
