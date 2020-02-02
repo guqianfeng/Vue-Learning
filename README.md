@@ -52,5 +52,6 @@
     * [知识点介绍](./03-萌新自制UI库/01-知识点介绍/知识点介绍.md)    
     * [演示element](./03-萌新自制UI库/02-演示element/演示element.md)    
     * [项目构建-button组件-基本架子](./03-萌新自制UI库/03-项目构建-button组件-基本架子/项目构建-button组件-基本架子.md)    
+    * [button组件-type属性的说明](./03-萌新自制UI库/04-button组件-type属性的说明/button组件-type属性的说明.md)    
 
        

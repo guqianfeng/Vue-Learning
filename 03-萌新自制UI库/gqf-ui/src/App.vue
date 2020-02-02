@@ -1,8 +1,13 @@
 <template>
   <div id="app">
-    <gqf-button>按钮1</gqf-button>
-    <gqf-button>按钮2</gqf-button>
-    <gqf-button>按钮3</gqf-button>
+    <div class="row">
+      <gqf-button>按钮</gqf-button>
+      <gqf-button type="primary">按钮</gqf-button>
+      <gqf-button type="success">按钮</gqf-button>
+      <gqf-button type="info">按钮</gqf-button>
+      <gqf-button type="warning">按钮</gqf-button>
+      <gqf-button type="danger">按钮</gqf-button>
+    </div>
   </div>
 </template>
 
@@ -12,6 +17,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
 </style>
