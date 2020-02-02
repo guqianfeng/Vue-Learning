@@ -30,37 +30,37 @@
 * 事件支持 - 点击事件   
 
 > css样式
-    * button样式
-        ```scss
-        .gqf-button {
-            display: inline-block;
-            line-height: 1;
-            white-space: nowrap;
-            cursor: pointer;
-            background: #fff;
-            border: 1px solid #dcdfe6;
-            color: #606266;
-            -webkit-appearance: none;
-            text-align: center;
-            box-sizing: border-box;
-            outline: none;
-            margin: 0;
-            transition: 0.1s;
-            font-weight: 500;
-            -moz-user-select: none;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            padding: 12px 20px;
-            font-size: 14px;
-            border-radius: 4px;
-            &:hover,
-            &:focus {
-                color: #409cff;
-                border-color: #c6e2ff;
-                background-color: #ecf5ff;
-            }
-        }        
-        ```    
+* button样式
+    ```scss
+    .gqf-button {
+        display: inline-block;
+        line-height: 1;
+        white-space: nowrap;
+        cursor: pointer;
+        background: #fff;
+        border: 1px solid #dcdfe6;
+        color: #606266;
+        -webkit-appearance: none;
+        text-align: center;
+        box-sizing: border-box;
+        outline: none;
+        margin: 0;
+        transition: 0.1s;
+        font-weight: 500;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        padding: 12px 20px;
+        font-size: 14px;
+        border-radius: 4px;
+        &:hover,
+        &:focus {
+            color: #409cff;
+            border-color: #c6e2ff;
+            background-color: #ecf5ff;
+        }
+    }        
+    ```    
 
 > 练习
 
@@ -161,3 +161,8 @@
     * 接着把样式复制进去，然后就能看到效果了  
 
         ![](./images/复制样式后的效果.jpg)   
+
+
+> 知道你还不过瘾继续吧       
+
+* [返回目录](../../README.md)         
