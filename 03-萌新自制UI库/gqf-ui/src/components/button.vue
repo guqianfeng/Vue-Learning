@@ -1,5 +1,5 @@
 <template>
-  <button class="gqf-button" :class="[`gqf-button--${type}`, {'is-plain': plain}, {'is-round': round}, {'is-circle': circle}]">
+  <button :disabled="disabled" class="gqf-button" :class="[`gqf-button--${type}`, {'is-plain': plain}, {'is-round': round}, {'is-circle': circle}, {'is-disabled': disabled}]">
     <span>
       <slot></slot>
     </span>
@@ -24,6 +24,10 @@ export default {
       default: false
     },
     circle: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
       type: Boolean,
       default: false
     }
@@ -195,5 +199,82 @@ export default {
 .gqf-button.is-circle{
   border-radius: 50%;
   padding: 12px;
+}
+
+// 禁用
+.gqf-button.is-disabled{
+    color: #c0c4cc;
+    cursor: not-allowed;
+    background-image: none;
+    background-color: #fff;
+    border-color: #ebeef5;
+  &:hover,
+  &:focus{
+    color: #c0c4cc;
+    cursor: not-allowed;
+    background-image: none;
+    background-color: #fff;
+    border-color: #ebeef5;
+  }
+}
+
+.gqf-button--primary.is-disabled{
+    color: #fff;
+    background-color: #a0cfff;
+    border-color: #a0cfff;
+  &:hover,
+  &:focus{
+    color: #fff;
+    background-color: #a0cfff;
+    border-color: #a0cfff;
+  }
+}
+
+.gqf-button--success.is-disabled{
+    color: #fff;
+    background-color: #b3e19d;
+    border-color: #b3e19d;
+  &:hover,
+  &:focus{
+    color: #fff;
+    background-color: #b3e19d;
+    border-color: #b3e19d;
+  }
+}
+
+.gqf-button--info.is-disabled{
+    color: #fff;
+    background-color: #c8c9cc;
+    border-color: #c8c9cc;
+  &:hover,
+  &:focus{
+    color: #fff;
+    background-color: #c8c9cc;
+    border-color: #c8c9cc;
+  }
+}
+
+.gqf-button--warning.is-disabled{
+    color: #fff;
+    background-color: #f3d19e;
+    border-color: #f3d19e;
+  &:hover,
+  &:focus{
+    color: #fff;
+    background-color: #f3d19e;
+    border-color: #f3d19e;
+  }
+}
+
+.gqf-button--danger.is-disabled{
+    color: #fff;
+    background-color: #fab6b6;
+    border-color: #fab6b6;
+  &:hover,
+  &:focus{
+    color: #fff;
+    background-color: #fab6b6;
+    border-color: #fab6b6;
+  }
 }
 </style>

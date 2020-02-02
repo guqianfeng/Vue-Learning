@@ -32,6 +32,22 @@
       <gqf-button circle type="warning">猪</gqf-button>
       <gqf-button circle type="danger">猪</gqf-button>
     </div>
+    <div class="row">
+      <gqf-button circle>我</gqf-button>
+      <gqf-button circle type="primary">梅</gqf-button>
+      <gqf-button circle type="success">利</gqf-button>
+      <gqf-button circle type="info">奥</gqf-button>
+      <gqf-button circle type="warning">猪</gqf-button>
+      <gqf-button circle type="danger">猪</gqf-button>
+    </div>
+    <div class="row">
+      <gqf-button disabled>按钮</gqf-button>
+      <gqf-button disabled type="primary">按钮</gqf-button>
+      <gqf-button disabled type="success">按钮</gqf-button>
+      <gqf-button disabled type="info">按钮</gqf-button>
+      <gqf-button disabled type="warning">按钮</gqf-button>
+      <gqf-button disabled type="danger">按钮</gqf-button>
+    </div>
   </div>
 </template>
 

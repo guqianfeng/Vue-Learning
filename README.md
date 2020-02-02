@@ -54,5 +54,6 @@
     * [项目构建-button组件-基本架子](./03-萌新自制UI库/03-项目构建-button组件-基本架子/项目构建-button组件-基本架子.md)    
     * [button组件-type属性的说明](./03-萌新自制UI库/04-button组件-type属性的说明/button组件-type属性的说明.md)    
     * [round-circle-plain属性的支持](./03-萌新自制UI库/05-round-circle-plain属性的支持/round-circle-plain属性的支持.md)    
+    * [button组件-字体图标与click事件](./03-萌新自制UI库/06-button组件-字体图标与click事件/button组件-字体图标与click事件.md)    
 
        
