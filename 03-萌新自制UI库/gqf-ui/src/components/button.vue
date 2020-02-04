@@ -1,6 +1,7 @@
 <template>
-  <button :disabled="disabled" class="gqf-button" :class="[`gqf-button--${type}`, {'is-plain': plain}, {'is-round': round}, {'is-circle': circle}, {'is-disabled': disabled}]">
-    <span>
+  <button @click="handleClick" :disabled="disabled" class="gqf-button" :class="[`gqf-button--${type}`, {'is-plain': plain}, {'is-round': round}, {'is-circle': circle}, {'is-disabled': disabled}]">
+    <i class="fa" :class="icon" v-if="icon"></i>
+    <span v-if="$slots.default">
       <slot></slot>
     </span>
   </button>
@@ -30,10 +31,20 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    icon: {
+      type: String,
+      default: ''
     }
   },
   created () {
-    console.log(this.type)
+    // console.log(this.type)
+    // console.log(this.$slots, this.$slots.default)
+  },
+  methods: {
+    handleClick (e) {
+      this.$emit('click', e)
+    }
   }
 }
 </script>
@@ -276,5 +287,10 @@ export default {
     background-color: #fab6b6;
     border-color: #fab6b6;
   }
+}
+
+// 处理文字和图标都传的样式
+.gqf-button [class*='fa'] + span{
+  margin-left: 5px;
 }
 </style>
