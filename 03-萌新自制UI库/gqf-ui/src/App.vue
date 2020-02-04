@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="row">
+    <!-- <div class="row">
       <gqf-button @click="fn">按钮</gqf-button>
       <gqf-button type="primary">按钮</gqf-button>
       <gqf-button type="success">按钮</gqf-button>
@@ -47,7 +47,14 @@
       <gqf-button circle icon="fa-camera-retro" type="info"></gqf-button>
       <gqf-button circle icon="fa-camera-retro" type="warning"></gqf-button>
       <gqf-button circle icon="fa-camera-retro" type="danger"></gqf-button>
-    </div>
+    </div> -->
+
+    <!-- <gqf-dialog title="我是梅利奥猪猪"></gqf-dialog> -->
+    <gqf-dialog>
+      <template v-slot:title>
+        <h1>你们的猪大佬</h1>
+      </template>
+    </gqf-dialog>
   </div>
 </template>
 
