@@ -45,7 +45,8 @@ export default {
   methods: {
     handleClose () {
       // console.log('close')
-      this.$emit('close', false)
+      // this.$emit('close', false)
+      this.$emit('update:visible', false)
     }
   }
 }
