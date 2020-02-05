@@ -49,12 +49,18 @@
       <gqf-button circle icon="fa-camera-retro" type="danger"></gqf-button>
     </div> -->
 
-    <!-- <gqf-dialog title="我是梅利奥猪猪"></gqf-dialog> -->
-    <gqf-dialog>
+    <gqf-dialog title="我是梅利奥猪猪" width="60%" top="30px">
+      <p>希望自己的练习能给大家带来帮助</p>
+      <template v-slot:footer>
+        <gqf-button>取消</gqf-button>
+        <gqf-button type="primary">确定</gqf-button>
+      </template>
+    </gqf-dialog>
+    <!-- <gqf-dialog>
       <template v-slot:title>
         <h1>你们的猪大佬</h1>
       </template>
-    </gqf-dialog>
+    </gqf-dialog> -->
   </div>
 </template>
 

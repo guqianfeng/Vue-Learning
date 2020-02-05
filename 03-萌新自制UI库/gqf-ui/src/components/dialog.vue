@@ -1,6 +1,6 @@
 <template>
   <div class="gqf-dialog__wrapper">
-    <div class="gqf-dialog">
+    <div class="gqf-dialog" :style="{width, marginTop: top}">
       <div class="gqf-dialog__header">
         <slot name="title">
           <span class="gqf-dialog__title">{{title}}</span>
@@ -10,11 +10,12 @@
         </button>
       </div>
       <div class="gqf-dialog__body">
-        <span>这是一段消息</span>
+        <slot>
+          <span>这是一段消息</span>
+        </slot>
       </div>
-      <div class="gqf-dialog__footer">
-        <gqf-button>取消</gqf-button>
-        <gqf-button type="primary">确定</gqf-button>
+      <div class="gqf-dialog__footer" v-if="$slots.footer">
+        <slot name="footer"></slot>
       </div>
     </div>
   </div>
@@ -27,6 +28,14 @@ export default {
     title: {
       type: String,
       default: '提示'
+    },
+    width: {
+      type: String,
+      default: '50%'
+    },
+    top: {
+      type: String,
+      default: '15vh'
     }
   }
 }
