@@ -49,11 +49,13 @@
       <gqf-button circle icon="fa-camera-retro" type="danger"></gqf-button>
     </div> -->
 
-    <gqf-dialog title="我是梅利奥猪猪" width="60%" top="30px">
+    <gqf-button @click="visible=true">按钮</gqf-button>
+
+    <gqf-dialog title="我是梅利奥猪猪" width="60%" top="30px" :visible="visible" @close="close">
       <p>希望自己的练习能给大家带来帮助</p>
       <template v-slot:footer>
-        <gqf-button>取消</gqf-button>
-        <gqf-button type="primary">确定</gqf-button>
+        <gqf-button @click="visible = false">取消</gqf-button>
+        <gqf-button type="primary" @click="visible = false">确定</gqf-button>
       </template>
     </gqf-dialog>
     <!-- <gqf-dialog>
@@ -66,9 +68,17 @@
 
 <script>
 export default {
+  data () {
+    return {
+      visible: false
+    }
+  },
   methods: {
     fn () {
       console.log('fn')
+    },
+    close () {
+      this.visible = false
     }
   }
 }

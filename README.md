@@ -58,5 +58,4 @@
     * [button组件-disabled属性说明](./03-萌新自制UI库/07-button组件-disabled属性说明/button组件-disabled属性说明.md)    
     * [dialog组件-组件创建标题的处理](./03-萌新自制UI库/08-dialog组件-组件创建标题的处理/dialog组件-组件创建标题的处理.md)    
     * [dialog组件的内容给处理-插槽的使用](./03-萌新自制UI库/09-dialog组件的内容给处理-插槽的使用/dialog组件的内容给处理-插槽的使用.md)    
-
-       
+    * [dialog组件-对话框的显示和隐藏](./03-萌新自制UI库/10-dialog组件-对话框的显示和隐藏/dialog组件-对话框的显示和隐藏.md)    

@@ -1,11 +1,11 @@
 <template>
-  <div class="gqf-dialog__wrapper">
+  <div class="gqf-dialog__wrapper" v-show="visible" @click.self="handleClose">
     <div class="gqf-dialog" :style="{width, marginTop: top}">
       <div class="gqf-dialog__header">
         <slot name="title">
           <span class="gqf-dialog__title">{{title}}</span>
         </slot>
-        <button class="gqf-dialog__headerbtn">
+        <button class="gqf-dialog__headerbtn" @click="handleClose">
           <i class="fa fa-close"></i>
         </button>
       </div>
@@ -36,6 +36,16 @@ export default {
     top: {
       type: String,
       default: '15vh'
+    },
+    visible: {
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    handleClose () {
+      // console.log('close')
+      this.$emit('close', false)
     }
   }
 }
