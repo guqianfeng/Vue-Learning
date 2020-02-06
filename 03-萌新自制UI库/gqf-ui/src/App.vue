@@ -54,19 +54,31 @@
         <h1>你们的猪大佬</h1>
       </template>
     </gqf-dialog> -->
-    <gqf-button @click="visible=true">按钮</gqf-button>
+    <!-- <gqf-button @click="visible=true">按钮</gqf-button> -->
 
     <!-- <gqf-dialog title="我是梅利奥猪猪" width="60%" top="30px" :visible="visible" @close="close"> -->
-    <gqf-dialog title="我是梅利奥猪猪" width="60%" top="30px" :visible.sync="visible">
+    <!-- <gqf-dialog title="我是梅利奥猪猪" width="60%" top="30px" :visible.sync="visible">
       <p>希望自己的练习能给大家带来帮助</p>
       <template v-slot:footer>
         <gqf-button @click="visible = false">取消</gqf-button>
         <gqf-button type="primary" @click="visible = false">确定</gqf-button>
       </template>
-    </gqf-dialog>
+    </gqf-dialog> -->
 
     <!-- <demo :money="money" @update:money="changeMoney"></demo> -->
     <!-- <demo :money.sync="money"></demo> -->
+    <div class="row">
+      <gqf-input placeholder="gqf"></gqf-input>
+      <gqf-input placeholder="is"></gqf-input>
+      <gqf-input placeholder="梅利奥猪猪"></gqf-input>
+    </div>
+    <div class="row">
+      <gqf-input placeholder="username" name="username"></gqf-input>
+      <gqf-input placeholder="password" name="username" type="password"></gqf-input>
+    </div>
+    <div class="row">
+      <gqf-input placeholder="禁用" disabled></gqf-input>
+    </div>
   </div>
 </template>
 
@@ -103,5 +115,8 @@ export default {
     .gqf-button {
       margin-right: 20px;
     }
+  }
+  .gqf-input{
+    width: 200px;
   }
 </style>
