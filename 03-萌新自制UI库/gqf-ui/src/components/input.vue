@@ -1,6 +1,8 @@
 <template>
   <div class="gqf-input">
-    <input class="gqf-input__inner" :class="{'is-disabled': disabled}" :type="type" :placeholder="placeholder" :name="name" :disabled="disabled"/>
+    <input class="gqf-input__inner" :class="{'is-disabled': disabled}" :type="type" :placeholder="placeholder" :name="name" :disabled="disabled" :value = "value"
+    @input = "handleInput"
+    />
   </div>
 </template>
 
@@ -23,6 +25,15 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    value: {
+      type: String,
+      default: ''
+    }
+  },
+  methods: {
+    handleInput (e) {
+      this.$emit('input', e.target.value)
     }
   }
 }

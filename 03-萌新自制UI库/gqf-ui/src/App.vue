@@ -79,6 +79,9 @@
     <div class="row">
       <gqf-input placeholder="禁用" disabled></gqf-input>
     </div>
+    <div class="row">
+      <gqf-input placeholder="请输入点信息" v-model="msg"></gqf-input>
+    </div>
   </div>
 </template>
 
@@ -91,7 +94,8 @@ export default {
   data () {
     return {
       visible: false,
-      money: 100
+      money: 100,
+      msg: 'gqf is 梅利奥猪猪'
     }
   },
   methods: {
