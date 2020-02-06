@@ -1,24 +1,26 @@
 <template>
-  <div class="gqf-dialog__wrapper" v-show="visible" @click.self="handleClose">
-    <div class="gqf-dialog" :style="{width, marginTop: top}">
-      <div class="gqf-dialog__header">
-        <slot name="title">
-          <span class="gqf-dialog__title">{{title}}</span>
-        </slot>
-        <button class="gqf-dialog__headerbtn" @click="handleClose">
-          <i class="fa fa-close"></i>
-        </button>
-      </div>
-      <div class="gqf-dialog__body">
-        <slot>
-          <span>这是一段消息</span>
-        </slot>
-      </div>
-      <div class="gqf-dialog__footer" v-if="$slots.footer">
-        <slot name="footer"></slot>
+  <transition name="dialog-fade">
+    <div class="gqf-dialog__wrapper" v-show="visible" @click.self="handleClose">
+      <div class="gqf-dialog" :style="{width, marginTop: top}">
+        <div class="gqf-dialog__header">
+          <slot name="title">
+            <span class="gqf-dialog__title">{{title}}</span>
+          </slot>
+          <button class="gqf-dialog__headerbtn" @click="handleClose">
+            <i class="fa fa-close"></i>
+          </button>
+        </div>
+        <div class="gqf-dialog__body">
+          <slot>
+            <span>这是一段消息</span>
+          </slot>
+        </div>
+        <div class="gqf-dialog__footer" v-if="$slots.footer">
+          <slot name="footer"></slot>
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -52,7 +54,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .gqf-dialog__wrapper {
   position: fixed;
   top: 0;
@@ -111,6 +113,25 @@ export default {
         margin-right: 20px;
       }
     }
+  }
+}
+
+.dialog-fade-enter-active {
+    animation: fade .3s;
+  }
+
+.dialog-fade-leave-active {
+  animation: fade .3s reverse;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
   }
 }
 </style>
