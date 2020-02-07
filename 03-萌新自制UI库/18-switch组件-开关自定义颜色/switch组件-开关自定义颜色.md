@@ -208,10 +208,10 @@
             this.setColor()
         },
         ```
-
-
+    * 这样自定义颜色就处理好了    
 
 > 知道你还不过瘾继续吧       
 
 * [上一节-input组件-显示和隐藏密码](../17-input组件-显示和隐藏密码/input组件-显示和隐藏密码.md)
+* [下一节-switch组件-添加input框](../19-switch组件-添加input框/switch组件-添加input框.md)
 * [返回目录](../../README.md)
