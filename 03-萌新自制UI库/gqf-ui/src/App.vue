@@ -90,7 +90,7 @@
       <gqf-switch v-model="active"></gqf-switch>
     </div>
     <div class="row">
-      <gqf-switch v-model="active" active-color="red" inactive-color="green" name="gqf"></gqf-switch>
+      <gqf-switch v-model="active" active-color="red" inactive-color="green" name="username"></gqf-switch>
     </div>
   </div>
 </template>

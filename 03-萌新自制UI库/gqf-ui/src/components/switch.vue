@@ -1,9 +1,10 @@
 <template>
-  <label class="gqf-switch" @click="handleClick" :class="{'is-checked': value}">
-      <span class="gqf-switch__core" ref="core">
-          <span class="gqf-switch__button"></span>
-      </span>
-  </label>
+  <div class="gqf-switch" @click="handleClick" :class="{'is-checked': value}">
+    <input class="gqf-switch__input" type="checkbox" :name="name" ref="input"/>
+    <span class="gqf-switch__core" ref="core">
+        <span class="gqf-switch__button"></span>
+    </span>
+  </div>
 </template>
 
 <script>
@@ -32,6 +33,7 @@ export default {
       this.$emit('input', !this.value)
       await this.$nextTick()
       this.setColor()
+      this.$refs.input.checked = this.value
     },
     setColor () {
       if (this.activeColor || this.inactiveColor) {
@@ -43,6 +45,7 @@ export default {
   },
   mounted () {
     this.setColor()
+    this.$refs.input.checked = this.value
   }
 }
 </script>
@@ -56,6 +59,13 @@ export default {
     line-height: 20px;
     height: 20px;
     vertical-align: middle;
+    .gqf-switch__input {
+      position: absolute;
+      width: 0;
+      height: 0;
+      opacity: 0;
+      margin: 0;
+    }
     .gqf-switch__core {
         margin: 0;
         display: inline-block;

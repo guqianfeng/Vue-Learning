@@ -27,11 +27,11 @@
     * 页面
         ```
         <template>
-            <label class="gqf-switch">
+            <div class="gqf-switch">
                 <span class="gqf-switch__core">
                     <span class="gqf-switch__button"></span>
                 </span>
-            </label>
+            </div>
         </template>        
         ```
     * 样式
@@ -166,7 +166,6 @@
     * 复制知识大纲的选中样式
     * 添加class，`:class="{'is-checked': value}"`
 
-* name属性就不说了，很简单
 * 接着来处理下传开关颜色   
     * 父组件`<gqf-switch v-model="active" active-color="red" inactive-color="green"></gqf-switch>`
     * 子组件接收 
