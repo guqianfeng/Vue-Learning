@@ -64,3 +64,4 @@
     * [dialog组件-涉及到的深度选择器](./03-萌新自制UI库/13-dialog组件-涉及到的深度选择器/dialog组件-涉及到的深度选择器.md)    
     * [input组件-基本结构与常用的属性](./03-萌新自制UI库/14-input组件-基本结构与常用的属性/input组件-基本结构与常用的属性.md)    
     * [input组件-v-model属性支持](./03-萌新自制UI库/15-input组件-v-model属性支持/input组件-v-model属性支持.md)    
+    * [input组件-清空value值的功能](./03-萌新自制UI库/16-input组件-清空value值的功能/input组件-清空value值的功能.md)    

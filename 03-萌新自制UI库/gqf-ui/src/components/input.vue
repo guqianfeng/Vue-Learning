@@ -1,8 +1,10 @@
 <template>
-  <div class="gqf-input">
+  <div class="gqf-input" :class="{'gqf-input--suffix': showSuffix}">
     <input class="gqf-input__inner" :class="{'is-disabled': disabled}" :type="type" :placeholder="placeholder" :name="name" :disabled="disabled" :value = "value"
     @input = "handleInput"
+    :clearable = "clearable"
     />
+    <span class="gqf-input__suffix" v-if="showSuffix"><i class="fa fa-close" v-if="clearable && value" @click="clear"></i><i class="fa fa-eye" v-if="showPassword"></i></span>
   </div>
 </template>
 
@@ -29,11 +31,27 @@ export default {
     value: {
       type: String,
       default: ''
+    },
+    clearable: {
+      type: Boolean,
+      default: false
+    },
+    showPassword: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
     handleInput (e) {
       this.$emit('input', e.target.value)
+    },
+    clear () {
+      this.$emit('input', '')
+    }
+  },
+  computed: {
+    showSuffix () {
+      return this.clearable || this.showPassword
     }
   }
 }
@@ -71,6 +89,29 @@ export default {
     border-color: #e4e7ed;
     color: #c0c4cc;
     cursor: not-allowed;
+  }
+}
+
+.gqf-input--suffix {
+  .gqf-input__inner {
+    padding-right: 30px;
+  }
+  .gqf-input__suffix {
+    position: absolute;
+    height: 100%;
+    right: 10px;
+    top: 0;
+    line-height: 40px;
+    text-align: center;
+    color: #c0c4cc;
+    transition: all .3s;
+    z-index: 900;
+    i {
+      color: #c0c4cc;
+      font-size: 14px;
+      cursor: pointer;
+      transition: color .2s cubic-bezier(.645, .045, .355, 1);
+    }
   }
 }
 </style>

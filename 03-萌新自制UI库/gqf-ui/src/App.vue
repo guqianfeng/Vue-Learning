@@ -82,6 +82,10 @@
     <div class="row">
       <gqf-input placeholder="请输入点信息" v-model="msg"></gqf-input>
     </div>
+    <div class="row">
+      <gqf-input placeholder="测试清空" v-model="msg" clearable></gqf-input>
+      <gqf-input placeholder="测试展示密码" type="password" showPassword></gqf-input>
+    </div>
   </div>
 </template>
 
