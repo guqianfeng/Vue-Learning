@@ -67,7 +67,7 @@
 
     <!-- <demo :money="money" @update:money="changeMoney"></demo> -->
     <!-- <demo :money.sync="money"></demo> -->
-    <div class="row">
+    <!-- <div class="row">
       <gqf-input placeholder="gqf"></gqf-input>
       <gqf-input placeholder="is"></gqf-input>
       <gqf-input placeholder="梅利奥猪猪"></gqf-input>
@@ -85,6 +85,12 @@
     <div class="row">
       <gqf-input placeholder="测试清空" v-model="msg" clearable></gqf-input>
       <gqf-input placeholder="测试展示密码" type="password" v-model="msg" showPassword></gqf-input>
+    </div> -->
+    <div class="row">
+      <gqf-switch v-model="active"></gqf-switch>
+    </div>
+    <div class="row">
+      <gqf-switch v-model="active" active-color="red" inactive-color="green" name="gqf"></gqf-switch>
     </div>
   </div>
 </template>
@@ -99,7 +105,8 @@ export default {
     return {
       visible: false,
       money: 100,
-      msg: 'gqf is 梅利奥猪猪'
+      msg: 'gqf is 梅利奥猪猪',
+      active: false
     }
   },
   methods: {

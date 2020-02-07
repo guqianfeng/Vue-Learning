@@ -66,3 +66,4 @@
     15. [input组件-v-model属性支持](./03-萌新自制UI库/15-input组件-v-model属性支持/input组件-v-model属性支持.md)    
     16. [input组件-清空value值的功能](./03-萌新自制UI库/16-input组件-清空value值的功能/input组件-清空value值的功能.md)    
     17. [input组件-显示和隐藏密码](./03-萌新自制UI库/17-input组件-显示和隐藏密码/input组件-显示和隐藏密码.md)    
+    18. [switch组件-开关自定义颜色](./03-萌新自制UI库/18-switch组件-开关自定义颜色/switch组件-开关自定义颜色.md)    
