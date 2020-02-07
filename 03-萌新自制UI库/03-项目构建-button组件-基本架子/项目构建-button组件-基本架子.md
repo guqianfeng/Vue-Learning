@@ -164,5 +164,6 @@
 
 
 > 知道你还不过瘾继续吧       
-
+* [上一节-演示element](../02-演示element/演示element.md)
+* [下一节-button组件-type属性的说明](../04-button组件-type属性的说明/button组件-type属性的说明.md)
 * [返回目录](../../README.md)         
