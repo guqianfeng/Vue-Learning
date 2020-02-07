@@ -84,7 +84,7 @@
     </div>
     <div class="row">
       <gqf-input placeholder="测试清空" v-model="msg" clearable></gqf-input>
-      <gqf-input placeholder="测试展示密码" type="password" showPassword></gqf-input>
+      <gqf-input placeholder="测试展示密码" type="password" v-model="msg" showPassword></gqf-input>
     </div>
   </div>
 </template>

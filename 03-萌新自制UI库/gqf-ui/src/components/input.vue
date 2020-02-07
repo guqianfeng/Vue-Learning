@@ -1,16 +1,20 @@
 <template>
   <div class="gqf-input" :class="{'gqf-input--suffix': showSuffix}">
-    <input class="gqf-input__inner" :class="{'is-disabled': disabled}" :type="type" :placeholder="placeholder" :name="name" :disabled="disabled" :value = "value"
+    <input class="gqf-input__inner" :class="{'is-disabled': disabled}" :type="showPassword ? (passwordVisible? 'text' : 'password') : type" :placeholder="placeholder" :name="name" :disabled="disabled" :value = "value"
     @input = "handleInput"
-    :clearable = "clearable"
     />
-    <span class="gqf-input__suffix" v-if="showSuffix"><i class="fa fa-close" v-if="clearable && value" @click="clear"></i><i class="fa fa-eye" v-if="showPassword"></i></span>
+    <span class="gqf-input__suffix" v-if="showSuffix"><i class="fa fa-close" v-if="clearable && value" @click="clear"></i><i class="fa fa-eye" :class="{'fa-eye-active': passwordVisible}" v-if="showPassword" @click="handlePassword"></i></span>
   </div>
 </template>
 
 <script>
 export default {
   name: 'GqfInput',
+  data () {
+    return {
+      passwordVisible: false
+    }
+  },
   props: {
     placeholder: {
       type: String,
@@ -47,6 +51,9 @@ export default {
     },
     clear () {
       this.$emit('input', '')
+    },
+    handlePassword () {
+      this.passwordVisible = !this.passwordVisible
     }
   },
   computed: {
@@ -111,6 +118,9 @@ export default {
       font-size: 14px;
       cursor: pointer;
       transition: color .2s cubic-bezier(.645, .045, .355, 1);
+    }
+    i.fa-eye-active {
+      color: blue;
     }
   }
 }
