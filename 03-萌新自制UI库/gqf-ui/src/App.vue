@@ -92,13 +92,13 @@
     <div class="row">
       <gqf-switch v-model="active" active-color="red" inactive-color="green" name="username"></gqf-switch>
     </div> -->
-    <div class="row">
-      <gqf-radio label="1" v-model="gender">男</gqf-radio>
-      <gqf-radio label="0" v-model="gender">女</gqf-radio>
-    </div>
-    <div class="row">
+    <!-- <div class="row">
       <gqf-radio label="1" v-model="gender"></gqf-radio>
       <gqf-radio label="0" v-model="gender"></gqf-radio>
+    </div> -->
+    <div class="row">
+      <gqf-radio label="1" v-model="gender" name="gender">男</gqf-radio>
+      <gqf-radio label="0" v-model="gender" name="gender">女</gqf-radio>
     </div>
   </div>
 </template>

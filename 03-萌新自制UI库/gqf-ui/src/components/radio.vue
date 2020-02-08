@@ -1,8 +1,8 @@
 <template>
-  <label class="gqf-radio">
+  <label class="gqf-radio" :class="{'is-checked': label === value}">
     <span class="gqf-radio__input">
       <span class="gqf-radio__inner"></span>
-      <input type="radio" class="gqf-radio__original">
+      <input type="radio" class="gqf-radio__original" :name="name" :value="label" v-model="model">
     </span>
     <span class="gqf-radio__label">
       <slot></slot>
@@ -14,6 +14,16 @@
 <script>
 export default {
   name: 'GqfRadio',
+  computed: {
+    model: {
+      get () {
+        return this.value
+      },
+      set (val) {
+        this.$emit('input', val)
+      }
+    }
+  },
   props: {
     label: {
       type: [String, Number, Boolean],
