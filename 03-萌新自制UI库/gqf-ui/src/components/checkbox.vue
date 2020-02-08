@@ -1,5 +1,5 @@
 <template>
-  <label for="" class="gqf-checkbox" :class="{'is-checked': model}">
+  <label class="gqf-checkbox" :class="{'is-checked': model}">
     <span class="gqf-checkbox__input">
       <span class="gqf-checkbox__inner"></span>
       <input type="checkbox" class="gqf-checkbox__original" :name="name" v-model="model" />
@@ -87,16 +87,16 @@ export default {
         transform-origin: center;
       }
     }
-    // .gqf-checkbox__original {
-    //   opacity: 0;
-    //   outline: none;
-    //   position: absolute;
-    //   left: 10px;
-    //   margin: 0;
-    //   width: 0;
-    //   height: 0;
-    //   z-index: -1;
-    // }
+    .gqf-checkbox__original {
+      opacity: 0;
+      outline: none;
+      position: absolute;
+      left: 10px;
+      margin: 0;
+      width: 0;
+      height: 0;
+      z-index: -1;
+    }
   }
   .gqf-checkbox__label {
     display: inline-block;
