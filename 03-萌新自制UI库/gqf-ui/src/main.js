@@ -5,6 +5,7 @@ import GqfButton from '@/components/button.vue'
 import GqfDialog from '@/components/dialog.vue'
 import GqfInput from '@/components/input.vue'
 import GqfSwitch from '@/components/switch.vue'
+import GqfRadio from '@/components/radio.vue'
 
 Vue.config.productionTip = false
 
@@ -12,6 +13,7 @@ Vue.component(GqfButton.name, GqfButton)
 Vue.component(GqfDialog.name, GqfDialog)
 Vue.component(GqfInput.name, GqfInput)
 Vue.component(GqfSwitch.name, GqfSwitch)
+Vue.component(GqfRadio.name, GqfRadio)
 
 new Vue({
   render: h => h(App)
