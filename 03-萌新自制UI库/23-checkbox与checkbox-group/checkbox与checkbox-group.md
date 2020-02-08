@@ -14,7 +14,7 @@
     * html结构
         ```html
         <template>
-            <label for="" class="gqf-checkbox">
+            <label class="gqf-checkbox">
                 <span class="gqf-checkbox__input">
                 <span class="gqf-checkbox__inner"></span>
                 <input type="checkbox" class="gqf-checkbox__original"/>
