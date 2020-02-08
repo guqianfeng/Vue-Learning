@@ -1,4 +1,4 @@
-# input组件-v-model属性支持
+# 15-input组件-v-model属性支持
 
 > 知识大纲
 
@@ -105,6 +105,6 @@
 
 > 知道你还不过瘾继续吧       
 
-* [上一节-input组件-基本结构与常用的属性](../14-input组件-基本结构与常用的属性/input组件-基本结构与常用的属性.md)
-* [下一节-input组件-清空value值的功能](../16-input组件-清空value值的功能/input组件-清空value值的功能.md)
+* [上一节-14-input组件-基本结构与常用的属性](../14-input组件-基本结构与常用的属性/input组件-基本结构与常用的属性.md)
+* [下一节-16-input组件-清空value值的功能](../16-input组件-清空value值的功能/input组件-清空value值的功能.md)
 * [返回目录](../../README.md)

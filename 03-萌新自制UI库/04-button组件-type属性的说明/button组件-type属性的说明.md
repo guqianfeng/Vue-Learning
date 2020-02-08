@@ -1,4 +1,4 @@
-# button组件-type属性的说明
+# 04-button组件-type属性的说明
 
 > css样式
 * 各type的样式
@@ -97,6 +97,6 @@
 
 > 知道你还不过瘾继续吧       
 
-* [上一节-项目构建-button组件-基本架子](../03-项目构建-button组件-基本架子/项目构建-button组件-基本架子.md)
-* [下一节-round-circle-plain属性的支持](../05-round-circle-plain属性的支持/round-circle-plain属性的支持.md)
+* [上一节-03-项目构建-button组件-基本架子](../03-项目构建-button组件-基本架子/项目构建-button组件-基本架子.md)
+* [下一节-05-round-circle-plain属性的支持](../05-round-circle-plain属性的支持/round-circle-plain属性的支持.md)
 * [返回目录](../../README.md) 

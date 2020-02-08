@@ -1,4 +1,4 @@
-# input组件-基本结构与常用的属性
+# 14-input组件-基本结构与常用的属性
 
 > 知识大纲
 
@@ -185,6 +185,6 @@
 
 > 知道你还不过瘾继续吧       
 
-* [上一节-dialog组件-涉及到的深度选择器](../13-dialog组件-涉及到的深度选择器/dialog组件-涉及到的深度选择器.md)
-* [下一节-input组件-v-model属性支持](../15-input组件-v-model属性支持/input组件-v-model属性支持.md)
+* [上一节-13-dialog组件-涉及到的深度选择器](../13-dialog组件-涉及到的深度选择器/dialog组件-涉及到的深度选择器.md)
+* [下一节-15-input组件-v-model属性支持](../15-input组件-v-model属性支持/input组件-v-model属性支持.md)
 * [返回目录](../../README.md)

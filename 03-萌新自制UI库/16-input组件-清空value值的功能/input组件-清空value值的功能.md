@@ -1,4 +1,4 @@
-# input组件-清空value值的功能
+# 16-input组件-清空value值的功能
 
 > 小图标样式
 * 样式如下
@@ -66,6 +66,6 @@
 
 > 知道你还不过瘾继续吧       
 
-* [上一节-input组件-v-model属性支持](../15-input组件-v-model属性支持/input组件-v-model属性支持.md)
-* [下一节-input组件-显示和隐藏密码](../17-input组件-显示和隐藏密码/input组件-显示和隐藏密码.md)
+* [上一节-15-input组件-v-model属性支持](../15-input组件-v-model属性支持/input组件-v-model属性支持.md)
+* [下一节-17-input组件-显示和隐藏密码](../17-input组件-显示和隐藏密码/input组件-显示和隐藏密码.md)
 * [返回目录](../../README.md)

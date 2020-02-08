@@ -1,4 +1,4 @@
-# dialog组件-组件创建标题的处理
+# 08-dialog组件-组件创建标题的处理
 
 > 知识大纲
 
@@ -184,6 +184,6 @@
 
 > 知道你还不过瘾继续吧       
 
-* [上一节-button组件-disabled属性说明](../07-button组件-disabled属性说明/button组件-disabled属性说明.md)
-* [下一节-dialog组件的内容给处理-插槽的使用](../09-dialog组件的内容给处理-插槽的使用/dialog组件的内容给处理-插槽的使用.md)
+* [上一节-07-button组件-disabled属性说明](../07-button组件-disabled属性说明/button组件-disabled属性说明.md)
+* [下一节-09-dialog组件的内容给处理-插槽的使用](../09-dialog组件的内容给处理-插槽的使用/dialog组件的内容给处理-插槽的使用.md)
 * [返回目录](../../README.md) 
