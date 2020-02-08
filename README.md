@@ -69,3 +69,4 @@
     18. [switch组件-开关自定义颜色](./03-萌新自制UI库/18-switch组件-开关自定义颜色/switch组件-开关自定义颜色.md)    
     19. [switch组件-添加input框](./03-萌新自制UI库/19-switch组件-添加input框/switch组件-添加input框.md)    
     20. [radio组件-基本结构](./03-萌新自制UI库/20-radio组件-基本结构/radio组件-基本结构.md)    
+    21. [radio组件-控制选中](./03-萌新自制UI库/21-radio组件-控制选中/radio组件-控制选中.md)    
