@@ -110,25 +110,47 @@
 > 练习
 
 * 老样子新建组件，复制结构及样式，然后不要忘记在main中注册
-* 我们先做一个是否同意的复选框，`<gqf-checkbox v-model="agree">是否同意</gqf-checkbox>`
-* props接受还是老样子的那几个
-    ```js
-    props: {
-        label: {
-            type: String,
-            default: null
-        },
-        name: {
-            type: String,
-            default: ''
-        },
-        value: {
-            type: Boolean,
-            default: false
+* 单个checkbox
+    * 我们先做一个是否同意的复选框，`<gqf-checkbox v-model="agree">是否同意</gqf-checkbox>`
+    * props接受还是老样子的那几个
+        ```js
+        props: {
+            label: {
+                type: String,
+                default: null
+            },
+            name: {
+                type: String,
+                default: ''
+            },
+            value: {
+                type: Boolean,
+                default: false
+            }
         }
-    }
-    ```
-* 处理下input    
+        ```
+    * 处理下双向数据绑定
+        * 老样子先用个计算属性处理model
+            ```js
+            computed: {
+                model: {
+                get () {
+                    return this.value
+                },
+                set (value) {
+                    this.$emit('input', value)
+                }
+                }
+            },        
+            ```
+        * 处理v-model和name，代码为`<input type="checkbox" class="gqf-checkbox__original" :name="name" v-model="model" />`
+        * 添加class`:class="{'is-checked': model}"`
+        * 此时单个checkbox，true/false选择功能就完成了
+
+            ![](./images/实现单个多选框.jpg)
+
+* 多个checkbox
+
 
 > 知道你还不过瘾继续吧       
 
