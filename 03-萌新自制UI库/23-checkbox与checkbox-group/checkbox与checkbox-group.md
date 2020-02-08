@@ -149,7 +149,16 @@
 
             ![](./images/实现单个多选框.jpg)
 
-* 多个checkbox
+* 多个checkbox - 新建新组件gqf-checkbox-group并注册
+    * App.vue中data给个hobby，`hobby: ['eat', 'play', 'sleep']`
+    * 然后使用方式具体是这样的
+        ```html
+        <gqf-checkbox-group v-model="hobby">
+            <gqf-checkbox label="sleep"></gqf-checkbox>
+            <gqf-checkbox label="eat"></gqf-checkbox>
+            <gqf-checkbox label="play"></gqf-checkbox>
+        </gqf-checkbox-group>        
+        ```
 
 
 > 知道你还不过瘾继续吧       
