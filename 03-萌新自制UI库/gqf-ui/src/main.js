@@ -7,6 +7,7 @@ import GqfInput from '@/components/input.vue'
 import GqfSwitch from '@/components/switch.vue'
 import GqfRadio from '@/components/radio.vue'
 import GqfRadioGroup from '@/components/radio-group.vue'
+import GqfCheckbox from '@/components/checkbox.vue'
 
 Vue.config.productionTip = false
 
@@ -16,6 +17,7 @@ Vue.component(GqfInput.name, GqfInput)
 Vue.component(GqfSwitch.name, GqfSwitch)
 Vue.component(GqfRadio.name, GqfRadio)
 Vue.component(GqfRadioGroup.name, GqfRadioGroup)
+Vue.component(GqfCheckbox.name, GqfCheckbox)
 
 new Vue({
   render: h => h(App)
