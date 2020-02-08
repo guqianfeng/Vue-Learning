@@ -1,5 +1,5 @@
 <template>
-  <label class="gqf-radio" :class="{'is-checked': label === value}">
+  <label class="gqf-radio" :class="{'is-checked': label === model}">
     <span class="gqf-radio__input">
       <span class="gqf-radio__inner"></span>
       <input type="radio" class="gqf-radio__original" :name="name" :value="label" v-model="model">
@@ -14,14 +14,27 @@
 <script>
 export default {
   name: 'GqfRadio',
+  // created () {
+  //   console.log(this.$parent)
+  // },
+  inject: {
+    RadioGroup: {
+      default: ''
+    }
+  },
   computed: {
     model: {
       get () {
-        return this.value
+        // return this.value
+        return this.isGroup ? this.RadioGroup.value : this.value
       },
       set (val) {
-        this.$emit('input', val)
+        // this.$emit('input', val)
+        this.isGroup ? this.RadioGroup.$emit('input', val) : this.$emit('input', val)
       }
+    },
+    isGroup () {
+      return !!this.RadioGroup
     }
   },
   props: {

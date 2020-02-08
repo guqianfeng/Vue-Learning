@@ -96,9 +96,15 @@
       <gqf-radio label="1" v-model="gender"></gqf-radio>
       <gqf-radio label="0" v-model="gender"></gqf-radio>
     </div> -->
-    <div class="row">
+    <!-- <div class="row">
       <gqf-radio label="1" v-model="gender" name="gender">男</gqf-radio>
       <gqf-radio label="0" v-model="gender" name="gender">女</gqf-radio>
+    </div> -->
+    <div class="row">
+      <gqf-radio-group v-model="gender">
+        <gqf-radio label="1" name="gender">男</gqf-radio>
+        <gqf-radio label="0" name="gender">女</gqf-radio>
+      </gqf-radio-group>
     </div>
   </div>
 </template>
