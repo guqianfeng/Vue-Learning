@@ -1,7 +1,11 @@
 {
   "name": "gqf-ui",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "main": "dist/gqf-ui.umd.min.js",
+  "author": {
+    "name": "顾乾峰"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
