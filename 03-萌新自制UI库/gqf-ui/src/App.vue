@@ -116,9 +116,12 @@
         <gqf-checkbox label="play"></gqf-checkbox>
       </gqf-checkbox-group>
     </div> -->
-    <gqf-form :model="model">
+    <gqf-form :model="model" label-width="200px">
       <gqf-form-item label="用户名">
-        <gqf-input placeholder="请输入用户名"></gqf-input>
+        <gqf-input placeholder="请输入用户名" v-model="model.username"></gqf-input>
+      </gqf-form-item>
+      <gqf-form-item label="是否同意">
+        <gqf-switch v-model="model.active"></gqf-switch>
       </gqf-form-item>
     </gqf-form>
   </div>
@@ -139,7 +142,8 @@ export default {
       gender: '1',
       hobby: ['eat', 'play', 'sleep'],
       model: {
-        hobby: ['eat', 'play', 'sleep']
+        username: '',
+        active: true
       }
     }
   },
