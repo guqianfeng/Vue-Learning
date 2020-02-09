@@ -75,3 +75,4 @@
     * [24-form组件的说明](./03-萌新自制UI库/24-form组件的说明/form组件的说明.md)    
     * [25-form与form-item组件的使用](./03-萌新自制UI库/25-form与form-item组件的使用/form与form-item组件的使用.md)    
     * [26-把package处理成vue插件](./03-萌新自制UI库/26-把package处理成vue插件/把package处理成vue插件.md)    
+    * [27-组件库的制作](./03-萌新自制UI库/27-组件库的制作/组件库的制作.md)    
