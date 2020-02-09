@@ -109,13 +109,13 @@
     <div class="row">
       <gqf-checkbox v-model="active" name="agree">是否同意</gqf-checkbox>
     </div>
-    <!-- <div class="row">
+    <div class="row">
       <gqf-checkbox-group v-model="hobby">
         <gqf-checkbox label="sleep"></gqf-checkbox>
         <gqf-checkbox label="eat"></gqf-checkbox>
         <gqf-checkbox label="play"></gqf-checkbox>
       </gqf-checkbox-group>
-    </div> -->
+    </div>
   </div>
 </template>
 

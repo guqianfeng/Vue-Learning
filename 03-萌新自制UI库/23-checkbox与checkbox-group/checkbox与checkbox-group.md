@@ -150,6 +150,30 @@
             ![](./images/实现单个多选框.jpg)
 
 * 多个checkbox - 新建新组件gqf-checkbox-group并注册
+    * 模板
+        ```html
+        <template>
+            <div class="gqf-checkbox-group">
+                <slot></slot>
+            </div>
+        </template>        
+        ```
+    * 数据
+        ```js
+        export default {
+            name: 'GqfCheckboxGroup',
+            props: {
+                value: {
+                type: Array
+                }
+            },
+            provide () {
+                return {
+                CheckboxGroup: this
+                }
+            }
+        }        
+        ```        
     * App.vue中data给个hobby，`hobby: ['eat', 'play', 'sleep']`
     * 然后使用方式具体是这样的
         ```html
@@ -159,6 +183,39 @@
             <gqf-checkbox label="play"></gqf-checkbox>
         </gqf-checkbox-group>        
         ```
+    * 此时页面的效果是这样的
+
+        ![](./images/注册checkbox-group.jpg) 
+
+    * checkbox组件inject接受
+        ```js
+        inject: {
+            CheckboxGroup: {
+                default: ''
+            }
+        },        
+        ```       
+    * 因为多选通过数组判断，input这时候`:value="label"`就起作用了    
+    * isGroup方法，model重新的处理，isChecked方法
+        ```js
+        computed: {
+            isGroup () {
+                return !!this.CheckboxGroup
+            },
+            model: {
+                get () {
+                    return this.isGroup ? this.CheckboxGroup.value : this.value
+                },
+                set (value) {
+                    this.isGroup ? this.CheckboxGroup.$emit('input', value) : this.$emit('input', value)
+                }
+            },
+            isChecked () {
+                return this.isGroup ? this.model.includes(this.label) : this.model
+            }
+        },        
+        ```
+    * class处理`:class="{'is-checked': isChecked}"`     
 
 
 > 知道你还不过瘾继续吧       

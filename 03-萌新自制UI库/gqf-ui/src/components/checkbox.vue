@@ -1,8 +1,8 @@
 <template>
-  <label class="gqf-checkbox" :class="{'is-checked': model}">
+  <label class="gqf-checkbox" :class="{'is-checked': isChecked}">
     <span class="gqf-checkbox__input">
       <span class="gqf-checkbox__inner"></span>
-      <input type="checkbox" class="gqf-checkbox__original" :name="name" v-model="model" />
+      <input type="checkbox" class="gqf-checkbox__original" :name="name" v-model="model" :value="label"/>
     </span>
     <span class="gqf-checkbox__label">
       <slot></slot>
@@ -14,14 +14,25 @@
 <script>
 export default {
   name: 'GqfCheckbox',
+  inject: {
+    CheckboxGroup: {
+      default: ''
+    }
+  },
   computed: {
+    isGroup () {
+      return !!this.CheckboxGroup
+    },
     model: {
       get () {
-        return this.value
+        return this.isGroup ? this.CheckboxGroup.value : this.value
       },
       set (value) {
-        this.$emit('input', value)
+        this.isGroup ? this.CheckboxGroup.$emit('input', value) : this.$emit('input', value)
       }
+    },
+    isChecked () {
+      return this.isGroup ? this.model.includes(this.label) : this.model
     }
   },
   props: {
