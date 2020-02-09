@@ -69,3 +69,4 @@
 
 * [返回目录](../../README.md)
 * [上一节-24-form组件的说明](../24-form组件的说明/form组件的说明.md)
+* [下一节-26-把package处理成vue插件](../26-把package处理成vue插件/把package处理成vue插件.md)

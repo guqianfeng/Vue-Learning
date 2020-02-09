@@ -116,14 +116,17 @@
         <gqf-checkbox label="play"></gqf-checkbox>
       </gqf-checkbox-group>
     </div> -->
-    <gqf-form :model="model" label-width="200px">
+    <!-- <gqf-form :model="model" label-width="200px">
       <gqf-form-item label="用户名">
         <gqf-input placeholder="请输入用户名" v-model="model.username"></gqf-input>
       </gqf-form-item>
       <gqf-form-item label="是否同意">
         <gqf-switch v-model="model.active"></gqf-switch>
       </gqf-form-item>
-    </gqf-form>
+    </gqf-form> -->
+    <div>测试制作ui库</div>
+    <br>
+    <gqf-button type='primary'>按钮</gqf-button>
   </div>
 </template>
 

@@ -74,3 +74,4 @@
     * [23-checkbox与checkbox-group](./03-萌新自制UI库/23-checkbox与checkbox-group/checkbox与checkbox-group.md)    
     * [24-form组件的说明](./03-萌新自制UI库/24-form组件的说明/form组件的说明.md)    
     * [25-form与form-item组件的使用](./03-萌新自制UI库/25-form与form-item组件的使用/form与form-item组件的使用.md)    
+    * [26-把package处理成vue插件](./03-萌新自制UI库/26-把package处理成vue插件/把package处理成vue插件.md)    
