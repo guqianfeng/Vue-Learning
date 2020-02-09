@@ -106,7 +106,7 @@
         <gqf-radio label="0" name="gender">女</gqf-radio>
       </gqf-radio-group>
     </div> -->
-    <div class="row">
+    <!-- <div class="row">
       <gqf-checkbox v-model="active" name="agree">是否同意</gqf-checkbox>
     </div>
     <div class="row">
@@ -115,7 +115,12 @@
         <gqf-checkbox label="eat"></gqf-checkbox>
         <gqf-checkbox label="play"></gqf-checkbox>
       </gqf-checkbox-group>
-    </div>
+    </div> -->
+    <gqf-form :model="model">
+      <gqf-form-item label="用户名">
+        <gqf-input placeholder="请输入用户名"></gqf-input>
+      </gqf-form-item>
+    </gqf-form>
   </div>
 </template>
 
@@ -132,7 +137,10 @@ export default {
       msg: 'gqf is 梅利奥猪猪',
       active: false,
       gender: '1',
-      hobby: ['eat', 'play', 'sleep']
+      hobby: ['eat', 'play', 'sleep'],
+      model: {
+        hobby: ['eat', 'play', 'sleep']
+      }
     }
   },
   methods: {
