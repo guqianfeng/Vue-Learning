@@ -10,7 +10,7 @@
     <div id="todoapp">
         <todo-header @add="addTodo"></todo-header>
         <todo-body :todos="todos" @delete="deleteTodo"></todo-body>
-        <todo-footer></todo-footer>
+        <todo-footer :todos="todos" @deletecompleted="deleteCompleted"></todo-footer>
     </div>
     <script src="./js/vue.js"></script>
     <script>
@@ -59,7 +59,7 @@
                     props: ["todos"],
                     template: `
                                 <section id="main" style="display: block;">
-                                    <input id="toggle-all" type="checkbox" checked="">
+                                    <input id="toggle-all" type="checkbox">
                                     <label for="toggle-all">Mark all as complete</label>
                                     <ul id="todo-list">
                                         <todo-item v-for="todo in todos" :key="todo.id" :todo="todo"></todo-item>
@@ -68,34 +68,61 @@
                             `,
                     components: {
                         "todo-item": {
+                            data(){
+                                return {
+                                    canEdit: false,
+                                    timer: 0,
+                                }
+                            },
                             inject: ['app'],
                             props: ["todo"],
                             template: `
                                         <li :class="{'done': todo.completed}">
-                                            <div class="view" style="display: block;">
+                                            <div class="view" :style="{display: canEdit ? 'none' : 'block'}">
                                                 <input class="toggle" type="checkbox" v-model="todo.completed">
-                                                <label>{{todo.val}}</label><a class="destroy" @click="deleteTodo"></a>
+                                                <label @dblclick="canEdit=true">{{todo.val}}</label><a class="destroy" @click="deleteTodo"></a>
                                             </div>
-                                            <input class="edit" type="text" value="213213" style="display: none;">
+                                            <input ref="editInput" class="edit" type="text" v-model="todo.val" :style="{display: canEdit ? 'block' : 'none'}" @blur="canEdit=false">
                                         </li>                    
                                     `,
                             methods: {
                                 deleteTodo(){
                                     this.app.deleteTodo(this.todo.id);
                                 }
-                            }        
+                            },
+                            watch: {
+                                canEdit(flag){
+                                    const editInput = this.$refs.editInput;
+                                    if(flag){
+                                        this.timer = setTimeout(() => {
+                                            editInput.select();
+                                        })
+                                    }else{
+                                        clearTimeout(this.timer);
+                                        if(!editInput.value.trim().length){
+                                            this.canEdit = true;
+                                        }
+                                    }
+                                }
+                            }     
                         }
                     }                      
                 },
                 "todo-footer": {
+                    props: ["todos"],
                     template: `
-                        <footer style="display: block;">
-                            <a id="clear-completed" style="display: none;">
-                                Clear 0 completed item
+                        <footer :style="{display: todos.length ? 'block' : 'none'}">
+                            <a @click="deleteCompleted" id="clear-completed" :style="{display: todos.filter(todo => todo.completed) ? 'block' : 'none'}">
+                                Clear {{todos.filter(todo => todo.completed).length}} completed item
                             </a>
-                            <div id="todo-count">10 items left</div>
+                            <div id="todo-count">{{todos.filter(todo => !todo.completed).length}} items left</div>
                         </footer>            
-                    `                    
+                    `,
+                    methods: {
+                        deleteCompleted(){
+                            this.$emit("deletecompleted");
+                        }
+                    }                    
                 },
             },
             methods: {
@@ -110,8 +137,11 @@
                 },
                 deleteTodo(id){
                     this.todos = this.todos.filter(todo => todo.id != id);
+                },
+                deleteCompleted(){
+                    this.todos = this.todos.filter(todo => !todo.completed)
                 }
-            }
+            },
         })
     </script>
 </body>
