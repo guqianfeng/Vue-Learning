@@ -14,8 +14,14 @@
     </div>
     <script src="./js/vue.js"></script>
     <script>
-        Vue.component("todo-header", {
-            template: `
+        let app = new Vue({
+            el: '#todoapp',
+            data: {
+                todos: [],
+            },
+            components: {
+                "todo-header": {
+                    template: `
                         <header>
                             <h1>Todos</h1>
                             <input 
@@ -27,62 +33,59 @@
                             />
                         </header>            
                     `,
-            data(){
-                return {
-                    todo: ''
-                }
-            },
-            methods: {
-                addTodo(){
-                    // console.log(this.todo);
-                    if(!this.todo.trim().length){
-                        alert("请输入内容")
-                    }else{
-                        this.$emit("add", this.todo);
-                        this.todo = "";
-                    }
-                }
-            }        
-        })
-        Vue.component("todo-body", {
-            props: ["todos"],
-            template: `
-                        <section id="main" style="display: block;">
-                            <input id="toggle-all" type="checkbox" checked="">
-                            <label for="toggle-all">Mark all as complete</label>
-                            <ul id="todo-list">
-                                <todo-item v-for="todo in todos" :key="todo.id"></todo-item>
-                            </ul>
-                        </section>            
-                    `,
-            components: {
-                "todo-item": {
+                    data(){
+                        return {
+                            todo: ''
+                        }
+                    },
+                    methods: {
+                        addTodo(){
+                            // console.log(this.todo);
+                            if(!this.todo.trim().length){
+                                alert("请输入内容")
+                            }else{
+                                this.$emit("add", this.todo);
+                                this.todo = "";
+                            }
+                        }
+                    }                      
+                },
+                "todo-body": {
+                    props: ["todos"],
                     template: `
-                                <li :class="">
-                                    <div class="view" style="display: block;">
-                                        <input class="toggle" type="checkbox">
-                                        <label>test</label><a class="destroy"></a>
-                                    </div>
-                                    <input class="edit" type="text" value="213213" style="display: none;">
-                                </li>                    
-                            `
-                }
-            }        
-        })
-        Vue.component("todo-footer", {
-            template: `
+                                <section id="main" style="display: block;">
+                                    <input id="toggle-all" type="checkbox" checked="">
+                                    <label for="toggle-all">Mark all as complete</label>
+                                    <ul id="todo-list">
+                                        <todo-item v-for="todo in todos" :key="todo.id" :todo="todo"></todo-item>
+                                    </ul>
+                                </section>            
+                            `,
+                    components: {
+                        "todo-item": {
+                            props: ["todo"],
+                            template: `
+                                        <li :class="{'done': todo.completed}">
+                                            <div class="view" style="display: block;">
+                                                <input class="toggle" type="checkbox" v-model="todo.completed">
+                                                <label>{{todo.val}}</label><a class="destroy"></a>
+                                            </div>
+                                            <input class="edit" type="text" value="213213" style="display: none;">
+                                        </li>                    
+                                    `
+                        }
+                    }                      
+                },
+                "todo-footer": {
+                    template: `
                         <footer style="display: block;">
                             <a id="clear-completed" style="display: none;">
                                 Clear 0 completed item
                             </a>
                             <div id="todo-count">10 items left</div>
                         </footer>            
-                    `
-        })
-        let app = new Vue({
-            el: '#todoapp',
-            data: {
-                todos: [],
+                    `                    
+                },
             },
             methods: {
                 addTodo(val){
