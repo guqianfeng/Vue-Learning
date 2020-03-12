@@ -3,25 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vue-todolist</title>
+    <title>Vue - todolist</title>
     <link rel="stylesheet" href="./css/index.css">
 </head>
 <body>
     <div id="todoapp">
-        <todo-header @add="addTodo"></todo-header>
-        <todo-body :todos="todos" @delete="deleteTodo"></todo-body>
-        <todo-footer :todos="todos" @deletecompleted="deleteCompleted"></todo-footer>
+        <todo-header></todo-header>
+        <todo-body :todos="todos"></todo-body>
+        <todo-footer :todos="todos"></todo-footer>
     </div>
     <script src="./js/vue.js"></script>
     <script>
-        let app = new Vue({
-            el: '#todoapp',
+        const app = new Vue({
+            el: "#todoapp",
             data: {
-                todos: [],
+                todos: []
+            },
+            methods: {
+                addTodo(val){
+                    this.todos.push({
+                        id: Date.now(),
+                        val,
+                        completed: false,
+                    })
+                    // console.log(this.todos);
+                },
+                deleteTodo(id){
+                    this.todos = this.todos.filter(todo => todo.id !== id);
+                },
+                deleteCompleted(){
+                    this.todos = this.todos.filter(todo => !todo.completed);
+                },
+                changeCheckedAll(val){
+                    this.todos.forEach(todo => todo.completed = val);
+                }
             },
             provide(){
                 return {
-                    'app': this
+                    "app": this
                 }
             },
             components: {
@@ -33,60 +52,94 @@
                                 id="new-todo" 
                                 type="text" 
                                 placeholder="What needs to be done?" 
-                                v-model="todo" 
+                                v-model="todo"
                                 @keyup.enter="addTodo"
                             />
-                        </header>            
+                        </header>                     
                     `,
+                    inject: ["app"],
                     data(){
                         return {
-                            todo: ''
+                            todo: ""
                         }
                     },
                     methods: {
                         addTodo(){
-                            // console.log(this.todo);
                             if(!this.todo.trim().length){
-                                alert("请输入内容")
-                            }else{
-                                this.$emit("add", this.todo);
-                                this.todo = "";
+                                alert("输入点内容吧");
+                                return;
                             }
-                        }
-                    }                      
+                            this.app.addTodo(this.todo);
+                            this.todo = "";
+                        },
+                    }
                 },
                 "todo-body": {
+                    inject: ["app"],
                     props: ["todos"],
                     template: `
-                                <section id="main" style="display: block;">
-                                    <input id="toggle-all" type="checkbox">
-                                    <label for="toggle-all">Mark all as complete</label>
-                                    <ul id="todo-list">
-                                        <todo-item v-for="todo in todos" :key="todo.id" :todo="todo"></todo-item>
-                                    </ul>
-                                </section>            
-                            `,
+                        <section id="main" style="display: block;">
+                            <input 
+                                id="toggle-all" 
+                                type="checkbox" 
+                                v-model="checkedAll" 
+                                v-show="todos.length" 
+                            />
+                            <label for="toggle-all">Mark all as complete</label>
+                            <ul id="todo-list">
+                                <todo-item
+                                    v-for="todo in todos"
+                                    :key="todo.id"
+                                    :todo="todo"
+                                ></todo-item>
+                            </ul>
+                        </section>                    
+                    `,
+                    computed: {
+                        checkedAll: {
+                            get(){
+                                if(!this.todos.length) return false;
+                                return this.todos.every(todo => todo.completed);
+                            },
+                            set(val){
+                                this.app.changeCheckedAll(val);
+                            }
+                        }
+                    },
                     components: {
                         "todo-item": {
+                            inject: ["app"],
+                            props: ["todo"],
                             data(){
                                 return {
                                     canEdit: false,
-                                    timer: 0,
+                                    timer: 0
                                 }
                             },
-                            inject: ['app'],
-                            props: ["todo"],
                             template: `
-                                        <li :class="{'done': todo.completed}">
-                                            <div class="view" :style="{display: canEdit ? 'none' : 'block'}">
-                                                <input class="toggle" type="checkbox" v-model="todo.completed">
-                                                <label @dblclick="canEdit=true">{{todo.val}}</label><a class="destroy" @click="deleteTodo"></a>
-                                            </div>
-                                            <input ref="editInput" class="edit" type="text" v-model="todo.val" :style="{display: canEdit ? 'block' : 'none'}" @blur="canEdit=false">
-                                        </li>                    
-                                    `,
+                                <li :class="{'done': todo.completed}">
+                                    <div class="view" :style="{display: canEdit ? 'none' : 'block'}" >
+                                        <input 
+                                            class="toggle"
+                                            type="checkbox"
+                                            v-model="todo.completed"
+                                        />
+                                        <label @dblclick="canEdit=true">{{todo.val}}</label>
+                                        <a class="destroy" @click="deleteTodo"></a>
+                                    </div>
+                                    <input
+                                        class="edit" 
+                                        type="text" 
+                                        v-model="todo.val"
+                                        :style="{display: canEdit ? 'block' : 'none'}" 
+                                        @blur="canEdit=false"
+                                        ref="editInput"
+                                    />
+                                </li>                            
+                            `,
                             methods: {
                                 deleteTodo(){
+                                    // console.log("delete")
                                     this.app.deleteTodo(this.todo.id);
                                 }
                             },
@@ -104,44 +157,41 @@
                                         }
                                     }
                                 }
-                            }     
+                            }
                         }
-                    }                      
+                    }
                 },
                 "todo-footer": {
+                    inject: ["app"],
                     props: ["todos"],
                     template: `
                         <footer :style="{display: todos.length ? 'block' : 'none'}">
-                            <a @click="deleteCompleted" id="clear-completed" :style="{display: todos.filter(todo => todo.completed) ? 'block' : 'none'}">
-                                Clear {{todos.filter(todo => todo.completed).length}} completed item
+                            <a 
+                                id="clear-completed" 
+                                :style="{display: completedTodos.length ? 'block' : 'none'}"
+                                @click="deleteCompleted"
+                            >
+                                Clear {{completedTodos.length}} completed item
                             </a>
-                            <div id="todo-count">{{todos.filter(todo => !todo.completed).length}} items left</div>
-                        </footer>            
+                            <div id="todo-count">{{uncompletedTodos.length}} items left</div>
+                        </footer>                    
                     `,
+                    computed: {
+                        completedTodos(){
+                            return this.todos.filter(todo => todo.completed)
+                        },
+                        uncompletedTodos(){
+                            return this.todos.filter(todo => !todo.completed)
+                        }
+                    },
                     methods: {
                         deleteCompleted(){
-                            this.$emit("deletecompleted");
+                            // console.log(this.app.deleteCompleted);
+                            this.app.deleteCompleted();
                         }
-                    }                    
-                },
-            },
-            methods: {
-                addTodo(val){
-                    // console.log(val)
-                    this.todos.push({
-                        id: Date.now(),
-                        val,
-                        completed: false,
-                    })
-                    // console.log(this.todos);
-                },
-                deleteTodo(id){
-                    this.todos = this.todos.filter(todo => todo.id != id);
-                },
-                deleteCompleted(){
-                    this.todos = this.todos.filter(todo => !todo.completed)
+                    }
                 }
-            },
+            }
         })
     </script>
 </body>
