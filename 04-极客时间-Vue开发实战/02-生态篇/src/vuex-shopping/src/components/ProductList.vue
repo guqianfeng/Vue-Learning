@@ -3,7 +3,7 @@
     <li
       v-for="product in products"
       :key="product.id">
-      {{ product.title }} - {{ product.price }}
+      {{ product.title }} - {{ product.price | RMB }} - {{ '库存数量: ' + product.inventory }}
       <br>
       <button
         :disabled="!product.inventory"
