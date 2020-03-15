@@ -2,6 +2,9 @@
   <div id="app">
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+    <input type="text" v-model="message">
+    <input type="text" :value="message" @input="changeInput">
+    {{message}}
     <todo-list>
       <todo-item 
           v-for="item in list" 
@@ -51,6 +54,9 @@ export default {
   methods: {
       deleteItem (title) {
         alert('delete ' + title)
+      },
+      changeInput (e) {
+        this.message = e.target.value;
       }
   }
 }
