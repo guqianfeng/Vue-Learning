@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "ant-design-vue": "^1.4.12",
+    "moment": "^2.24.0"
+  }
+}
