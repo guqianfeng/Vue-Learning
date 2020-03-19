@@ -80,7 +80,26 @@
     ]
   };
   ```
-* 改好这个配置后，我们就可以把前面的2行代码(引入button，引入css)改成1行`import { Button } from 'ant-design-vue'`  
+* 改好这个配置后，我们就可以把前面的2行代码(引入button，引入css)改成1行`import { Button } from 'ant-design-vue'` 
+* main.js目前的代码是
+  ```js
+  import Vue from "vue";
+  import App from "./App.vue";
+  import router from "./router";
+  import store from "./store";
+  Vue.config.productionTip = false;
+
+  import { Button } from 'ant-design-vue'
+  import 'ant-design-vue/dist/antd.less' 
+  Vue.use(Button)
+
+  new Vue({
+    router,
+    store,
+    render: h => h(App)
+  }).$mount("#app");
+
+  ```
 
 ## 知道你还不过瘾继续吧       
 
