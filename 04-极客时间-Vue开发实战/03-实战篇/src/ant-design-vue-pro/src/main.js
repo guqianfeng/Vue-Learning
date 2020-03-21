@@ -5,7 +5,8 @@ import store from "./store";
 Vue.config.productionTip = false;
 
 import 'ant-design-vue/dist/antd.less' 
-import { Layout, Icon, Drawer, Button, Radio } from 'ant-design-vue'
+import { Layout, Icon, Drawer, Button, Radio, Menu } from 'ant-design-vue'
+Vue.use(Menu)
 Vue.use(Radio)
 Vue.use(Button)
 Vue.use(Drawer)

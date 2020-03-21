@@ -16,20 +16,16 @@
         ></a-icon>
       </template>
       <div>
-        <template>
-          <h2>主题风格定制</h2>
-          <a-radio-group @change="(e) => handleSettingChange('navTheme', e.target.value)" :value="$route.query.navTheme || 'dark'">
-            <a-radio value="dark">黑色</a-radio>
-            <a-radio value="light">白色</a-radio>
-          </a-radio-group>
-        </template>
-        <template>
-          <h2>导航模式</h2>
-          <a-radio-group @change="(e) => handleSettingChange('navLayout', e.target.value)" :value="$route.query.navLayout || 'left'">
-            <a-radio value="left">左侧</a-radio>
-            <a-radio value="top">顶部</a-radio>
-          </a-radio-group>
-        </template>
+        <h2>主题风格定制</h2>
+        <a-radio-group @change="(e) => handleSettingChange('navTheme', e.target.value)" :value="$route.query.navTheme || 'dark'">
+          <a-radio value="dark">黑色</a-radio>
+          <a-radio value="light">白色</a-radio>
+        </a-radio-group>
+        <h2>导航模式</h2>
+        <a-radio-group @change="(e) => handleSettingChange('navLayout', e.target.value)" :value="$route.query.navLayout || 'left'">
+          <a-radio value="left">左侧</a-radio>
+          <a-radio value="top">顶部</a-radio>
+        </a-radio-group>
       </div>
     </a-drawer>
   </div>
