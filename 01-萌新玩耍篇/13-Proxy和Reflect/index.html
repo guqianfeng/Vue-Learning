@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proxy和Reflect</title>
+</head>
+<body>
+  <input type="text">
+  <input type="number">
+  <script>
+    const _user = {
+      name: '梅利奥猪猪',
+      age: 28
+    }
+
+    const textInput = document.querySelector('input[type=text]')
+    const NumberInput = document.querySelector('input[type=number]')
+    
+    textInput.value = _user.name
+    NumberInput.value = _user.age
+
+    const user = new Proxy(_user, {
+      set (target, prop, value) {
+        if (prop === 'name') {
+          textInput.value = value
+        }
+        if (prop === 'age') {
+          NumberInput.value = value
+        }
+        Reflect.set(...arguments)
+      }
+    })
+
+    textInput.addEventListener('change', e => {
+      Reflect.set(_user, 'name', e.target.value)
+    })
+    NumberInput.addEventListener('change', e => {
+      Reflect.set(_user, 'age', e.target.value)
+    })
+
+  </script>
+</body>
+</html>
