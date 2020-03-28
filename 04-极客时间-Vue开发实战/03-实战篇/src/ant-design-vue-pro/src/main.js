@@ -4,6 +4,8 @@ import router from "./router";
 import store from "./store";
 import Authorized from './components/Authorized'
 import Auth from './directives/auth'
+import request from './utils/request'
+Vue.prototype.$request = request
 Vue.config.productionTip = false;
 
 import 'ant-design-vue/dist/antd.less' 

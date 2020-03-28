@@ -6,7 +6,6 @@
 
 <script>
 import Chart from "../../components/Chart"
-import axios from 'axios'
 export default {
   components: {
     Chart
@@ -27,7 +26,11 @@ export default {
   },
   methods: {
     getChartData () {
-      axios.get('/api/dashboard/chart', {params: { id: 12345 }}).then(res => {
+      this.$request({
+        url: '/api/dashboard/chart',
+        method: 'get',
+        params: { id: 12345 }
+      }).then(res => {
         this.chartOption = {
           title: {
             text: "ECharts 入门示例"
