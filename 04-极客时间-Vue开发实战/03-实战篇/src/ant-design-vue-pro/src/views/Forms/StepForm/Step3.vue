@@ -1,5 +1,5 @@
 <template>
-  <div>Step3</div>
+  <div>操作成功</div>
 </template>
 
 <script>
