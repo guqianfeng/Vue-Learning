@@ -12,7 +12,7 @@
     >
       <a-input
         v-decorator="['password', {
-          initialValue: '',
+          initialValue: step.payAccount,
           rules: [{
             required: true,
             message: '请输入付款密码'
