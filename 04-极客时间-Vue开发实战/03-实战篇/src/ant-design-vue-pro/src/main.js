@@ -9,7 +9,8 @@ Vue.prototype.$request = request
 Vue.config.productionTip = false;
 
 import 'ant-design-vue/dist/antd.less' 
-import { Layout, Icon, Drawer, Button, Radio, Menu, Form, Input } from 'ant-design-vue'
+import { Layout, Icon, Drawer, Button, Radio, Menu, Form, Input, Select } from 'ant-design-vue'
+Vue.use(Select)
 Vue.use(Input)
 Vue.use(Form)
 Vue.use(Menu)
