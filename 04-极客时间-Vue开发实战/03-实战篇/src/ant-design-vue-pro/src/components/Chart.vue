@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     resize () {
-      console.log('resize')
+      // console.log('resize')
       this.chart.resize()
     },
     renderChart () {
