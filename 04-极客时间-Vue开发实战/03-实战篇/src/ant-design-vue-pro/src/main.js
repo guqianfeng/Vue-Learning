@@ -11,11 +11,16 @@ import zhCN from './locale/zhCN'
 import enUS from './locale/enUS'
 import queryString from 'querystring'
 
+import VueHighlightJS from 'vue-highlightjs'
+import 'highlight.js/styles/github.css'
+
+
 Vue.prototype.$request = request
 Vue.config.productionTip = false;
 
 import 'ant-design-vue/dist/antd.less' 
 import { Layout, Icon, Drawer, Button, Radio, Menu, Form, Input, Select, LocaleProvider, Dropdown, DatePicker } from 'ant-design-vue'
+Vue.use(VueHighlightJS)
 Vue.use(DatePicker)
 Vue.use(Dropdown)
 Vue.use(LocaleProvider)
@@ -29,8 +34,9 @@ Vue.use(Drawer)
 Vue.use(Icon)
 Vue.use(Layout)
 Vue.use(VueI18n)
-Vue.component('Authorized', Authorized)
 Vue.use(Auth)
+
+Vue.component('Authorized', Authorized)
 
 const i18n = new VueI18n({
   locale: queryString.parse(location.search).locale || 'zhCN',
