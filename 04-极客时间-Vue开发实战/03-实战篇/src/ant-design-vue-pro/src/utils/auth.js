@@ -1,7 +1,11 @@
+const currentAuth = ['admin']
+
+export { currentAuth }
+
 export function getCurrentAuthority () {
   // 后端返回，这边先模拟下数据，获取当前权限
   // return ['user']
-  return ['admin']
+  return currentAuth
 }
 
 export function check (authority) {
