@@ -38,9 +38,6 @@
       };
     },
     methods: {
-      afterVisibleChange(val) {
-        console.log('visible', val)
-      },
       onClose() {
         this.visible = false;
       },
