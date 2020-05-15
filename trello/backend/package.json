@@ -8,11 +8,15 @@
   "license": "MIT",
   "devDependencies": {
     "@types/koa": "^2.11.3",
+    "@types/koa-router": "^7.4.1",
     "@types/node": "^13.13.5",
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "koa": "^2.11.0"
+    "class-validator": "^0.12.2",
+    "koa": "^2.11.0",
+    "koa-router": "^8.0.8",
+    "koa-ts-controllers": "^2.1.0"
   }
 }
