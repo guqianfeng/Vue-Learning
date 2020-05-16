@@ -2,6 +2,7 @@ import configs from './configs'
 import Koa from 'koa'
 import { bootstrapControllers } from 'koa-ts-controllers'
 import KoaRouter from 'koa-router'
+import KoaBodyParser from 'koa-bodyparser'
 import path from 'path'
 
 (async () => {
@@ -20,6 +21,7 @@ import path from 'path'
     ]
   })
 
+  app.use(KoaBodyParser())
   app.use(router.routes())
 
   app.listen(configs.server.port, configs.server.host, () => {
