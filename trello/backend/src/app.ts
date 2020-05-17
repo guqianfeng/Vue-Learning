@@ -20,11 +20,20 @@ import path from 'path'
       path.resolve(__dirname + '/controllers/**/*')
     ],
     errorHandler: async (err: any, ctx: Context) => {
+      console.log(err)
       let status = 500
-      let body = {
+      let body: any = {
         statusCode: status,
         error: 'Internal server error',
         message: 'An internal server error occurred'
+      }
+
+      if (err.output) {
+        status = err.output.statusCode
+        body = {...err.output.payload}
+        if (err.data) {
+          body.errorDetails = err.data
+        }
       }
 
       ctx.status = status

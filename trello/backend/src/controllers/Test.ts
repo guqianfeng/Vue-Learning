@@ -1,5 +1,14 @@
 import { Controller, Get, Params, Query, Post, Body, Header } from "koa-ts-controllers";
 
+import { IsNumberString } from 'class-validator'
+
+class GetUsersQuery {
+
+  @IsNumberString()
+  page: number
+
+}
+
 @Controller('/test')
 class TestController {
 
@@ -36,4 +45,9 @@ class TestController {
     return 'hello world'
   }
 
+  @Get('/users')
+  async getUsers (@Query() query: GetUsersQuery) {
+    console.log(query)
+    return `传过来的query: ${JSON.stringify(query)}`
+  }
 }
