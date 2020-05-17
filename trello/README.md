@@ -19,3 +19,15 @@
 ## windows安装Navicat
 
 * [安装Navicat](https://juejin.im/post/5bc89b3d6fb9a05cea7fbff0)，亲测能激活
+
+## postman文档
+
+* [官方文档](https://learning.postman.com/)
+
+## AJV
+
+* [AJV](https://ajv.js.org/)
+
+## 断言库
+
+* [断言库](https://www.chaijs.com/api/)
