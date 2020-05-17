@@ -31,3 +31,41 @@
 ## 断言库
 
 * [断言库](https://www.chaijs.com/api/)
+
+## 数据库相关脚本指令
+
+* 先进入后端项目backend
+* 在configs新建database.json
+```
+{
+  "development": {
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "username": "root",
+    "password": "",
+    "database": "trello_app_development",
+    "timezone": "+08:00"
+  },
+  "test": {
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "username": "root",
+    "password": "",
+    "database": "trello_app_test",
+    "timezone": "+08:00"
+  },
+  "production": {
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "username": "root",
+    "password": "",
+    "database": "trello_app_production",
+    "timezone": "+08:00"
+  }
+}
+```
+* 创建数据库和删除数据库指令可以看我的package.json
+* 迁移脚本执行`.\node_modules\.bin\sequelize migration:create --name UserInit`
+* 更新迁移脚本可以执行`.\node_modules\.bin\sequelize migration:create --name UserAndUpdatedAt`，在使用相关API比如addColumn添加列
+* 种子脚本的指令为`.\node_modules\.bin\sequelize seed:create --name UserInit`
+
