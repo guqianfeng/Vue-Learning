@@ -4,6 +4,7 @@ import { bootstrapControllers } from 'koa-ts-controllers'
 import KoaRouter from 'koa-router'
 import KoaBodyParser from 'koa-bodyparser'
 import path from 'path'
+import Boom from '@hapi/Boom'
 
 (async () => {
 
@@ -39,6 +40,10 @@ import path from 'path'
       ctx.status = status
       ctx.body = body
     }
+  })
+
+  router.all('*', async ctx => {
+    throw Boom.notFound('不存在该路由')
   })
 
   app.use(KoaBodyParser())

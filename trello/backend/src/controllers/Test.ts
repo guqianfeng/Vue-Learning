@@ -1,6 +1,7 @@
 import { Controller, Get, Params, Query, Post, Body, Header } from "koa-ts-controllers";
 
 import { IsNumberString } from 'class-validator'
+import Boom from '@hapi/Boom'
 
 class GetUsersQuery {
 
@@ -48,6 +49,9 @@ class TestController {
   @Get('/users')
   async getUsers (@Query() query: GetUsersQuery) {
     console.log(query)
+    if (true) {
+      throw Boom.notFound('各种业务逻辑错误', '补充错误说明')
+    }
     return `传过来的query: ${JSON.stringify(query)}`
   }
 }
