@@ -1,5 +1,7 @@
 import { Length, IsNotEmpty } from 'class-validator'
 
+import { IsSameValue } from './CustomValidationDecorators'
+
 export class RegisterBody {
 
   @Length(1, 50, {
@@ -13,6 +15,9 @@ export class RegisterBody {
   password: string
 
   // 需要自定义装饰器，因为要和password比较，必须拥有相同的值
-  // rePassword: string
+  @IsSameValue('password', {
+    message: '两次输入密码不一致'
+  })
+  rePassword: string
 
 }
