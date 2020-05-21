@@ -1,10 +1,12 @@
-import { Controller, Get, Params, Query, Post, Body, Header, Ctx } from "koa-ts-controllers";
+import { Controller, Get, Params, Query, Post, Body, Header, Ctx, Flow } from "koa-ts-controllers";
 
 import { IsNumberString, IsNotEmpty } from 'class-validator'
 
 import { Context } from 'koa'
 
 import Boom from '@hapi/Boom'
+
+import authorization from '../middlewares/authorization'
 
 class GetUsersQuery {
 
@@ -76,5 +78,18 @@ class TestController {
       throw Boom.notFound('各种业务逻辑错误', '补充错误说明')
     }
     return `传过来的query: ${JSON.stringify(query)}`
+  }
+
+  @Get('/auth')
+  @Flow([authorization])
+  async auth (
+    @Ctx() ctx: Context
+  ) {
+    return '不登录看不到'
+  }
+
+  @Get('/noauth')
+  async noAuth () {
+    return '随便看'
   }
 }

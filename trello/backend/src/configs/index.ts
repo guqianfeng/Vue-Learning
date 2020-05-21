@@ -15,21 +15,30 @@ const configs = {
       host: 'localhost',
       port: 8080
     },
-    database: databaseConfig.development as IDatabaseConfig
+    database: databaseConfig.development as IDatabaseConfig,
+    jwt: {
+      privateKey: 'gqf'
+    }
   },
   test: {
     server: {
       host: 'localhost',
       port: 8080
     },
-    database: databaseConfig.test as IDatabaseConfig
+    database: databaseConfig.test as IDatabaseConfig,
+    jwt: {
+      privateKey: 'gqf'
+    }
   },
   production: {
     server: {
       host: 'localhost',
       port: 8080
     },
-    database: databaseConfig.production as IDatabaseConfig
+    database: databaseConfig.production as IDatabaseConfig,
+    jwt: {
+      privateKey: 'gqf'
+    }
   },
 }
 
