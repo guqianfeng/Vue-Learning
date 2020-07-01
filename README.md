@@ -23,7 +23,9 @@
   * [element](https://element.eleme.cn/#/zh-CN/)  
 
 * 谷歌浏览器插件 - vue-devTools    
-  * 直接将shell-chrome(在项目根目录下)拖动到谷歌浏览器的扩展程序      
+  * 直接将shell-chrome(在项目根目录下)拖动到谷歌浏览器的扩展程序  
+  
+* postcss-px-to-viewport - 移动端适配方案  
 
 ## 学习目录
 
