@@ -161,4 +161,6 @@
   * 可以打断点，然后找源文件看代码
   * 前面的入口文件，可以看到$mount方法，可以去理解代码
     * 如有个判断条件`!options.render`，就能知道竞争条件，render函数有很高的优先级
+    * [官方render函数例子](https://cn.vuejs.org/v2/guide/render-function.html#使用-JavaScript-代替模板功能)
+    * [知乎-为什么vue写render函数的灵活性更高？](https://www.zhihu.com/question/406354817)
 
