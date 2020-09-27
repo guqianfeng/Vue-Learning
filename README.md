@@ -158,6 +158,7 @@
   * 找到文件`scripts/config.js`
   * 搜索`web-full-dev`，找到入口文件`entry-runtime-with-compiler.js`
 * 在`examples/commits/index.html`中玩耍
+  * 引入的js把.min去掉
   * 可以打断点，然后找源文件看代码
   * 前面的入口文件，可以看到$mount方法，可以去理解代码
     * 如有个判断条件`!options.render`，就能知道竞争条件，render函数有很高的优先级
