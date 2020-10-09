@@ -149,4 +149,5 @@
 * [vue-router原理](./05-Vue2源码篇/vue-router原理/vue-router原理.md)
 * [vuex原理](./05-Vue2源码篇/vuex原理/vuex原理.md)
 * [起手式](./05-Vue2源码篇/起手式/起手式.md) 
+* vdom及diff算法
 
