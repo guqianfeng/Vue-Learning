@@ -146,8 +146,8 @@
   
 ### Vue2源码篇
 
-* [vue-router原理](./05-Vue2源码篇/vue-router原理/vue-router原理.md)
-* [vuex原理](./05-Vue2源码篇/vuex原理/vuex原理.md)
-* [起手式](./05-Vue2源码篇/起手式/起手式.md) 
-* vdom及diff算法
+* [vue-router原理](./05-Vue2源码篇/vue-router原理/README.md)
+* [vuex原理](./05-Vue2源码篇/vuex原理/README.md)
+* [起手式](./05-Vue2源码篇/起手式/README.md) 
+* [vdom及diff算法](./05-Vue2源码篇/vdom及diff算法/README.md)
 
