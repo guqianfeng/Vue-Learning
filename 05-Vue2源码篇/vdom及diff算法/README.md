@@ -20,3 +20,7 @@
   * `nodeOps`里都是真实节点dom操作
   * `modules`里对真实dom属性操作，如`attr`，`class`等
   * 然后就可以找到`core/vdom/patch`
+* 在`core/vdom/patch`直接搜索`createPatchFunction`
+ * 方法最后返回了`return function patch`这是我们真正打补丁的函数
+ * 可以看到最后返回了真实dom`return vnode.elm`
+ * 具体diff算法可以结合[文章-详解vue的diff算法](https://www.cnblogs.com/wind-lanyan/p/9061684.html)和源码一起看
