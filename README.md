@@ -150,4 +150,5 @@
 * [vuex原理](./05-Vue2源码篇/vuex原理/README.md)
 * [起手式](./05-Vue2源码篇/起手式/README.md) 
 * [vdom及diff算法](./05-Vue2源码篇/vdom及diff算法/README.md)
+* [编译compiler](./05-Vue2源码篇/编译compiler/README.md)
 
