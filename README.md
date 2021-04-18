@@ -24,8 +24,11 @@
 
 * 谷歌浏览器插件 - vue-devTools    
   * 直接将shell-chrome(在项目根目录下)拖动到谷歌浏览器的扩展程序  
+
+* [时间倒计时翻页效果组件](https://github.com/javaLuo/vue-flip-down)
   
 * postcss-px-to-viewport - 移动端适配方案  
+
 * [逐行剖析 Vue.js 源码](https://vue-js.com/learn-vue/)
 
 ## 学习目录
