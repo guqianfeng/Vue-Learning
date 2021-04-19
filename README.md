@@ -31,6 +31,8 @@
 
 * [逐行剖析 Vue.js 源码](https://vue-js.com/learn-vue/)
 
+* [vue3仓库](https://github.com/vuejs/vue-next)
+
 ## 学习目录
 
 ### 萌新玩耍篇
