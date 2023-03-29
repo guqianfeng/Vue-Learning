@@ -4,7 +4,7 @@
 * 把代码克隆下来，有如下几个好处
   * 可以切不同版本分支看
   * 自己可以新建分支，反正本地代码随意修改调试
-  * 该学习笔记，vue的版本是2.6.11
+  * 该学习笔记，vue的版本是2.6.11，node用12.14.0
 * 项目所需依赖，记得安装  
 * 修改下dev脚本，`"dev": "rollup -w -c scripts/config.js --sourcemap --environment TARGET:web-full-dev",` 
   * 添加的`--sourcemap`为了看源码，找到对应的代码和文件对应
